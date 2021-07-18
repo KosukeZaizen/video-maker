@@ -1,6 +1,5 @@
 import { app, BrowserWindow } from "electron";
 
-console.log("__dirname", __dirname);
 require("electron-reload")("../");
 
 let mainWindow;
