@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { About } from "./components/About";
 import { Home } from "./components/Home";
+import VocabEditTop from "./components/Vocab/Edit/Top";
 
 function App() {
     return (
@@ -12,6 +13,24 @@ function App() {
                 <Route path="/about">
                     <About />
                 </Route>
+                <Route
+                    sensitive
+                    exact
+                    path="/vocabularyEdit"
+                    component={VocabEditTop}
+                />
+                {/* <Route
+                    sensitive
+                    exact
+                    path="/vocabularyEdit/:genreName"
+                    component={VocabEdit}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/vocabularyVideo/:genreName"
+                    component={VocabVideo}
+                /> */}
                 <Route path="/">
                     <Home />
                 </Route>
@@ -29,6 +48,9 @@ function Nav() {
                 </li>
                 <li>
                     <Link to="/about">About</Link>
+                </li>
+                <li>
+                    <Link to="/vocabularyEdit">Vocab</Link>
                 </li>
             </ul>
         </nav>
