@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { About } from "./components/About";
 import { Home } from "./components/Home";
 import VocabEditTop from "./components/Vocab/Edit/Top";
