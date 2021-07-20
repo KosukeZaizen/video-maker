@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as consts from "../../../common/consts";
-import "./CharacterComment.css";
+import { css } from "../../../common/util/getAphroditeClassName";
 
 type TProps = {
     imgNumber: number;
@@ -55,7 +55,23 @@ export default function CharacterComment(props: TProps) {
                 }}
             >
                 <div
-                    className="says"
+                    className={css({
+                        display: "inline-block",
+                        position: "relative",
+                        margin: "5px 0 0 10px",
+                        padding: "17px 13px",
+                        borderRadius: 12,
+                        background: "antiquewhite",
+                        ":after": {
+                            content: "",
+                            display: "inline-block",
+                            position: "absolute",
+                            top: 18,
+                            left: -24,
+                            border: "12px solid transparent",
+                            borderRight: "12px solid antiquewhite",
+                        },
+                    })}
                     style={{
                         width:
                             screenWidth > 767

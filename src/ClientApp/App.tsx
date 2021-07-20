@@ -1,25 +1,23 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";
-import { About } from "./components/About";
 import { Home } from "./components/Home";
+import VocabEdit from "./components/Vocab/Edit";
 import VocabEditTop from "./components/Vocab/Edit/Top";
+import VocabVideo from "./components/Vocab/VocabVideo";
 
 function App() {
     return (
         <Router>
             <Nav />
             <Switch>
-                <Route path="/about">
-                    <About />
-                </Route>
                 <Route
                     sensitive
                     exact
                     path="/vocabularyEdit"
                     component={VocabEditTop}
                 />
-                {/* <Route
+                <Route
                     sensitive
                     exact
                     path="/vocabularyEdit/:genreName"
@@ -30,10 +28,8 @@ function App() {
                     exact
                     path="/vocabularyVideo/:genreName"
                     component={VocabVideo}
-                /> */}
-                <Route path="/">
-                    <Home />
-                </Route>
+                />
+                <Route component={Home} />
             </Switch>
         </Router>
     );

@@ -2,7 +2,6 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { appsPublicImg, Z_APPS_TOP_URL } from "../../../../common/consts";
 import { cFetch } from "../../../../common/util/cFetch";
-import "./animation.css";
 import { fallingImage } from "./type";
 
 let count = 0;

@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./style.css";
 
 interface Props {
     style?: React.CSSProperties;
