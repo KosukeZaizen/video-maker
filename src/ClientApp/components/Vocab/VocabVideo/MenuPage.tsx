@@ -100,8 +100,14 @@ export function MenuPage({
                 Video Start
             </button>
 
-            <button onClick={startRecording}>start recording</button>
-            <button onClick={stopRecording}>stop recording</button>
+            <button
+                onClick={() => {
+                    startRecording();
+                    setTimeout(stopRecording, 5000);
+                }}
+            >
+                start recording
+            </button>
 
             <div style={{ display: "flex" }}>
                 <div style={{ border: "solid", margin: 20, padding: 20 }}>
