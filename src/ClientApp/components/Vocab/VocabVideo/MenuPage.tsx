@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChangePage, Page } from ".";
 import { getFallingImages } from "../../shared/Animations/SeasonAnimation";
 import { FallingImageEdit } from "../../shared/Animations/SeasonAnimation/FallingImageEdit";
@@ -36,15 +36,36 @@ export function MenuPage({
     const [seasonNames, setSeasonNames] = useState<string[]>([]);
     const [isAnimationStopped, setIsAnimationStopped] = useState(true);
 
+    const mountState = useMemo(() => {
+        const mountState = { unmounted: false };
+        return {
+            setUnmounted: (unmounted: boolean) => {
+                mountState.unmounted = unmounted;
+            },
+            checkUnmounted: () => mountState.unmounted,
+        };
+    }, []);
+
+    useEffect(() => {
+        mountState.setUnmounted(false);
+        return () => {
+            mountState.setUnmounted(true);
+        };
+    }, []);
+
+    const { checkUnmounted } = mountState;
+
     useEffect(() => {
         vocabSounds.forEach(vocabSound => {
             vocabSound.audio.oncanplaythrough = () => {
                 vocabSound.playable = true;
-                setPlayableArray(vocabSounds.map(s => s.playable));
+                if (!checkUnmounted()) {
+                    setPlayableArray(vocabSounds.map(s => s.playable));
+                }
             };
             vocabSound.audio.load();
         });
-    }, [vocabSounds]);
+    }, [vocabSounds, checkUnmounted]);
 
     useEffect(() => {
         if (!music) {
@@ -52,17 +73,21 @@ export function MenuPage({
         }
         music.audio.oncanplaythrough = () => {
             music.playable = true;
-            setMusicPlayable(true);
+            if (!checkUnmounted()) {
+                setMusicPlayable(true);
+            }
         };
         music.audio.load();
-    }, [music]);
+    }, [music, checkUnmounted]);
 
     useEffect(() => {
         (async () => {
             const seasons = await getFallingImages();
-            setSeasonNames(seasons.map(s => s.name));
+            if (!checkUnmounted()) {
+                setSeasonNames(seasons.map(s => s.name));
+            }
         })();
-    }, []);
+    }, [checkUnmounted]);
 
     const playableCount = playableArray.filter(p => p).length;
     const totalCount = vocabSounds.filter(s => s).length;
@@ -89,11 +114,13 @@ export function MenuPage({
                     <button
                         style={{ margin: 10 }}
                         onClick={() => {
-                            setIsAnimationStopped(false);
                             setTimeout(() => {
                                 changePage(Page.title);
                             }, 3000);
-                            setIsButtonShown(false);
+                            if (!checkUnmounted()) {
+                                setIsAnimationStopped(false);
+                                setIsButtonShown(false);
+                            }
                         }}
                     >
                         Video Start
