@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { ChangePage, Page } from ".";
 import { sleepAsync } from "../../../common/functions";
-import { audioPlayAsync } from "../../../common/util/audioPlayAsync";
+import { audioPlayAsync } from "../../../common/util/audio/audioPlayAsync";
 import CharacterComment from "../../shared/CharacterComment";
 import { vocab } from "../types/vocab";
 

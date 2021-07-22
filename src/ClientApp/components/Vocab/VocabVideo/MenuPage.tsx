@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { ChangePage, Page } from ".";
-import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
 import { getFallingImages } from "../../shared/Animations/SeasonAnimation";
 import { FallingImageEdit } from "../../shared/Animations/SeasonAnimation/FallingImageEdit";
 import { sound, vocab } from "../types/vocab";
@@ -37,8 +36,6 @@ export function MenuPage({
     const [seasonNames, setSeasonNames] = useState<string[]>([]);
     const [isAnimationStopped, setIsAnimationStopped] = useState(true);
 
-    const { startRecording, stopRecording } = useVideoRecorder();
-
     useEffect(() => {
         vocabSounds.forEach(vocabSound => {
             vocabSound.audio.oncanplaythrough = () => {
@@ -61,11 +58,10 @@ export function MenuPage({
     }, [music]);
 
     useEffect(() => {
-        const load = async () => {
+        (async () => {
             const seasons = await getFallingImages();
             setSeasonNames(seasons.map(s => s.name));
-        };
-        load();
+        })();
     }, []);
 
     const playableCount = playableArray.filter(p => p).length;
@@ -98,15 +94,6 @@ export function MenuPage({
                 }}
             >
                 Video Start
-            </button>
-
-            <button
-                onClick={() => {
-                    startRecording();
-                    setTimeout(stopRecording, 5000);
-                }}
-            >
-                start recording
             </button>
 
             <div style={{ display: "flex" }}>
