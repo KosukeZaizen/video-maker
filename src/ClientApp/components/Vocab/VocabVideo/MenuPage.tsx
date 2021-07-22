@@ -83,18 +83,22 @@ export function MenuPage({
                 musicPlayable ? "OK!" : "Loading..."
             }`}</p>
 
-            <button
-                style={{ margin: 10 }}
-                onClick={() => {
-                    setIsAnimationStopped(false);
-                    setTimeout(() => {
-                        changePage(Page.title);
-                    }, 3000);
-                    setIsButtonShown(false);
-                }}
-            >
-                Video Start
-            </button>
+            {playableCount === totalCount &&
+                musicPlayable &&
+                seasonNames.length && (
+                    <button
+                        style={{ margin: 10 }}
+                        onClick={() => {
+                            setIsAnimationStopped(false);
+                            setTimeout(() => {
+                                changePage(Page.title);
+                            }, 3000);
+                            setIsButtonShown(false);
+                        }}
+                    >
+                        Video Start
+                    </button>
+                )}
 
             <div style={{ display: "flex" }}>
                 <div style={{ border: "solid", margin: 20, padding: 20 }}>
