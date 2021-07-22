@@ -1,142 +1,112 @@
 import { desktopCapturer, DesktopCapturerSource } from "electron";
 import { writeFile } from "fs";
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
-
-let mediaRecorder: MediaRecorder | undefined = undefined;
-const recordedChunks: BlobPart[] = [];
+import { useEffect, useState } from "react";
 
 export function VideoTest() {
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const num = useNum();
-    const videoSources = useVideoSources();
+    const mediaRecorder = useMediaRecorder();
+
+    const startRecording = () => {
+        mediaRecorder?.start();
+    };
+    const stopRecording = () => {
+        mediaRecorder?.stop();
+    };
 
     return (
-        <div>
-            <select
-                onChange={ev => {
-                    const source = videoSources.find(
-                        s => s.name === ev.target.value
-                    );
-                    if (source && videoRef.current) {
-                        setSource(source, videoRef.current);
-                    }
-                }}
-            >
-                {videoSources.map(s => (
-                    <option key={s.id}>{s.name}</option>
-                ))}
-            </select>
-            <br />
-            <button
-                onClick={() => {
-                    mediaRecorder?.start();
-                }}
-            >
-                start
-            </button>
-            <button
-                onClick={() => {
-                    mediaRecorder?.stop();
-                }}
-            >
-                stop
-            </button>
-            <br />
-            <video ref={videoRef} />
-            <br />
-            {num}
-        </div>
+        <>
+            <InternalComponent
+                startRecording={startRecording}
+                stopRecording={stopRecording}
+            />
+        </>
     );
 }
 
-function useNum() {
-    const [num, setNum] = useState(0);
-
-    useEffect(() => {
-        setTimeout(() => {
-            setNum(num + 1);
-        }, 2000);
-    }, [num]);
-
-    return num;
+function InternalComponent({
+    startRecording,
+    stopRecording,
+}: {
+    startRecording: () => void;
+    stopRecording: () => void;
+}) {
+    return (
+        <>
+            <button onClick={startRecording}>start</button>
+            <button onClick={stopRecording}>stop</button>
+        </>
+    );
 }
 
-function useVideoSources() {
-    const [inputSources, setInputSources] = useState<DesktopCapturerSource[]>(
-        []
-    );
+function useMediaRecorder() {
+    const [inputSource, setInputSource] = useState<DesktopCapturerSource>();
+    const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>();
 
     useEffect(() => {
-        const getSources = async () => {
+        (async () => {
             const inputSources = await desktopCapturer.getSources({
-                types: ["window", "screen"],
+                types: ["window"],
             });
-            console.log("sources", inputSources);
-            setInputSources(inputSources);
-        };
-        setTimeout(getSources, 5000);
+            const source = inputSources.find(s => s.name === document.title);
+            setInputSource(source);
+        })();
     }, []);
 
-    return inputSources;
-}
-
-async function setSource(
-    source: DesktopCapturerSource,
-    videoElement: HTMLVideoElement
-) {
-    try {
-        if (videoElement) {
-            const constraints = {
-                audio: false,
-                video: {
-                    mandatory: {
-                        chromeMediaSource: "desktop",
-                        chromeMediaSourceId: source.id,
-                        minWidth: 1280,
-                        maxWidth: 1280,
-                        minHeight: 720,
-                        maxHeight: 720,
-                    },
-                },
-            } as MediaStreamConstraints;
-
-            const stream = await navigator.mediaDevices.getUserMedia(
-                constraints
-            );
-            videoElement.srcObject = stream;
-            videoElement.play();
-
-            const options = { mimeType: "video/webm;codecs=vp9" };
-
-            mediaRecorder = new MediaRecorder(stream, options);
-            mediaRecorder.ondataavailable = handleDataAvailable;
-            mediaRecorder.onstop = handleStop;
+    useEffect(() => {
+        if (inputSource) {
+            (async () => {
+                const recorder = await setVideoSource(inputSource);
+                setMediaRecorder(recorder);
+            })();
         }
-    } catch (e) {
-        console.log("e", e);
-    }
+    }, [inputSource]);
+
+    return mediaRecorder;
 }
 
-function handleDataAvailable(e: BlobEvent) {
-    console.log("The video data is available");
-    recordedChunks.push(e.data);
+async function setVideoSource(source: DesktopCapturerSource) {
+    const constraints = {
+        audio: false,
+        video: {
+            mandatory: {
+                chromeMediaSource: "desktop",
+                chromeMediaSourceId: source.id,
+                minWidth: 1280,
+                maxWidth: 1280,
+                minHeight: 720,
+                maxHeight: 720,
+            },
+        },
+    } as MediaStreamConstraints;
+
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const options = { mimeType: "video/webm;codecs=vp9" };
+
+    const mediaRecorder = new MediaRecorder(stream, options);
+
+    mediaRecorder.ondataavailable = (e: BlobEvent) => {
+        console.log("The video data is available");
+        mediaRecorder.onstop = getHandleStop(e.data);
+    };
+
+    return mediaRecorder;
 }
 
-async function handleStop(e: Event) {
-    const blob = new Blob(recordedChunks, {
-        type: "video/webm;codecs=vp9",
-    });
+function getHandleStop(blobData: Blob) {
+    return async (e: Event) => {
+        const blob = new Blob([blobData], {
+            type: "video/webm;codecs=vp9",
+        });
 
-    const buffer = Buffer.from(await blob.arrayBuffer());
+        const buffer = Buffer.from(await blob.arrayBuffer());
 
-    const downloadFolder = `${
-        process.env.USERPROFILE
-    }/Downloads/vid-${Date.now()}.webm`;
+        const downloadFolder = `${
+            process.env.USERPROFILE
+        }/Downloads/vid-${Date.now()}.webm`;
 
-    writeFile(downloadFolder, buffer, () => {
-        console.log("File saved successfully");
-    });
+        writeFile(downloadFolder, buffer, () => {
+            alert("File saved successfully");
+        });
+    };
 }
-
 export default VideoTest;
