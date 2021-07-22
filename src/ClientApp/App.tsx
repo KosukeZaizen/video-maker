@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { Home } from "./components/Home";
-import VideoTest from "./components/VideoTest";
 import VocabEdit from "./components/Vocab/Edit";
 import VocabEditTop from "./components/Vocab/Edit/Top";
 import VocabVideo from "./components/Vocab/VocabVideo";
@@ -30,7 +29,6 @@ function App() {
                     path="/vocabularyVideo/:genreName"
                     component={VocabVideo}
                 />
-                <Route sensitive exact path="/test" component={VideoTest} />
                 <Route component={Home} />
             </Switch>
         </Router>

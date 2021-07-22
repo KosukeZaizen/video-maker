@@ -1,67 +1,50 @@
 import { desktopCapturer, DesktopCapturerSource } from "electron";
 import { writeFile } from "fs";
-import * as React from "react";
 import { useEffect, useState } from "react";
 
-export function VideoTest() {
-    const mediaRecorder = useMediaRecorder();
-
-    const startRecording = () => {
-        mediaRecorder?.start();
-    };
-    const stopRecording = () => {
-        mediaRecorder?.stop();
-    };
-
-    return (
-        <>
-            <InternalComponent
-                startRecording={startRecording}
-                stopRecording={stopRecording}
-            />
-        </>
-    );
-}
-
-function InternalComponent({
-    startRecording,
-    stopRecording,
-}: {
-    startRecording: () => void;
-    stopRecording: () => void;
-}) {
-    return (
-        <>
-            <button onClick={startRecording}>start</button>
-            <button onClick={stopRecording}>stop</button>
-        </>
-    );
-}
-
-function useMediaRecorder() {
+export function useVideoRecorder() {
     const [inputSource, setInputSource] = useState<DesktopCapturerSource>();
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>();
 
     useEffect(() => {
         (async () => {
-            const inputSources = await desktopCapturer.getSources({
-                types: ["window"],
-            });
-            const source = inputSources.find(s => s.name === document.title);
-            setInputSource(source);
+            try {
+                const inputSources = await desktopCapturer.getSources({
+                    types: ["window"],
+                });
+                const source = inputSources.find(
+                    s => s.name === document.title
+                );
+                setInputSource(source);
+            } catch (ex) {
+                console.log("source ex:", ex);
+            }
         })();
     }, []);
 
     useEffect(() => {
         if (inputSource) {
             (async () => {
-                const recorder = await setVideoSource(inputSource);
-                setMediaRecorder(recorder);
+                try {
+                    const recorder = await setVideoSource(inputSource);
+                    setMediaRecorder(recorder);
+                } catch (ex) {
+                    console.log("media recorder ex:", ex);
+                }
             })();
         }
     }, [inputSource]);
 
-    return mediaRecorder;
+    return {
+        startRecording: () => {
+            console.log("start recording");
+            mediaRecorder?.start();
+        },
+        stopRecording: () => {
+            mediaRecorder?.stop();
+            console.log("stop recording");
+        },
+    };
 }
 
 async function setVideoSource(source: DesktopCapturerSource) {
@@ -93,7 +76,7 @@ async function setVideoSource(source: DesktopCapturerSource) {
 }
 
 function getHandleStop(blobData: Blob) {
-    return async (e: Event) => {
+    return async () => {
         const blob = new Blob([blobData], {
             type: "video/webm;codecs=vp9",
         });
@@ -109,4 +92,3 @@ function getHandleStop(blobData: Blob) {
         });
     };
 }
-export default VideoTest;

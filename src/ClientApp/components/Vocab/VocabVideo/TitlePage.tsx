@@ -50,6 +50,7 @@ export function TitlePage({
         setTimeout(() => {
             setIsInitial(false);
         }, 5000);
+
         setTimeout(() => {
             changePage(Page.list);
         }, 10000);

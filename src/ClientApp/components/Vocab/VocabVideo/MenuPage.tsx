@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { ChangePage, Page } from ".";
+import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
 import { getFallingImages } from "../../shared/Animations/SeasonAnimation";
 import { FallingImageEdit } from "../../shared/Animations/SeasonAnimation/FallingImageEdit";
 import { sound, vocab } from "../types/vocab";
@@ -35,6 +36,8 @@ export function MenuPage({
     const [musicPlayable, setMusicPlayable] = useState(false);
     const [seasonNames, setSeasonNames] = useState<string[]>([]);
     const [isAnimationStopped, setIsAnimationStopped] = useState(true);
+
+    const { startRecording, stopRecording } = useVideoRecorder();
 
     useEffect(() => {
         vocabSounds.forEach(vocabSound => {
@@ -96,6 +99,9 @@ export function MenuPage({
             >
                 Video Start
             </button>
+
+            <button onClick={startRecording}>start recording</button>
+            <button onClick={stopRecording}>stop recording</button>
 
             <div style={{ display: "flex" }}>
                 <div style={{ border: "solid", margin: 20, padding: 20 }}>
