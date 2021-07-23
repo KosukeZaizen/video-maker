@@ -41,11 +41,10 @@ export default function CharacterComment(props: TProps) {
                         verticalAlign: "top",
                         ...imgStyle,
                     }}
-                    className="ninjaPic"
+                    className="character-jump-animation"
                 />
             </div>
             <div
-                className="chatting"
                 style={{
                     height: "auto",
                     display: "flex",

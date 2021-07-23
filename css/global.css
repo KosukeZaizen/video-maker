@@ -30,3 +30,36 @@
     background: linear-gradient(#035c1d, #047c28);
 }
 /* ↑ Scroll Box ↑ */
+
+/* ↓ Jumping Character Animation ↓ */
+.character-jump-animation {
+    animation: 10s linear infinite character-jump-animation;
+    animation-delay: 1s;
+}
+@keyframes character-jump-animation {
+    0% {
+        position: relative;
+        bottom: 0px;
+    }
+    2% {
+        position: relative;
+        bottom: 10px;
+    }
+    5% {
+        position: relative;
+        bottom: 0px;
+    }
+    7% {
+        position: relative;
+        bottom: 10px;
+    }
+    10% {
+        position: relative;
+        bottom: 0px;
+    }
+    100% {
+        position: relative;
+        bottom: 0px;
+    }
+}
+/* ↑ Jumping Character Animation ↑ */

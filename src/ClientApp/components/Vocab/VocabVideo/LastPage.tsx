@@ -48,10 +48,11 @@ export function LastPage({
             </h1>
             <CharacterComment
                 imgNumber={1}
+                imgStyle={{ minWidth: 160, position: "relative", left: -40 }}
                 screenWidth={screenWidth}
                 comment={[
-                    <p>{"Don't forget to subscribe"}</p>,
-                    <p>{"to this YouTube channel!"}</p>,
+                    <p style={{ margin: 0 }}>{"Don't forget to subscribe"}</p>,
+                    <p style={{ margin: 0 }}>{"to this YouTube channel!"}</p>,
                 ]}
                 style={{ maxWidth: 1000, marginBottom: 40 }}
                 commentStyle={{
