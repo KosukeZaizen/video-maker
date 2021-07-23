@@ -50,6 +50,8 @@ export function ListPage({
         play();
     }, []);
 
+    const pStyle = { margin: "0 0 15px" };
+
     return (
         <div
             style={{
@@ -59,14 +61,19 @@ export function ListPage({
                 fontSize: 90,
             }}
         >
-            <p>{currentVocab.kanji}</p>
-            <p>{currentVocab.hiragana}</p>
-            <p>{currentVocab.english}</p>
+            <p style={pStyle}>{currentVocab.kanji}</p>
+            <p style={pStyle}>{currentVocab.hiragana}</p>
+            <p style={pStyle}>{currentVocab.english}</p>
             <div style={{ position: "absolute", bottom: 0, left: 20 }}>
                 <CharacterComment
                     imgNumber={2}
                     comment={
-                        <p style={{ fontSize: "x-large", width: 273 }}>
+                        <p
+                            style={{
+                                fontSize: "x-large",
+                                minWidth: 273,
+                            }}
+                        >
                             {"Remember these words"}
                             <br />
                             {"before the quiz!"}
@@ -74,7 +81,11 @@ export function ListPage({
                     }
                     imgStyle={{ width: 95 }}
                     screenWidth={screenWidth / 2}
-                    commentStyle={{ marginLeft: 15, paddingLeft: 25 }}
+                    commentStyle={{
+                        marginLeft: 15,
+                        paddingLeft: 25,
+                        width: 300,
+                    }}
                 />
             </div>
             <div

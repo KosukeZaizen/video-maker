@@ -71,10 +71,16 @@ export function QuizPage({
         }, 5000);
     }, []);
 
+    const pStyle = { margin: "0 0 15px" };
+
     return isInitialScreen ? (
         <CharacterComment
             imgNumber={1}
-            comment={<p style={{ fontSize: 70 }}>{"Let's start the quiz!"}</p>}
+            comment={
+                <p style={{ fontSize: 70, margin: 0, padding: 15 }}>
+                    {"Let's start the quiz!"}
+                </p>
+            }
             style={{ maxWidth: 1000 }}
             screenWidth={screenWidth}
             commentStyle={{
@@ -94,14 +100,15 @@ export function QuizPage({
                 fontSize: 90,
             }}
         >
-            <p>{currentVocab.kanji}</p>
-            <p>{currentVocab.hiragana}</p>
+            <p style={pStyle}>{currentVocab.kanji}</p>
+            <p style={pStyle}>{currentVocab.hiragana}</p>
             <p
                 key={currentVocab.vocabId}
                 style={{
                     color: "red",
                     opacity: showAnswer ? 1 : 0,
                     transition: "500ms",
+                    ...pStyle,
                 }}
             >
                 {currentVocab.english}
@@ -110,7 +117,13 @@ export function QuizPage({
                 <CharacterComment
                     imgNumber={3}
                     comment={
-                        <p style={{ fontSize: "x-large" }}>
+                        <p
+                            style={{
+                                fontSize: "x-large",
+                                margin: 0,
+                                paddingLeft: 5,
+                            }}
+                        >
                             {"Do you remember the meaning?"}
                         </p>
                     }

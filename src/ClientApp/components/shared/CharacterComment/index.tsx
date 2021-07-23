@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as consts from "../../../common/consts";
-import { css } from "../../../common/util/getAphroditeClassName";
 
 type TProps = {
     imgNumber: number;
@@ -55,14 +54,23 @@ export default function CharacterComment(props: TProps) {
                 }}
             >
                 <div
-                    className={css({
+                    style={{
+                        width:
+                            screenWidth > 767
+                                ? (screenWidth * 7) / 10 - 15
+                                : "100%",
+                        maxWidth: 420,
                         display: "inline-block",
                         position: "relative",
-                        margin: "5px 0 0 10px",
+                        margin: "5px 0 0 15px",
                         padding: "17px 13px",
                         borderRadius: 12,
                         background: "antiquewhite",
-                        ":after": {
+                        ...commentStyle,
+                    }}
+                >
+                    <div
+                        style={{
                             content: "",
                             display: "inline-block",
                             position: "absolute",
@@ -70,17 +78,8 @@ export default function CharacterComment(props: TProps) {
                             left: -24,
                             border: "12px solid transparent",
                             borderRight: "12px solid antiquewhite",
-                        },
-                    })}
-                    style={{
-                        width:
-                            screenWidth > 767
-                                ? (screenWidth * 7) / 10 - 15
-                                : "100%",
-                        maxWidth: 420,
-                        ...commentStyle,
-                    }}
-                >
+                        }}
+                    />
                     {comment}
                 </div>
             </div>
