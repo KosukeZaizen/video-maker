@@ -9,10 +9,12 @@ export function LastPage({
     screenWidth,
     changePage,
     music,
+    stopRecording,
 }: {
     screenWidth: number;
     changePage: ChangePage;
     music: sound;
+    stopRecording: () => void;
 }) {
     useEffect(() => {
         setTimeout(() => {
@@ -27,7 +29,8 @@ export function LastPage({
         }, 13000);
 
         setTimeout(() => {
-            changePage(Page.menu);
+            stopRecording();
+            setTimeout(() => changePage(Page.menu), 600);
         }, 20000);
     }, []);
 

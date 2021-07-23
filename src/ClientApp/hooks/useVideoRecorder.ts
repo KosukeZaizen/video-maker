@@ -45,7 +45,7 @@ export function useVideoRecorder() {
 
             const checkStop = () => {
                 if (recordingState.isRecording) {
-                    setTimeout(checkStop, 100);
+                    setTimeout(checkStop, 500);
                 } else {
                     mediaRecorder?.stop();
                 }
@@ -63,6 +63,8 @@ async function setVideoSource(source: DesktopCapturerSource) {
         chromeMediaSource: "desktop",
         chromeMediaSourceId: source.id,
     };
+    const width = 1920;
+    const height = 1080;
 
     const constraints = {
         audio: {
@@ -71,10 +73,10 @@ async function setVideoSource(source: DesktopCapturerSource) {
         video: {
             mandatory: {
                 ...mediaSource,
-                minWidth: 1280,
-                maxWidth: 1280,
-                minHeight: 720,
-                maxHeight: 720,
+                minWidth: width,
+                maxWidth: width,
+                minHeight: height,
+                maxHeight: height,
             },
         },
     } as MediaStreamConstraints;

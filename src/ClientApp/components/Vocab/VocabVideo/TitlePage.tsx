@@ -12,14 +12,12 @@ export function TitlePage({
     changePage,
     vocabList,
     music,
-    stopRecording,
 }: {
     titleToShowUpper: string;
     screenWidth: number;
     changePage: ChangePage;
     vocabList: vocab[];
     music: sound;
-    stopRecording: () => void;
 }) {
     const scrollTextRef = useRef<HTMLSpanElement>(null);
     const characterCommentRef = useRef<HTMLDivElement>(null);
@@ -54,7 +52,6 @@ export function TitlePage({
         }, 5000);
 
         setTimeout(() => {
-            stopRecording();
             changePage(Page.list);
         }, 10000);
     }, []);

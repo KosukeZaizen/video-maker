@@ -86,7 +86,6 @@ function VocabVideo({ match: { params } }: Props) {
                     changePage={setCurrentPage}
                     vocabList={vocabList}
                     music={music}
-                    stopRecording={stopRecording}
                 />
             );
             break;
@@ -127,6 +126,7 @@ function VocabVideo({ match: { params } }: Props) {
                     screenWidth={screenWidth}
                     changePage={setCurrentPage}
                     music={music}
+                    stopRecording={stopRecording}
                 />
             );
             break;
