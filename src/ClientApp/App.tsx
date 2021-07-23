@@ -48,9 +48,6 @@ function Nav() {
                 <li>
                     <Link to="/vocabularyEdit">Vocab</Link>
                 </li>
-                <li>
-                    <Link to="/test">Test</Link>
-                </li>
             </ul>
         </nav>
     );

@@ -2,6 +2,8 @@ import { desktopCapturer, DesktopCapturerSource } from "electron";
 import { writeFile } from "fs";
 import { useEffect, useState } from "react";
 
+const recordingState = { isRecording: false };
+
 export function useVideoRecorder() {
     const [inputSource, setInputSource] = useState<DesktopCapturerSource>();
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>();
@@ -37,23 +39,38 @@ export function useVideoRecorder() {
 
     return {
         startRecording: () => {
-            console.log("start recording");
+            alert("start recording");
+            recordingState.isRecording = true;
             mediaRecorder?.start();
+
+            const checkStop = () => {
+                if (recordingState.isRecording) {
+                    setTimeout(checkStop, 100);
+                } else {
+                    mediaRecorder?.stop();
+                }
+            };
+            checkStop();
         },
         stopRecording: () => {
-            mediaRecorder?.stop();
-            console.log("stop recording");
+            recordingState.isRecording = false;
         },
     };
 }
 
 async function setVideoSource(source: DesktopCapturerSource) {
+    const mediaSource = {
+        chromeMediaSource: "desktop",
+        chromeMediaSourceId: source.id,
+    };
+
     const constraints = {
-        audio: false,
+        audio: {
+            mandatory: mediaSource,
+        },
         video: {
             mandatory: {
-                chromeMediaSource: "desktop",
-                chromeMediaSourceId: source.id,
+                ...mediaSource,
                 minWidth: 1280,
                 maxWidth: 1280,
                 minHeight: 720,

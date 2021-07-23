@@ -3,6 +3,7 @@ import { useState } from "react";
 import { BLOB_URL } from "../../../common/consts";
 import { getAudio } from "../../../common/util/audio/getAudio";
 import { useScreenSize } from "../../../hooks/useScreenSize";
+import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
 import { useVocabList } from "../../../hooks/Vocab/useVocabList";
 import { SeasonAnimation } from "../../shared/Animations/SeasonAnimation";
 import { sound } from "../types/vocab";
@@ -43,6 +44,7 @@ function VocabVideo({ match: { params } }: Props) {
         params.genreName.toString().split("#")[0]
     );
     const { screenWidth } = useScreenSize();
+    const { startRecording, stopRecording } = useVideoRecorder();
 
     const { genreName } = vocabGenre;
     const titleToShowUpper = genreName
@@ -71,6 +73,7 @@ function VocabVideo({ match: { params } }: Props) {
                     isOneSeason={isOneSeason}
                     setIsOneSeason={setIsOneSeason}
                     vocabSeasons={vocabSeasons}
+                    startRecording={startRecording}
                 />
             );
             break;
@@ -83,6 +86,7 @@ function VocabVideo({ match: { params } }: Props) {
                     changePage={setCurrentPage}
                     vocabList={vocabList}
                     music={music}
+                    stopRecording={stopRecording}
                 />
             );
             break;

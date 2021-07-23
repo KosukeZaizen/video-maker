@@ -16,6 +16,7 @@ export function MenuPage({
     isOneSeason,
     setIsOneSeason,
     vocabSeasons,
+    startRecording,
 }: {
     changePage: ChangePage;
     vocabSounds: sound[];
@@ -27,6 +28,7 @@ export function MenuPage({
     isOneSeason: boolean;
     setIsOneSeason: (isOneSeason: boolean) => void;
     vocabSeasons: string[];
+    startRecording: () => void;
 }) {
     const [isButtonShown, setIsButtonShown] = useState(true);
     const [playableArray, setPlayableArray] = useState(
@@ -116,6 +118,7 @@ export function MenuPage({
                         onClick={() => {
                             setTimeout(() => {
                                 changePage(Page.title);
+                                startRecording();
                             }, 3000);
                             if (!checkUnmounted()) {
                                 setIsAnimationStopped(false);
