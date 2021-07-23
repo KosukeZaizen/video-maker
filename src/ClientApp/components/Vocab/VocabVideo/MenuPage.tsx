@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ChangePage, Page } from ".";
 import { getFallingImages } from "../../shared/Animations/SeasonAnimation";
 import { FallingImageEdit } from "../../shared/Animations/SeasonAnimation/FallingImageEdit";
+import { BackButton } from "../../shared/BackButton";
 import { sound, vocab } from "../types/vocab";
 
 export function MenuPage({
@@ -102,6 +103,7 @@ export function MenuPage({
                 alignItems: "center",
             }}
         >
+            <BackButton />
             <p
                 style={{ margin: 10 }}
             >{`Loaded Audio: ${playableCount} / ${totalCount}`}</p>
