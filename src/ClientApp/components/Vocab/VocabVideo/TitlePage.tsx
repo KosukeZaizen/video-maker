@@ -86,11 +86,14 @@ export function TitlePage({
         });
     } else {
         comment = (
-            <p style={{ fontSize: 60 }}>
-                {"Let's check all the words"}
-                <br />
-                {"before starting the quiz!"}
-            </p>
+            <>
+                <p style={{ fontSize: 60, margin: "10px 0 20px" }}>
+                    {"Let's check all the words"}
+                </p>
+                <p style={{ fontSize: 60, margin: "0 0 10px" }}>
+                    {"before starting the quiz!"}
+                </p>
+            </>
         );
     }
 
@@ -103,8 +106,7 @@ export function TitlePage({
                           flexDirection: "column",
                           alignItems: "center",
                           justifyContent: "space-around",
-                          height: "100%",
-                          padding: isCommentTwoLines ? undefined : 20,
+                          height: isCommentTwoLines ? "98%" : "95%",
                       }
                     : {}
             }
@@ -116,7 +118,7 @@ export function TitlePage({
                         marginTop: 10,
                         marginBottom: isInitial ? 20 : 100,
                         fontWeight: "bold",
-                        fontSize: 100,
+                        fontSize: 90,
                     }}
                 >
                     {"Japanese Vocabulary Quiz"}
@@ -130,7 +132,7 @@ export function TitlePage({
                 style={{
                     maxWidth: 1000,
                     position: "relative",
-                    left: -40,
+                    left: -75,
                 }}
                 commentStyle={{
                     fontSize: 100,
@@ -140,12 +142,12 @@ export function TitlePage({
                     textAlign: "center",
                     marginBottom: -20,
                     lineHeight: 1.3,
-                    paddingBottom: 30,
+                    padding: "30px 0",
                 }}
                 imgStyle={{ maxWidth: 150 }}
             />
             {isInitial && (
-                <ScrollBox>
+                <ScrollBox style={{ marginTop: 60 }}>
                     <div
                         style={{
                             fontSize: 50,

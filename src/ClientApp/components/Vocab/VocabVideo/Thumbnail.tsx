@@ -54,8 +54,7 @@ export function Thumbnail({
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "space-around",
-                height: "100%",
-                padding: isCommentTwoLines ? undefined : 20,
+                height: isCommentTwoLines ? "98%" : "95%",
             }}
         >
             <h1
@@ -64,7 +63,7 @@ export function Thumbnail({
                     marginTop: 10,
                     marginBottom: 20,
                     fontWeight: "bold",
-                    fontSize: 100,
+                    fontSize: 90,
                 }}
             >
                 {"Japanese Vocabulary Quiz"}
@@ -78,7 +77,7 @@ export function Thumbnail({
                 style={{
                     maxWidth: 1000,
                     position: "relative",
-                    left: -40,
+                    left: -75,
                 }}
                 commentStyle={{
                     fontSize: 100,
@@ -88,12 +87,12 @@ export function Thumbnail({
                     textAlign: "center",
                     marginBottom: -20,
                     lineHeight: 1.3,
-                    paddingBottom: 30,
+                    padding: "30px 0",
                 }}
                 imgStyle={{ maxWidth: 150 }}
             />
 
-            <ScrollBox>
+            <ScrollBox style={{ marginTop: 60 }}>
                 <div
                     style={{
                         fontSize: 50,

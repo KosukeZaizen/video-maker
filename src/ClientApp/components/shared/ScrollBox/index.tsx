@@ -7,7 +7,7 @@ interface Props {
 export const ScrollBox = (props: Props) => {
     const { children, style } = props;
     return (
-        <div style={style} className="style-scroll">
+        <div style={style} className="style-scroll-box">
             {children}
         </div>
     );

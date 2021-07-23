@@ -72,6 +72,7 @@ export function ListPage({
                             style={{
                                 fontSize: "x-large",
                                 minWidth: 273,
+                                margin: 0,
                             }}
                         >
                             {"Remember these words"}
