@@ -4,12 +4,15 @@ require("electron-reload")("../");
 
 let mainWindow: BrowserWindow;
 
+const unitLength = 85;
+
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 1920,
-        height: 1080,
+        frame: false,
+        width: unitLength * 16,
+        height: unitLength * 9,
         webPreferences: {
-            nodeIntegration: true, // this line is very important as it allows us to use `require` syntax in our html file.
+            nodeIntegration: true,
             contextIsolation: false,
         },
     });
@@ -18,6 +21,10 @@ function createWindow() {
 
 ipcMain.on("mainWindow:setMenuBarVisibility", (event, visible) => {
     mainWindow.menuBarVisible = visible;
+});
+
+ipcMain.on("mainWindow:setScreenSizeForVideo", () => {
+    mainWindow.setSize(unitLength * 16, unitLength * 9);
 });
 
 app.whenReady().then(createWindow);

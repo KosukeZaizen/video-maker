@@ -2,6 +2,7 @@ import { desktopCapturer, DesktopCapturerSource } from "electron";
 import { writeFile } from "fs";
 import { useEffect, useState } from "react";
 import { hideMenuBar } from "../common/util/ipc/hideMenuBar";
+import { setScreenSizeForVideo } from "../common/util/ipc/setScreenSizeForVideo";
 import { showMenuBar } from "../common/util/ipc/showMenuBar";
 
 const recordingState = { isRecording: false };
@@ -43,6 +44,7 @@ export function useVideoRecorder() {
         startRecording: () => {
             hideMenuBar();
             alert("start recording");
+            setScreenSizeForVideo();
             recordingState.isRecording = true;
             mediaRecorder?.start();
 
