@@ -121,7 +121,7 @@ export function MenuPage({
                             setTimeout(() => {
                                 changePage(Page.title);
                                 startRecording();
-                            }, 3000);
+                            }, 1000);
                             if (!checkUnmounted()) {
                                 setIsAnimationStopped(false);
                                 setIsButtonShown(false);
