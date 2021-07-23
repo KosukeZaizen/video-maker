@@ -1,6 +1,8 @@
 import { desktopCapturer, DesktopCapturerSource } from "electron";
 import { writeFile } from "fs";
 import { useEffect, useState } from "react";
+import { hideMenuBar } from "../common/util/ipc/hideMenuBar";
+import { showMenuBar } from "../common/util/ipc/showMenuBar";
 
 const recordingState = { isRecording: false };
 
@@ -39,6 +41,7 @@ export function useVideoRecorder() {
 
     return {
         startRecording: () => {
+            hideMenuBar();
             alert("start recording");
             recordingState.isRecording = true;
             mediaRecorder?.start();
@@ -48,6 +51,7 @@ export function useVideoRecorder() {
                     setTimeout(checkStop, 500);
                 } else {
                     mediaRecorder?.stop();
+                    setTimeout(showMenuBar, 1000);
                 }
             };
             checkStop();
