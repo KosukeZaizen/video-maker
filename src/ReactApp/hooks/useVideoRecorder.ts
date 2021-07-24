@@ -1,6 +1,10 @@
 import { desktopCapturer, DesktopCapturerSource } from "electron";
 import { writeFile } from "fs";
 import { useEffect, useState } from "react";
+import {
+    hideMouseCursor,
+    showMouseCursor,
+} from "../common/util/hideMouseCursor";
 import { hideMenuBar } from "../common/util/ipc/hideMenuBar";
 import { setScreenSizeForVideo } from "../common/util/ipc/setScreenSizeForVideo";
 import { showMenuBar } from "../common/util/ipc/showMenuBar";
@@ -43,6 +47,7 @@ export function useVideoRecorder() {
     return {
         startRecording: () => {
             hideMenuBar();
+            hideMouseCursor();
             alert("start recording");
             setScreenSizeForVideo();
             recordingState.isRecording = true;
@@ -53,7 +58,10 @@ export function useVideoRecorder() {
                     setTimeout(checkStop, 500);
                 } else {
                     mediaRecorder?.stop();
-                    setTimeout(showMenuBar, 1000);
+                    setTimeout(() => {
+                        showMenuBar();
+                        showMouseCursor();
+                    }, 1000);
                 }
             };
             checkStop();
