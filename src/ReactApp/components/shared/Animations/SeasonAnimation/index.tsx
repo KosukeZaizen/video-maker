@@ -5,6 +5,19 @@ import { cFetch } from "../../../../common/util/cFetch";
 import { css } from "../../../../common/util/getAphroditeClassName";
 import { fallingImage } from "./type";
 
+const fallingAnimationClass = css({
+    animationName: {
+        "0%": {
+            transform: "translateX(0) translateY(0) rotate(0deg)",
+        },
+        "100%": {
+            transform: "translateX(-1000px) translateY(2000px) rotate(1000deg)",
+        },
+    },
+    animationDuration: "20s",
+    animationTimingFunction: "linear",
+});
+
 let count = 0;
 let ls: Leaf[] = [];
 
@@ -119,20 +132,7 @@ export const SeasonAnimation = ({
                     left: l.initialX,
                     zIndex: -100,
                 }}
-                className={css({
-                    animationName: {
-                        "0%": {
-                            transform:
-                                "translateX(0) translateY(0) rotate(0deg)",
-                        },
-                        "100%": {
-                            transform:
-                                "translateX(-1000px) translateY(2000px) rotate(1000deg)",
-                        },
-                    },
-                    animationDuration: "20s",
-                    animationTimingFunction: "linear",
-                })}
+                className={fallingAnimationClass}
             />
         );
     }
