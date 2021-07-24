@@ -144,7 +144,7 @@ function VocabVideo({ match: { params } }: Props) {
     }
 
     return (
-        <div>
+        <>
             <div
                 style={{
                     position: "absolute",
@@ -167,7 +167,7 @@ function VocabVideo({ match: { params } }: Props) {
                     season={season}
                 />
             )}
-        </div>
+        </>
     );
 }
 

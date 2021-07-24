@@ -6,15 +6,17 @@ import { css } from "../../../../common/util/getAphroditeClassName";
 import { fallingImage } from "./type";
 
 const fallingAnimationClass = css({
+    willChange: "animation",
+    backfaceVisibility: "hidden",
     animationName: {
         "0%": {
             transform: "translateX(0) translateY(0) rotate(0deg)",
         },
         "100%": {
-            transform: "translateX(-1000px) translateY(2000px) rotate(1000deg)",
+            transform: "translateX(-550px) translateY(1100px) rotate(550deg)",
         },
     },
-    animationDuration: "20s",
+    animationDuration: "10s",
     animationTimingFunction: "linear",
 });
 
@@ -84,10 +86,10 @@ export const SeasonAnimation = ({
         setScale((screenWidth + window.innerHeight) / 1000);
 
         const intervalId = window.setInterval(() => {
-            //各葉っぱは20秒で消える
+            //各葉っぱは10秒で消える
             const newLeaves = ls
                 .map(l => ({ ...l, ageCount: l.ageCount + 1 }))
-                .filter(l => l.ageCount <= 20);
+                .filter(l => l.ageCount <= 10);
 
             count++;
             if (count % frequencySec === 0) {

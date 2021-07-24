@@ -53,7 +53,7 @@ const smoothPosition = {
     ...smoothCSSProperty,
 };
 
-export default function WelcomeAnimation() {
+export function FooterAnimation() {
     const [animationState, setAnimationState] = useState(initialAnimationState);
 
     useEffect(() => {
