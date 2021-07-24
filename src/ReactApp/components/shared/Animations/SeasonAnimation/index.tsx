@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { appsPublicImg, Z_APPS_TOP_URL } from "../../../../common/consts";
 import { cFetch } from "../../../../common/util/cFetch";
+import { css } from "../../../../common/util/getAphroditeClassName";
 import { fallingImage } from "./type";
 
 let count = 0;
@@ -118,7 +119,20 @@ export const SeasonAnimation = ({
                     left: l.initialX,
                     zIndex: -100,
                 }}
-                className="falling"
+                className={css({
+                    animationName: {
+                        "0%": {
+                            transform:
+                                "translateX(0) translateY(0) rotate(0deg)",
+                        },
+                        "100%": {
+                            transform:
+                                "translateX(-1000px) translateY(2000px) rotate(1000deg)",
+                        },
+                    },
+                    animationDuration: "20s",
+                    animationTimingFunction: "linear",
+                })}
             />
         );
     }
