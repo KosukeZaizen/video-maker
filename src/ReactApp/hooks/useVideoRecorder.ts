@@ -1,5 +1,5 @@
-import { desktopCapturer, DesktopCapturerSource } from "electron";
-import { writeFile } from "fs";
+import { desktopCapturer, DesktopCapturerSource, ipcRenderer } from "electron";
+import { existsSync, mkdirSync, writeFile } from "fs";
 import { useEffect, useState } from "react";
 import {
     hideMouseCursor,
@@ -119,17 +119,22 @@ async function setVideoSource(source: DesktopCapturerSource) {
 function getHandleStop(blobData: Blob) {
     return async () => {
         const blob = new Blob([blobData], {
-            type: "video/webm;codecs=vp9",
+            type: "video/mp4",
         });
 
         const buffer = Buffer.from(await blob.arrayBuffer());
 
-        const downloadFolder = `${
-            process.env.USERPROFILE
-        }/Downloads/vid-${Date.now()}.webm`;
+        const downloadFolder = `${process.env.USERPROFILE}/Downloads`;
+        const workingFolder = `${downloadFolder}/WorkingFolderForVideoMaker`;
 
-        writeFile(downloadFolder, buffer, () => {
+        if (!existsSync(workingFolder)) {
+            mkdirSync(workingFolder);
+        }
+
+        writeFile(`${workingFolder}/tmp.mp4`, buffer, () => {
             alert("File saved successfully");
         });
+
+        ipcRenderer.send("mainWindow:mergeVideos");
     };
 }

@@ -6,7 +6,7 @@ import { sendPost } from "../../../common/functions";
 import { compareObjects } from "../../../common/util/compareObjects";
 import {
     getCurrentToken,
-    InputRegisterToken,
+    InputRegisterToken
 } from "../../shared/InputRegisterToken";
 import { vocabGenre } from "../types/vocab";
 
@@ -57,6 +57,7 @@ function VocabEditTop() {
 
     return (
         <>
+            <Link to="/">home</Link>
             <h1 style={{ marginBottom: 30 }}>{"Vocabulary Edit"}</h1>
 
             <div style={{ marginBottom: 30, backgroundColor: "lightyellow" }}>
