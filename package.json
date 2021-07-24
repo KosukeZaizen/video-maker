@@ -5,7 +5,7 @@
     "main": "dist/ServerSideScripts/index.js",
     "scripts": {
         "start": "npm run build && electron .",
-        "build": "tsc",
+        "build": "rimraf ./dist && tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
         "watch": "tsc-watch",
         "debug": "concurrently --kill-others \"npm run watch\" \"npm run start\""
@@ -38,6 +38,7 @@
         "eslint-plugin-prettier": "^3.4.0",
         "eslint-plugin-react": "^7.24.0",
         "prettier": "^2.3.2",
+        "rimraf": "^3.0.2",
         "tsc-watch": "^4.4.0",
         "typescript": "^4.3.5"
     }
