@@ -46,10 +46,10 @@ export function useVideoRecorder() {
 
     return {
         startRecording: () => {
-            hideMenuBar();
-            hideMouseCursor();
+            beforeRecording();
+
             alert("start recording");
-            setScreenSizeForVideo();
+
             recordingState.isRecording = true;
             mediaRecorder?.start();
 
@@ -58,10 +58,7 @@ export function useVideoRecorder() {
                     setTimeout(checkStop, 500);
                 } else {
                     mediaRecorder?.stop();
-                    setTimeout(() => {
-                        showMenuBar();
-                        showMouseCursor();
-                    }, 1000);
+                    setTimeout(afterRecording, 1000);
                 }
             };
             checkStop();
@@ -70,6 +67,17 @@ export function useVideoRecorder() {
             recordingState.isRecording = false;
         },
     };
+}
+
+function beforeRecording() {
+    hideMenuBar();
+    hideMouseCursor();
+    setScreenSizeForVideo();
+}
+
+function afterRecording() {
+    showMenuBar();
+    showMouseCursor();
 }
 
 async function setVideoSource(source: DesktopCapturerSource) {
