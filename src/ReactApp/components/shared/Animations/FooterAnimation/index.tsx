@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { AnimationEngine } from "../../../../common/animation";
 import { appsPublicImg } from "../../../../common/consts";
 
-const timeStep = 1000; //ms
+const timeStep = 2000; //ms
 
 const badNinja = appsPublicImg + "ninja_bad.png";
 const rock = appsPublicImg + "rockRight.png";
@@ -40,9 +39,6 @@ const baseStyle: React.CSSProperties = {
     zIndex: 1000000000,
 };
 
-export let finishFooterAnimation: () => void;
-export let restartFooterAnimation: () => void;
-
 const smoothCSSProperty = {
     transitionDuration: `${timeStep / 1000}s`,
     transitionTimingFunction: "linear",
@@ -50,6 +46,7 @@ const smoothCSSProperty = {
 
 const smoothPosition = {
     transitionProperty: "top left",
+    willChange: "left, top",
     ...smoothCSSProperty,
 };
 
@@ -57,17 +54,8 @@ export function FooterAnimation() {
     const [animationState, setAnimationState] = useState(initialAnimationState);
 
     useEffect(() => {
-        finishFooterAnimation = () => {
-            setAnimationState({ ...initialAnimationState, shown: false });
-        };
-
-        restartFooterAnimation = () => {
-            setAnimationState(initialAnimationState);
-        };
-
-        const animation = new AnimationEngine<StateToAnimate>(
-            initialAnimationState,
-            ({
+        setTimeout(() => {
+            let {
                 ninjaX,
                 ninjaY,
                 badNinjaX,
@@ -77,55 +65,53 @@ export function FooterAnimation() {
                 flyingNinjaDisplay,
                 time,
                 ...rest
-            }) => {
-                if (time > 1000 / timeStep && time < 11200 / timeStep) {
-                    ninjaX -= 0.5 * timeStep;
-                    badNinjaX = ninjaX + 900;
+            } = animationState;
+
+            if (time > 1000 / timeStep && time < 11200 / timeStep) {
+                ninjaX -= 0.5 * timeStep;
+                badNinjaX = ninjaX + 900;
+            }
+
+            if (time === Math.floor(11200 / timeStep)) {
+                turn = true;
+                ninjaY = 115;
+            }
+
+            if (time > 11200 / timeStep && time < 22000 / timeStep) {
+                ninjaX += 0.5 * timeStep;
+                badNinjaX = ninjaX + 600;
+            }
+
+            if (time > 22000 / timeStep && flyingNinjaPos[0] > -200) {
+                if (flyingNinjaPos[0] > 2000) {
+                    flyingNinjaDisplay = "block";
                 }
+                flyingNinjaSpeed[1] +=
+                    ((Math.random() - 0.499) * timeStep) / 30;
 
-                if (time === Math.floor(11200 / timeStep)) {
-                    turn = true;
-                    ninjaY = 115;
-                }
+                flyingNinjaPos[0] -= 0.3 * timeStep;
+                flyingNinjaPos[1] += flyingNinjaSpeed[1];
+            }
 
-                if (time > 11200 / timeStep && time < 22000 / timeStep) {
-                    ninjaX += 0.5 * timeStep;
-                    badNinjaX = ninjaX + 600;
-                }
+            if (time % Math.floor(60000 / timeStep) === 0) {
+                flyingNinjaDisplay = "none";
+                flyingNinjaPos = [2500, 300];
+                flyingNinjaSpeed = [0, 0];
+            }
 
-                if (time > 22000 / timeStep && flyingNinjaPos[0] > -200) {
-                    if (flyingNinjaPos[0] > 2000) {
-                        flyingNinjaDisplay = "block";
-                    }
-                    flyingNinjaSpeed[1] +=
-                        ((Math.random() - 0.499) * timeStep) / 30;
-
-                    flyingNinjaPos[0] -= 0.3 * timeStep;
-                    flyingNinjaPos[1] += flyingNinjaSpeed[1];
-                }
-
-                if (time % Math.floor(60000 / timeStep) === 0) {
-                    flyingNinjaDisplay = "none";
-                    flyingNinjaPos = [2500, 300];
-                    flyingNinjaSpeed = [0, 0];
-                }
-
-                return {
-                    ninjaX,
-                    ninjaY,
-                    badNinjaX,
-                    turn,
-                    flyingNinjaPos,
-                    flyingNinjaSpeed,
-                    flyingNinjaDisplay,
-                    time: time + 1,
-                    ...rest,
-                };
-            },
-            setAnimationState
-        );
-        return animation.cleanUpAnimation;
-    }, []);
+            setAnimationState({
+                ninjaX,
+                ninjaY,
+                badNinjaX,
+                turn,
+                flyingNinjaPos,
+                flyingNinjaSpeed,
+                flyingNinjaDisplay,
+                time: time + 1,
+                ...rest,
+            });
+        }, timeStep);
+    }, [animationState]);
 
     if (!animationState.shown) {
         return null;

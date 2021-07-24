@@ -5,6 +5,7 @@ import { getAudio } from "../../../common/util/audio/getAudio";
 import { useScreenSize } from "../../../hooks/useScreenSize";
 import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
 import { useVocabList } from "../../../hooks/Vocab/useVocabList";
+import { FooterAnimation } from "../../shared/Animations/FooterAnimation";
 import { SeasonAnimation } from "../../shared/Animations/SeasonAnimation";
 import { sound } from "../types/vocab";
 import { LastPage } from "./LastPage";
@@ -161,11 +162,13 @@ function VocabVideo({ match: { params } }: Props) {
             </div>
             {currentPage !== Page.thumbnail && (
                 <SeasonAnimation
-                    isFestivalHidden
                     frequencySec={3}
                     screenWidth={screenWidth}
                     season={season}
                 />
+            )}
+            {[Page.menu, Page.thumbnail].every(p => p !== currentPage) && (
+                <FooterAnimation />
             )}
         </>
     );

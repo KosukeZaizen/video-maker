@@ -17,6 +17,7 @@ const fallingAnimationClass = css({
         },
     },
     animationDuration: "10s",
+    animationDelay: "1s",
     animationTimingFunction: "linear",
 });
 
@@ -33,13 +34,11 @@ interface Props {
     frequencySec: number;
     screenWidth: number;
     season?: string;
-    isFestivalHidden?: boolean;
 }
 export const SeasonAnimation = ({
     frequencySec,
     screenWidth,
     season: pSeason,
-    isFestivalHidden,
 }: Props) => {
     const [scale, setScale] = useState(
         (screenWidth + window.innerHeight) / 1000
@@ -139,25 +138,7 @@ export const SeasonAnimation = ({
         );
     }
 
-    return (
-        <div>
-            {!isFestivalHidden && (
-                <img
-                    alt="japanese festival"
-                    title="japanese festival"
-                    src={appsPublicImg + "japanese-festival.png"}
-                    style={{
-                        position: "absolute",
-                        width: "128%",
-                        top: 80 - screenWidth * 0.34,
-                        left: -(screenWidth * 0.28),
-                        zIndex: -110,
-                    }}
-                />
-            )}
-            {leaves.map(getImg)}
-        </div>
-    );
+    return <>{leaves.map(getImg)}</>;
 };
 
 export async function getFallingImages() {
