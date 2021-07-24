@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { appsPublicImg } from "../../../../common/consts";
 
-const timeStep = 2000; //ms
+const timeStep = 100; //ms
 
 const badNinja = appsPublicImg + "ninja_bad.png";
 const rock = appsPublicImg + "rockRight.png";
@@ -40,13 +40,12 @@ const baseStyle: React.CSSProperties = {
 };
 
 const smoothCSSProperty = {
-    transitionDuration: `${timeStep / 1000}s`,
+    transitionDuration: `${timeStep}ms`,
     transitionTimingFunction: "linear",
 };
 
 const smoothPosition = {
-    transitionProperty: "top left",
-    willChange: "left, top",
+    transitionProperty: "bottom, left",
     ...smoothCSSProperty,
 };
 
@@ -132,6 +131,8 @@ export function FooterAnimation() {
                 src={runningNinja}
                 alt="running ninja"
                 style={{
+                    willChange: "left",
+                    backfaceVisibility: "hidden",
                     ...baseStyle,
                     left: animationState.ninjaX * U,
                     bottom: animationState.ninjaY * U,
@@ -144,6 +145,8 @@ export function FooterAnimation() {
                 src={badNinja}
                 alt="bad ninja"
                 style={{
+                    willChange: "left",
+                    backfaceVisibility: "hidden",
                     ...baseStyle,
                     left: animationState.badNinjaX * U,
                     bottom: 0,
@@ -156,6 +159,8 @@ export function FooterAnimation() {
                 src={badNinja}
                 alt="bad ninja"
                 style={{
+                    willChange: "left",
+                    backfaceVisibility: "hidden",
                     ...baseStyle,
                     left: animationState.badNinjaX * U,
                     bottom: 0,
@@ -168,6 +173,8 @@ export function FooterAnimation() {
                 src={badNinja}
                 alt="bad ninja"
                 style={{
+                    willChange: "left",
+                    backfaceVisibility: "hidden",
                     ...baseStyle,
                     left: (animationState.badNinjaX - 100) * U,
                     bottom: 0,
@@ -180,6 +187,8 @@ export function FooterAnimation() {
                 src={badNinja}
                 alt="bad ninja"
                 style={{
+                    willChange: "left",
+                    backfaceVisibility: "hidden",
                     ...baseStyle,
                     left: (animationState.badNinjaX - 200) * U,
                     bottom: 0,
@@ -192,6 +201,8 @@ export function FooterAnimation() {
                 src={badNinja}
                 alt="bad ninja"
                 style={{
+                    willChange: "left",
+                    backfaceVisibility: "hidden",
                     ...baseStyle,
                     left: (animationState.badNinjaX - 300) * U,
                     bottom: 0,
@@ -204,6 +215,8 @@ export function FooterAnimation() {
                 src={badNinja}
                 alt="bad ninja"
                 style={{
+                    willChange: "left",
+                    backfaceVisibility: "hidden",
                     ...baseStyle,
                     left: (animationState.badNinjaX - 400) * U,
                     bottom: 0,
@@ -218,6 +231,8 @@ export function FooterAnimation() {
                         src={rock}
                         alt="rock"
                         style={{
+                            willChange: "lef",
+                            backfaceVisibility: "hidden",
                             ...baseStyle,
                             left: (animationState.ninjaX - 5) * U,
                             bottom: 0,
@@ -230,6 +245,8 @@ export function FooterAnimation() {
                         src={fire}
                         alt="fire"
                         style={{
+                            willChange: "left",
+                            backfaceVisibility: "hidden",
                             ...baseStyle,
                             left: (animationState.ninjaX - ninjaLength) * U,
                             bottom: 0,
@@ -244,6 +261,8 @@ export function FooterAnimation() {
                     src={flyingNinja}
                     alt="flying ninja"
                     style={{
+                        willChange: "left, bottom",
+                        backfaceVisibility: "hidden",
                         ...baseStyle,
                         left: animationState.flyingNinjaPos[0] * U,
                         bottom: animationState.flyingNinjaPos[1] * U,
