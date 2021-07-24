@@ -2,7 +2,7 @@
     "name": "video-maker",
     "version": "1.0.0",
     "description": "",
-    "main": "dist/ServerSideScripts/index.js",
+    "main": "dist/ElectronSideScripts/index.js",
     "scripts": {
         "start": "npm run build && electron .",
         "build": "rimraf ./dist && tsc",
