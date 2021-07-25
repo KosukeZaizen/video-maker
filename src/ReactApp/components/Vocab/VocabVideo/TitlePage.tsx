@@ -26,7 +26,6 @@ export function TitlePage({
     const [vList, setVList] = useState<vocab[]>(vocabList.map(v => ({ ...v })));
     const [isOmitted, setIsOmitted] = useState(false);
     const [isCommentTwoLines, setIsCommentTwoLines] = useState(false);
-    const [isAnimationStopped, setIsAnimationStopped] = useState(true);
 
     useEffect(() => {
         setTimeout(() => {
@@ -42,10 +41,6 @@ export function TitlePage({
             };
             musicPlay();
         }, 500);
-
-        setTimeout(() => {
-            setIsAnimationStopped(false);
-        }, 2000);
 
         setTimeout(() => {
             setIsInitial(false);

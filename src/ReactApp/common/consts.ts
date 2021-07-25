@@ -12,3 +12,7 @@ export const appsPublicImg =
     "https://lingualninja.blob.core.windows.net/lingual-storage/appsPublic/img/";
 
 export const azureUrl = "z-apps20190306091011.azurewebsites.net";
+
+export const appPath = require("electron").remote.app.getAppPath();
+
+export const staticFolderPath = `${appPath}/static`;

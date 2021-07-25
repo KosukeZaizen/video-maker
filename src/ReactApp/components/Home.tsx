@@ -13,14 +13,7 @@ export function Home() {
                 <Link to="/vocabularyEdit">Vocab</Link>
             </li>
             <li>
-                <button
-                    onClick={() => {
-                        startRecording();
-                        setTimeout(stopRecording, 3000);
-                    }}
-                >
-                    test
-                </button>
+                <Link to="/test">Test Page</Link>
             </li>
         </ul>
     );
