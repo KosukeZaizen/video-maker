@@ -104,7 +104,7 @@ async function setVideoSource(source: DesktopCapturerSource) {
     } as MediaStreamConstraints;
 
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    const options = { mimeType: "video/webm;codecs=vp8" };
+    const options = { mimeType: "video/webm;codecs=vp9" };
 
     const mediaRecorder = new MediaRecorder(stream, options);
 
@@ -119,14 +119,14 @@ async function setVideoSource(source: DesktopCapturerSource) {
 function getHandleStop(blobData: Blob) {
     return async () => {
         const blob = new Blob([blobData], {
-            type: "video/mp4",
+            type: "video/webm;codecs=vp9",
         });
 
         const buffer = Buffer.from(await blob.arrayBuffer());
 
         const downloadFolder = `${process.env.USERPROFILE}/Downloads`;
 
-        writeFile(`${downloadFolder}/vid-${Date.now()}.mp4`, buffer, () => {
+        writeFile(`${downloadFolder}/vid-${Date.now()}.webm`, buffer, () => {
             alert("File saved successfully");
         });
     };
