@@ -1,5 +1,5 @@
-import { desktopCapturer, DesktopCapturerSource, ipcRenderer } from "electron";
-import { existsSync, mkdirSync, writeFile } from "fs";
+import { desktopCapturer, DesktopCapturerSource } from "electron";
+import { writeFile } from "fs";
 import { useEffect, useState } from "react";
 import {
     hideMouseCursor,
@@ -125,16 +125,9 @@ function getHandleStop(blobData: Blob) {
         const buffer = Buffer.from(await blob.arrayBuffer());
 
         const downloadFolder = `${process.env.USERPROFILE}/Downloads`;
-        const workingFolder = `${downloadFolder}/WorkingFolderForVideoMaker`;
 
-        if (!existsSync(workingFolder)) {
-            mkdirSync(workingFolder);
-        }
-
-        writeFile(`${workingFolder}/tmp.mp4`, buffer, () => {
+        writeFile(`${downloadFolder}/vid-${Date.now()}.mp4`, buffer, () => {
             alert("File saved successfully");
         });
-
-        ipcRenderer.send("mainWindow:mergeVideos");
     };
 }
