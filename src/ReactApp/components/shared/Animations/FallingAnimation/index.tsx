@@ -10,10 +10,10 @@ const fallingAnimationClass = css({
     backfaceVisibility: "hidden",
     animationName: {
         "0%": {
-            transform: "translateX(0) translateY(0) rotate(0deg)",
+            transform: "translate3d(0px,0px,0px) rotate(0deg)",
         },
         "100%": {
-            transform: "translateX(-550px) translateY(1100px) rotate(550deg)",
+            transform: "translate3d(-550px,1100px,0px) rotate(550deg)",
         },
     },
     animationDuration: "10s",

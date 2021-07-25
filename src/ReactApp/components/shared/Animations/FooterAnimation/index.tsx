@@ -39,15 +39,16 @@ const baseStyle: React.CSSProperties = {
     zIndex: 1000000000,
 };
 
-const smoothCSSProperty = {
+const smoothTransform = {
+    willChange: "transform",
+    transitionProperty: "transform",
     transitionDuration: `${timeStep}ms`,
     transitionTimingFunction: "linear",
 };
 
-const smoothPosition = {
-    transitionProperty: "bottom, left",
-    ...smoothCSSProperty,
-};
+function getTranslate(x: number, y: number) {
+    return `translate3d(${Math.floor(x)}px,${Math.floor(y)}px,0px)`;
+}
 
 export function FooterAnimation() {
     const [animationState, setAnimationState] = useState(initialAnimationState);
@@ -131,98 +132,111 @@ export function FooterAnimation() {
                 src={runningNinja}
                 alt="running ninja"
                 style={{
-                    willChange: "left",
-                    backfaceVisibility: "hidden",
                     ...baseStyle,
-                    left: animationState.ninjaX * U,
-                    bottom: animationState.ninjaY * U,
-                    width: ninjaLength * U,
-                    transform: animationState.turn ? "scale(-1, 1)" : "",
-                    ...smoothPosition,
-                }}
-            />
-            <img
-                src={badNinja}
-                alt="bad ninja"
-                style={{
-                    willChange: "left",
                     backfaceVisibility: "hidden",
-                    ...baseStyle,
-                    left: animationState.badNinjaX * U,
+                    left: 0,
                     bottom: 0,
                     width: ninjaLength * U,
-                    transform: animationState.turn ? "" : "scale(-1, 1)",
-                    ...smoothPosition,
+                    transform: animationState.turn
+                        ? `scale(-1, 1) ${getTranslate(
+                              -animationState.ninjaX * U,
+                              -animationState.ninjaY * U
+                          )}`
+                        : getTranslate(
+                              animationState.ninjaX * U,
+                              -animationState.ninjaY * U
+                          ),
+                    ...smoothTransform,
                 }}
             />
             <img
                 src={badNinja}
                 alt="bad ninja"
                 style={{
-                    willChange: "left",
-                    backfaceVisibility: "hidden",
                     ...baseStyle,
-                    left: animationState.badNinjaX * U,
+                    backfaceVisibility: "hidden",
+                    left: 0,
                     bottom: 0,
                     width: ninjaLength * U,
-                    transform: animationState.turn ? "" : "scale(-1, 1)",
-                    ...smoothPosition,
+                    transform: animationState.turn
+                        ? getTranslate(animationState.badNinjaX * U, 0)
+                        : `scale(-1, 1) ${getTranslate(
+                              -animationState.badNinjaX * U,
+                              0
+                          )}`,
+                    ...smoothTransform,
                 }}
             />
             <img
                 src={badNinja}
                 alt="bad ninja"
                 style={{
-                    willChange: "left",
-                    backfaceVisibility: "hidden",
                     ...baseStyle,
-                    left: (animationState.badNinjaX - 100) * U,
+                    backfaceVisibility: "hidden",
+                    left: 0,
                     bottom: 0,
                     width: ninjaLength * U * 1.1,
-                    transform: animationState.turn ? "" : "scale(-1, 1)",
-                    ...smoothPosition,
+                    transform: animationState.turn
+                        ? getTranslate((animationState.badNinjaX - 100) * U, 0)
+                        : `scale(-1, 1) ${getTranslate(
+                              -(animationState.badNinjaX - 100) * U,
+                              0
+                          )}`,
+                    ...smoothTransform,
                 }}
             />
             <img
                 src={badNinja}
                 alt="bad ninja"
                 style={{
-                    willChange: "left",
-                    backfaceVisibility: "hidden",
                     ...baseStyle,
-                    left: (animationState.badNinjaX - 200) * U,
+                    backfaceVisibility: "hidden",
+                    left: 0,
                     bottom: 0,
                     width: ninjaLength * U,
-                    transform: animationState.turn ? "" : "scale(-1, 1)",
-                    ...smoothPosition,
+                    transform: animationState.turn
+                        ? getTranslate((animationState.badNinjaX - 200) * U, 0)
+                        : `scale(-1, 1) ${getTranslate(
+                              -(animationState.badNinjaX - 200) * U,
+                              0
+                          )}`,
+                    ...smoothTransform,
                 }}
             />
             <img
                 src={badNinja}
                 alt="bad ninja"
                 style={{
-                    willChange: "left",
-                    backfaceVisibility: "hidden",
                     ...baseStyle,
-                    left: (animationState.badNinjaX - 300) * U,
+                    backfaceVisibility: "hidden",
+                    left: 0,
                     bottom: 0,
                     width: ninjaLength * U * 1.1,
-                    transform: animationState.turn ? "" : "scale(-1, 1)",
-                    ...smoothPosition,
+                    transform: animationState.turn
+                        ? getTranslate((animationState.badNinjaX - 300) * U, 0)
+                        : `scale(-1, 1) ${getTranslate(
+                              -(animationState.badNinjaX - 300) * U,
+                              0
+                          )}`,
+                    ...smoothTransform,
                 }}
             />
             <img
                 src={badNinja}
                 alt="bad ninja"
                 style={{
-                    willChange: "left",
-                    backfaceVisibility: "hidden",
                     ...baseStyle,
-                    left: (animationState.badNinjaX - 400) * U,
+                    backfaceVisibility: "hidden",
+                    left: 0,
                     bottom: 0,
                     width: ninjaLength * U * 1.1,
-                    transform: animationState.turn ? "" : "scale(-1, 1)",
-                    ...smoothPosition,
+                    transform: animationState.turn
+                        ? getTranslate((animationState.badNinjaX - 400) * U, 0)
+                        : `scale(-1, 1) ${getTranslate(
+                              -(animationState.badNinjaX - 400) * U,
+                              0
+                          )}`,
+                    ...smoothTransform,
                 }}
             />
             {animationState.time > 10000 / timeStep && (
@@ -231,27 +245,33 @@ export function FooterAnimation() {
                         src={rock}
                         alt="rock"
                         style={{
-                            willChange: "lef",
-                            backfaceVisibility: "hidden",
                             ...baseStyle,
-                            left: (animationState.ninjaX - 5) * U,
+                            backfaceVisibility: "hidden",
+                            left: 0,
                             bottom: 0,
                             width: ninjaLength * U * 1.3,
                             zIndex: 1000000001,
-                            ...smoothPosition,
+                            transform: getTranslate(
+                                (animationState.ninjaX - 5) * U,
+                                0
+                            ),
+                            ...smoothTransform,
                         }}
                     />
                     <img
                         src={fire}
                         alt="fire"
                         style={{
-                            willChange: "left",
-                            backfaceVisibility: "hidden",
                             ...baseStyle,
-                            left: (animationState.ninjaX - ninjaLength) * U,
+                            backfaceVisibility: "hidden",
+                            left: 0,
                             bottom: 0,
                             width: ninjaLength * U * 1.3,
-                            ...smoothPosition,
+                            transform: getTranslate(
+                                (animationState.ninjaX - ninjaLength) * U,
+                                0
+                            ),
+                            ...smoothTransform,
                         }}
                     />
                 </>
@@ -261,14 +281,17 @@ export function FooterAnimation() {
                     src={flyingNinja}
                     alt="flying ninja"
                     style={{
-                        willChange: "left, bottom",
-                        backfaceVisibility: "hidden",
                         ...baseStyle,
-                        left: animationState.flyingNinjaPos[0] * U,
-                        bottom: animationState.flyingNinjaPos[1] * U,
+                        backfaceVisibility: "hidden",
+                        left: 0,
+                        bottom: 0,
                         width: ninjaLength * U * 1.5,
                         display: animationState.flyingNinjaDisplay,
-                        ...smoothPosition,
+                        transform: getTranslate(
+                            animationState.flyingNinjaPos[0] * U,
+                            -animationState.flyingNinjaPos[1] * U
+                        ),
+                        ...smoothTransform,
                     }}
                 />
             )}
