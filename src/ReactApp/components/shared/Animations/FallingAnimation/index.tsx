@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { appsPublicImg, Z_APPS_TOP_URL } from "../../../../common/consts";
 import { cFetch } from "../../../../common/util/cFetch";
 import { css } from "../../../../common/util/getAphroditeClassName";
@@ -22,125 +22,140 @@ const fallingAnimationClass = css({
 });
 
 let count = 0;
-let ls: Leaf[] = [];
+let ls: FallingItem[] = [];
+let intervalId = 0;
 
-interface Leaf {
+interface FallingItem {
     id: number;
     ageCount: number;
     initialX: number;
 }
 
-interface Props {
-    frequencySec: number;
-    screenWidth: number;
-    season?: string;
-}
 export const FallingAnimation = ({
     frequencySec,
     screenWidth,
+    screenHeight,
     season: pSeason,
-}: Props) => {
-    const [scale, setScale] = useState(
-        (screenWidth + window.innerHeight) / 1000
+}: {
+    frequencySec: number;
+    screenWidth: number;
+    screenHeight: number;
+    season?: string;
+}) => {
+    const fallingItems = useFallingItemsAnimation(
+        frequencySec,
+        screenWidth,
+        screenHeight
     );
-    const [leaves, setLeaves] = useState<Leaf[]>([]);
-    const [season, setSeason] = useState<string>("none");
+    const getImg = useFallingImage(screenWidth, screenHeight, pSeason);
+
+    return <>{fallingItems.map(getImg)}</>;
+};
+
+function useFallingImage(
+    screenWidth: number,
+    screenHeight: number,
+    pSeason?: string
+) {
+    const { seasonItems, fallingItemKeyword } = useSeasonItems(pSeason);
+    const scale = (screenWidth + screenHeight) / 1000;
+
+    const seasonItem = seasonItems?.find(
+        item => item.name === fallingItemKeyword
+    );
+
+    const getImg = useCallback(
+        (l: FallingItem) =>
+            seasonItem && (
+                <img
+                    key={`falling item ${l.id}`}
+                    src={appsPublicImg + seasonItem.fileName}
+                    alt={`${seasonItem.alt} ${l.id}`}
+                    title={`${seasonItem.alt} ${l.id}`}
+                    style={{
+                        maxWidth: 50 * scale,
+                        maxHeight: 50 * scale,
+                        position: "fixed",
+                        top: -1.5 * 90 * scale,
+                        left: l.initialX,
+                        zIndex: -100,
+                    }}
+                    className={fallingAnimationClass}
+                />
+            ),
+        [seasonItem, scale]
+    );
+
+    return getImg;
+}
+
+function useSeasonItems(pSeason?: string) {
     const [seasonItems, setSeasonItems] = useState<fallingImage[]>([]);
+    const [fallingItemKeyword, setFallingItemKeyword] =
+        useState<string>("none");
 
     useEffect(() => {
-        const load = async () => {
-            if (pSeason === "none") {
+        // load
+        (async () => {
+            if (!pSeason || pSeason === "none") {
                 return;
             }
+
             const fallingImages = await getFallingImages();
             setSeasonItems(fallingImages);
 
-            if (pSeason) {
-                if (fallingImages.some(im => im.name === pSeason)) {
-                    setSeason(pSeason);
-                } else {
-                    setSeason("none");
-                }
+            if (fallingImages.some(im => im.name === pSeason)) {
+                setFallingItemKeyword(pSeason);
             } else {
-                const month = new Date().getMonth() + 1;
-                if (9 <= month && month <= 11) {
-                    //秋
-                    setSeason("autumn");
-                } else if (12 === month || month <= 2) {
-                    //冬
-                    setSeason("winter");
-                } else if (3 <= month && month <= 4) {
-                    //春
-                    setSeason("spring");
-                } else {
-                    //夏
-                    setSeason("summer");
-                }
+                setFallingItemKeyword("none");
             }
-        };
-        load();
+        })();
     }, [pSeason]);
 
-    useEffect(() => {
-        setScale((screenWidth + window.innerHeight) / 1000);
+    return { seasonItems, fallingItemKeyword };
+}
 
-        console.log("set");
-        const intervalId = window.setInterval(() => {
-            //各葉っぱは10秒で消える
-            const newLeaves = ls
-                .map(l => ({ ...l, ageCount: l.ageCount + 1 }))
-                .filter(l => l.ageCount <= 10);
+function useFallingItemsAnimation(
+    frequencySec: number,
+    screenWidth: number,
+    screenHeight: number
+) {
+    const [fallingItems, setFallingItems] = useState<FallingItem[]>([]);
+
+    useEffect(() => {
+        if (intervalId) {
+            // clear old interval
+            clearInterval(intervalId);
+        }
+
+        intervalId = window.setInterval(() => {
+            //各FallingItemは10秒で消える
+            const newFallingItems = ls
+                .filter(l => l.ageCount <= 10)
+                .map(l => ({ ...l, ageCount: l.ageCount + 1 }));
 
             count++;
+
             if (count % frequencySec === 0) {
-                newLeaves.push({
+                newFallingItems.push({
                     id: count,
                     ageCount: 0,
                     initialX: (screenWidth / 6) * (Math.random() * 11),
                 });
             }
 
-            setLeaves(newLeaves);
-            ls = newLeaves;
+            setFallingItems(newFallingItems);
+            ls = newFallingItems;
         }, 1000);
 
         return () => {
             clearInterval(intervalId);
-        };
-    }, [screenWidth]);
-
-    useEffect(() => {
-        return () => {
             ls = [];
         };
-    }, []);
+    }, [screenWidth, screenHeight, frequencySec]);
 
-    let getImg;
-    const seasonItem = seasonItems?.find(item => item.name === season);
-    if (!season || season === "none" || !seasonItem) {
-        getImg = () => null;
-    } else {
-        getImg = (l: Leaf) => (
-            <img
-                key={`falling item ${l.id}`}
-                src={appsPublicImg + seasonItem.fileName}
-                alt={`${seasonItem.alt} ${l.id}`}
-                title={`${seasonItem.alt} ${l.id}`}
-                style={{
-                    maxWidth: 50 * scale,
-                    maxHeight: 50 * scale,
-                    position: "fixed",
-                    top: -1.5 * 90 * scale,
-                    left: l.initialX,
-                    zIndex: -100,
-                }}
-                className={fallingAnimationClass}
-            />
-        );
-    }
-
-    return <>{leaves.map(getImg)}</>;
-};
+    return fallingItems;
+}
 
 export async function getFallingImages() {
     const response = await cFetch(

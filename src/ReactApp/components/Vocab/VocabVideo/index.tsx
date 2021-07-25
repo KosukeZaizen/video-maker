@@ -44,7 +44,7 @@ function VocabVideo({ match: { params } }: Props) {
     const { vocabGenre, vocabList, vocabSounds } = useVocabList(
         params.genreName.toString().split("#")[0]
     );
-    const { screenWidth } = useScreenSize();
+    const { screenWidth, screenHeight } = useScreenSize();
     const { startRecording, stopRecording } = useVideoRecorder();
 
     const { genreName } = vocabGenre;
@@ -164,6 +164,7 @@ function VocabVideo({ match: { params } }: Props) {
                 <FallingAnimation
                     frequencySec={3}
                     screenWidth={screenWidth}
+                    screenHeight={screenHeight}
                     season={season}
                 />
             )}
