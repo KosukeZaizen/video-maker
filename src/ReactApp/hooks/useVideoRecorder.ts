@@ -104,7 +104,7 @@ async function setVideoSource(source: DesktopCapturerSource) {
     } as MediaStreamConstraints;
 
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    const options = { mimeType: "video/webm;codecs=vp9" };
+    const options = { mimeType: "video/webm;codecs=vp8" };
 
     const mediaRecorder = new MediaRecorder(stream, options);
 
