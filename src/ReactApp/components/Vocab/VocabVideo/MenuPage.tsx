@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { ChangePage, Page } from ".";
 import { getFallingImages } from "../../shared/Animations/SeasonAnimation";
 import { FallingImageEdit } from "../../shared/Animations/SeasonAnimation/FallingImageEdit";
@@ -103,7 +104,12 @@ export function MenuPage({
                 alignItems: "center",
             }}
         >
-            <BackButton />
+            <div style={{ display: "flex" }}>
+                <BackButton />
+                <Link to="/">
+                    <button>Home</button>
+                </Link>
+            </div>
             <p
                 style={{ margin: 10 }}
             >{`Loaded Audio: ${playableCount} / ${totalCount}`}</p>
