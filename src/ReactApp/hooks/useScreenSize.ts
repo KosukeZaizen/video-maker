@@ -9,7 +9,7 @@ export function useScreenSize() {
     useEffect(() => {
         let timer: number;
         window.onresize = () => {
-            if (!getUnmounted()) {
+            if (getUnmounted()) {
                 return;
             }
 

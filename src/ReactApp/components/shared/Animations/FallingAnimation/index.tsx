@@ -35,7 +35,7 @@ interface Props {
     screenWidth: number;
     season?: string;
 }
-export const SeasonAnimation = ({
+export const FallingAnimation = ({
     frequencySec,
     screenWidth,
     season: pSeason,
@@ -84,6 +84,7 @@ export const SeasonAnimation = ({
     useEffect(() => {
         setScale((screenWidth + window.innerHeight) / 1000);
 
+        console.log("set");
         const intervalId = window.setInterval(() => {
             //各葉っぱは10秒で消える
             const newLeaves = ls

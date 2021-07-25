@@ -5,8 +5,8 @@ import { getAudio } from "../../../common/util/audio/getAudio";
 import { useScreenSize } from "../../../hooks/useScreenSize";
 import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
 import { useVocabList } from "../../../hooks/Vocab/useVocabList";
+import { FallingAnimation } from "../../shared/Animations/FallingAnimation";
 import { FooterAnimation } from "../../shared/Animations/FooterAnimation";
-import { SeasonAnimation } from "../../shared/Animations/SeasonAnimation";
 import { sound } from "../types/vocab";
 import { LastPage } from "./LastPage";
 import { ListPage } from "./ListPage";
@@ -161,7 +161,7 @@ function VocabVideo({ match: { params } }: Props) {
                 {pageContent}
             </div>
             {currentPage !== Page.thumbnail && (
-                <SeasonAnimation
+                <FallingAnimation
                     frequencySec={3}
                     screenWidth={screenWidth}
                     season={season}
