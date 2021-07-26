@@ -46,10 +46,6 @@ const smoothTransform = {
     transitionTimingFunction: "linear",
 };
 
-function getTranslate(x: number, y: number) {
-    return `translate3d(${Math.floor(x)}px,${Math.floor(y)}px,0px)`;
-}
-
 export function FooterAnimation() {
     const [animationState, setAnimationState] = useState(initialAnimationState);
 
@@ -239,62 +235,65 @@ export function FooterAnimation() {
                     ...smoothTransform,
                 }}
             />
-            {animationState.time > 10000 / timeStep && (
-                <>
-                    <img
-                        src={rock}
-                        alt="rock"
-                        style={{
-                            ...baseStyle,
-                            backfaceVisibility: "hidden",
-                            left: 0,
-                            bottom: 0,
-                            width: ninjaLength * U * 1.3,
-                            zIndex: 1000000001,
-                            transform: getTranslate(
-                                (animationState.ninjaX - 5) * U,
-                                0
-                            ),
-                            ...smoothTransform,
-                        }}
-                    />
-                    <img
-                        src={fire}
-                        alt="fire"
-                        style={{
-                            ...baseStyle,
-                            backfaceVisibility: "hidden",
-                            left: 0,
-                            bottom: 0,
-                            width: ninjaLength * U * 1.3,
-                            transform: getTranslate(
-                                (animationState.ninjaX - ninjaLength) * U,
-                                0
-                            ),
-                            ...smoothTransform,
-                        }}
-                    />
-                </>
-            )}
-            {animationState.time > 18000 / timeStep && (
-                <img
-                    src={flyingNinja}
-                    alt="flying ninja"
-                    style={{
-                        ...baseStyle,
-                        backfaceVisibility: "hidden",
-                        left: 0,
-                        bottom: 0,
-                        width: ninjaLength * U * 1.5,
-                        display: animationState.flyingNinjaDisplay,
-                        transform: getTranslate(
-                            animationState.flyingNinjaPos[0] * U,
-                            -animationState.flyingNinjaPos[1] * U
-                        ),
-                        ...smoothTransform,
-                    }}
-                />
-            )}
+            <img
+                src={rock}
+                alt="rock"
+                style={{
+                    ...baseStyle,
+                    backfaceVisibility: "hidden",
+                    left: 0,
+                    bottom: 0,
+                    width: ninjaLength * U * 1.3,
+                    zIndex: 1000000001,
+                    transform: getTranslate((animationState.ninjaX - 5) * U, 0),
+                    ...smoothTransform,
+                    display:
+                        animationState.time > 10000 / timeStep
+                            ? "inline"
+                            : "none",
+                }}
+            />
+            <img
+                src={fire}
+                alt="fire"
+                style={{
+                    ...baseStyle,
+                    backfaceVisibility: "hidden",
+                    left: 0,
+                    bottom: 0,
+                    width: ninjaLength * U * 1.3,
+                    transform: getTranslate(
+                        (animationState.ninjaX - ninjaLength) * U,
+                        0
+                    ),
+                    ...smoothTransform,
+                    display:
+                        animationState.time > 10000 / timeStep
+                            ? "inline"
+                            : "none",
+                }}
+            />
+            <img
+                src={flyingNinja}
+                alt="flying ninja"
+                style={{
+                    ...baseStyle,
+                    backfaceVisibility: "hidden",
+                    left: 0,
+                    bottom: 0,
+                    width: ninjaLength * U * 1.5,
+                    display: animationState.flyingNinjaDisplay,
+                    transform: getTranslate(
+                        animationState.flyingNinjaPos[0] * U,
+                        -animationState.flyingNinjaPos[1] * U
+                    ),
+                    ...smoothTransform,
+                }}
+            />
         </>
     );
+}
+
+function getTranslate(x: number, y: number) {
+    return `translate3d(${Math.floor(x)}px,${Math.floor(y)}px,0px)`;
 }
