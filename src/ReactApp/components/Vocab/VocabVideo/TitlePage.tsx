@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ChangePage, Page } from ".";
-import { sleepAsync } from "../../../common/functions";
+import { audioPlayAsync } from "../../../common/util/audio/audioPlayAsync";
 import CharacterComment from "../../shared/CharacterComment";
 import { ScrollBox } from "../../shared/ScrollBox";
 import { sound, vocab } from "../types/vocab";
@@ -28,19 +28,14 @@ export function TitlePage({
     const [isCommentTwoLines, setIsCommentTwoLines] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {
-            const musicPlay = async () => {
-                const { audio } = music;
-                audio.volume = 0;
-                audio.onended = musicPlay;
-                audio.play();
-                while (audio.volume < 0.005) {
-                    audio.volume += 0.001;
-                    await sleepAsync(500);
-                }
-            };
-            musicPlay();
-        }, 500);
+        (async () => {
+            const { audio } = music;
+            audio.volume = 0.005;
+
+            while (audio.volume > 0) {
+                await audioPlayAsync(audio);
+            }
+        })();
 
         setTimeout(() => {
             setIsInitial(false);
@@ -69,28 +64,29 @@ export function TitlePage({
         setIsCommentTwoLines(isTwoLines);
     }, [titleToShowUpper]);
 
-    let comment: React.ReactNode;
-    if (isInitial) {
-        comment = titleToShowUpper.split(" ").map((t, i) => {
-            const str = i ? " " + t : t;
-            return t.includes("-") ? (
-                <span style={{ display: "inline-block" }}>{str}</span>
-            ) : (
-                str
+    const comment = useMemo(() => {
+        if (isInitial) {
+            return titleToShowUpper.split(" ").map((t, i) => {
+                const str = i ? " " + t : t;
+                return t.includes("-") ? (
+                    <span style={{ display: "inline-block" }}>{str}</span>
+                ) : (
+                    str
+                );
+            });
+        } else {
+            return (
+                <>
+                    <p style={{ fontSize: 60, margin: "10px 0 20px" }}>
+                        {"Let's check all the words"}
+                    </p>
+                    <p style={{ fontSize: 60, margin: "0 0 10px" }}>
+                        {"before starting the quiz!"}
+                    </p>
+                </>
             );
-        });
-    } else {
-        comment = (
-            <>
-                <p style={{ fontSize: 60, margin: "10px 0 20px" }}>
-                    {"Let's check all the words"}
-                </p>
-                <p style={{ fontSize: 60, margin: "0 0 10px" }}>
-                    {"before starting the quiz!"}
-                </p>
-            </>
-        );
-    }
+        }
+    }, [isInitial]);
 
     return (
         <div

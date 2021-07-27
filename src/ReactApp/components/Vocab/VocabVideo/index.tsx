@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BLOB_URL } from "../../../common/consts";
 import { getAudio } from "../../../common/util/audio/getAudio";
 import { useScreenSize } from "../../../hooks/useScreenSize";
@@ -41,23 +41,39 @@ function VocabVideo({ match: { params } }: Props) {
     const [season, setSeason] = useState("spring");
     const [isOneSeason, setIsOneSeason] = useState(true);
     const [vocabSeasons, setVocabSeasons] = useState<string[]>([]);
-    const { vocabGenre, vocabList, vocabSounds } = useVocabList(
-        params.genreName.toString().split("#")[0]
+    const pGenreName = useMemo(
+        () => params.genreName.toString().split("#")[0],
+        [params]
+    );
+    const {
+        vocabGenre: { genreName },
+        vocabList,
+        vocabSounds,
+    } = useVocabList(pGenreName);
+    const audioVocabSound = useMemo(
+        () => vocabSounds.map(s => s?.audio),
+        [vocabSounds]
     );
     const { screenWidth, screenHeight } = useScreenSize();
     const { startRecording, stopRecording } = useVideoRecorder();
 
-    const { genreName } = vocabGenre;
-    const titleToShowUpper = genreName
-        .split("_")
-        .map((t: string) => t && t[0].toUpperCase() + t.substr(1))
-        .join(" ");
+    const titleToShowUpper = useMemo(
+        () =>
+            genreName
+                .split("_")
+                .map((t: string) => t && t[0].toUpperCase() + t.substr(1))
+                .join(" "),
+        [genreName]
+    );
 
-    const setVocabSeason = (vocabId: number, season: string) => {
-        const newVocabSeasons = [...vocabSeasons];
-        newVocabSeasons[vocabId] = season;
-        setVocabSeasons(newVocabSeasons);
-    };
+    const setVocabSeason = useCallback(
+        (vocabId: number, season: string) => {
+            setVocabSeasons(
+                vocabSeasons.map((v, i) => (i === vocabId ? season : v))
+            );
+        },
+        [vocabSeasons]
+    );
 
     let pageContent: React.ReactNode;
     switch (currentPage) {
@@ -97,7 +113,7 @@ function VocabVideo({ match: { params } }: Props) {
                     screenWidth={screenWidth}
                     changePage={setCurrentPage}
                     vocabList={vocabList}
-                    vocabSounds={vocabSounds.map(s => s?.audio)}
+                    vocabSounds={audioVocabSound}
                     vocabSeasons={vocabSeasons}
                     setSeason={setSeason}
                     isOneSeason={isOneSeason}
@@ -112,7 +128,7 @@ function VocabVideo({ match: { params } }: Props) {
                     screenWidth={screenWidth}
                     changePage={setCurrentPage}
                     vocabList={vocabList}
-                    vocabSounds={vocabSounds.map(s => s?.audio)}
+                    vocabSounds={audioVocabSound}
                     vocabSeasons={vocabSeasons}
                     setSeason={setSeason}
                     isOneSeason={isOneSeason}

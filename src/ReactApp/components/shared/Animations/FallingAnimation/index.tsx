@@ -150,7 +150,9 @@ function useFallingItemsAnimation(
 
         return () => {
             clearInterval(intervalId);
+            count = 0;
             ls = [];
+            intervalId = 0;
         };
     }, [screenWidth, screenHeight, frequencySec]);
 

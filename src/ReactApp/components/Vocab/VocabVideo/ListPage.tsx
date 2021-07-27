@@ -28,7 +28,7 @@ export function ListPage({
     const [currentVocab, setCurrentVocab] = useState(vocabList[0]);
 
     useEffect(() => {
-        const play = async () => {
+        (async () => {
             const initialSeason = season;
             for (let i in vocabList) {
                 const { vocabId } = vocabList[i];
@@ -46,8 +46,7 @@ export function ListPage({
             }
             setSeason(initialSeason);
             changePage(Page.quiz);
-        };
-        play();
+        })();
     }, []);
 
     const pStyle = { margin: "0 0 30px" };
