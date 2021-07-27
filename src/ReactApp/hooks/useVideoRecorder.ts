@@ -73,7 +73,7 @@ function useInputSource() {
     return inputSource;
 }
 
-function useMediaRecorder(inputSource?: DesktopCapturerSource) {
+function useMediaRecorder(inputSource: DesktopCapturerSource | undefined) {
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>();
 
     useEffect(() => {
