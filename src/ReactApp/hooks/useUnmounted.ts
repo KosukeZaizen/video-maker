@@ -1,13 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
-const unmountedState = { unmounted: false };
+let mountedIds: number[] = [];
 
 export function useUnmounted() {
-    useEffect(() => {
-        return () => {
-            unmountedState.unmounted = true;
-        };
-    }, []);
+    const id = useMemo(
+        () => (mountedIds.length ? Math.max(...mountedIds) + 1 : 1),
+        []
+    );
 
-    return { getUnmounted: () => unmountedState.unmounted };
+    useEffect(() => {
+        mountedIds.push(id);
+
+        return () => {
+            mountedIds = mountedIds.filter(mid => mid !== id);
+        };
+    }, [id]);
+
+    // Empty array will also return true.
+    return { getUnmounted: () => mountedIds.every(mid => mid !== id) };
 }
