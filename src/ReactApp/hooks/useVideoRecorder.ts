@@ -12,37 +12,8 @@ import { showMenuBar } from "../common/util/ipc/showMenuBar";
 const recordingState = { isRecording: false };
 
 export function useVideoRecorder() {
-    const [inputSource, setInputSource] = useState<DesktopCapturerSource>();
-    const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>();
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const inputSources = await desktopCapturer.getSources({
-                    types: ["window"],
-                });
-                const source = inputSources.find(
-                    s => s.name === document.title
-                );
-                setInputSource(source);
-            } catch (ex) {
-                console.log("source ex:", ex);
-            }
-        })();
-    }, []);
-
-    useEffect(() => {
-        if (inputSource) {
-            (async () => {
-                try {
-                    const recorder = await setVideoSource(inputSource);
-                    setMediaRecorder(recorder);
-                } catch (ex) {
-                    console.log("media recorder ex:", ex);
-                }
-            })();
-        }
-    }, [inputSource]);
+    const inputSource = useInputSource();
+    const mediaRecorder = useMediaRecorder(inputSource);
 
     return {
         startRecording: () => {
@@ -78,6 +49,47 @@ function beforeRecording() {
 function afterRecording() {
     showMenuBar();
     showMouseCursor();
+}
+
+function useInputSource() {
+    const [inputSource, setInputSource] = useState<DesktopCapturerSource>();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const inputSources = await desktopCapturer.getSources({
+                    types: ["window"],
+                });
+                const source = inputSources.find(
+                    s => s.name === document.title
+                );
+                setInputSource(source);
+            } catch (ex) {
+                console.log("source ex:", ex);
+            }
+        })();
+    }, []);
+
+    return inputSource;
+}
+
+function useMediaRecorder(inputSource?: DesktopCapturerSource) {
+    const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>();
+
+    useEffect(() => {
+        if (inputSource) {
+            (async () => {
+                try {
+                    const recorder = await setVideoSource(inputSource);
+                    setMediaRecorder(recorder);
+                } catch (ex) {
+                    console.log("media recorder ex:", ex);
+                }
+            })();
+        }
+    }, [inputSource]);
+
+    return mediaRecorder;
 }
 
 async function setVideoSource(source: DesktopCapturerSource) {
