@@ -1,10 +1,59 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChangePage, Page } from ".";
 import { sleepAsync } from "../../../common/functions";
 import { audioPlayAsync } from "../../../common/util/audio/audioPlayAsync";
 import CharacterComment from "../../shared/CharacterComment";
 import { vocab } from "../types/vocab";
+
+const styles = {
+    pStyle: { margin: "0 0 30px" },
+    commentP: {
+        fontSize: 65,
+        margin: 0,
+        padding: 10,
+        fontWeight: "bold",
+    },
+    characterComment: { maxWidth: 1000 },
+    comment: {
+        fontSize: 100,
+        maxWidth: 900,
+        width: 700,
+        marginLeft: 40,
+        textAlign: "center",
+    },
+    outsideDiv: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        fontSize: 90,
+    },
+    quizContentsDiv: { marginBottom: 10, textAlign: "center" },
+    characterOutsideDiv: { position: "absolute", bottom: 0, left: 20 },
+    askingCommentP: {
+        fontSize: "x-large",
+        margin: 0,
+        paddingLeft: 5,
+    },
+    askingCharacterImg: { width: 95 },
+    askingComment: {
+        marginLeft: 15,
+        paddingLeft: 25,
+        width: 300,
+    },
+    progress: {
+        position: "absolute",
+        top: 10,
+        left: 20,
+        fontSize: 40,
+    },
+    count: {
+        position: "absolute",
+        top: 0,
+        right: 50,
+        fontSize: 100,
+    },
+} as const;
 
 export function QuizPage({
     screenWidth,
@@ -71,102 +120,54 @@ export function QuizPage({
         }, 5000);
     }, []);
 
-    const pStyle = { margin: "0 0 30px" };
+    const redPStyle = useMemo(
+        () =>
+            ({
+                color: "red",
+                opacity: showAnswer ? 1 : 0,
+                transition: "500ms",
+                ...styles.pStyle,
+            } as const),
+        [showAnswer]
+    );
+
+    const progress = useMemo(
+        () => `${vocabList.indexOf(currentVocab) + 1} / ${vocabList.length}`,
+        [vocabList, currentVocab]
+    );
 
     return isInitialScreen ? (
         <CharacterComment
             imgNumber={1}
-            comment={
-                <p
-                    style={{
-                        fontSize: 65,
-                        margin: 0,
-                        padding: 10,
-                        fontWeight: "bold",
-                    }}
-                >
-                    {"Let's start the quiz!"}
-                </p>
-            }
-            style={{ maxWidth: 1000 }}
+            comment={<p style={styles.commentP}>{"Let's start the quiz!"}</p>}
+            style={styles.characterComment}
             screenWidth={screenWidth}
-            commentStyle={{
-                fontSize: 100,
-                maxWidth: 900,
-                width: 700,
-                marginLeft: 40,
-                textAlign: "center",
-            }}
+            commentStyle={styles.comment}
         />
     ) : (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                fontSize: 90,
-            }}
-        >
-            <div style={{ marginBottom: 10, textAlign: "center" }}>
-                <p style={pStyle}>{currentVocab.kanji}</p>
-                <p style={pStyle}>{currentVocab.hiragana}</p>
-                <p
-                    key={currentVocab.vocabId}
-                    style={{
-                        color: "red",
-                        opacity: showAnswer ? 1 : 0,
-                        transition: "500ms",
-                        ...pStyle,
-                    }}
-                >
+        <div style={styles.outsideDiv}>
+            <div style={styles.quizContentsDiv}>
+                <p style={styles.pStyle}>{currentVocab.kanji}</p>
+                <p style={styles.pStyle}>{currentVocab.hiragana}</p>
+                <p key={currentVocab.vocabId} style={redPStyle}>
                     {currentVocab.english}
                 </p>
             </div>
-            <div style={{ position: "absolute", bottom: 0, left: 20 }}>
+            <div style={styles.characterOutsideDiv}>
                 <CharacterComment
                     imgNumber={3}
                     comment={
-                        <p
-                            style={{
-                                fontSize: "x-large",
-                                margin: 0,
-                                paddingLeft: 5,
-                            }}
-                        >
+                        <p style={styles.askingCommentP}>
                             {"Do you remember the meaning?"}
                         </p>
                     }
-                    imgStyle={{ width: 95 }}
+                    imgStyle={styles.askingCharacterImg}
                     screenWidth={screenWidth / 2}
-                    commentStyle={{
-                        marginLeft: 15,
-                        paddingLeft: 25,
-                        width: 300,
-                    }}
+                    commentStyle={styles.askingComment}
                 />
             </div>
-            <div
-                style={{
-                    position: "absolute",
-                    top: 10,
-                    left: 20,
-                    fontSize: 40,
-                }}
-            >
-                {`${vocabList.indexOf(currentVocab) + 1} / ${vocabList.length}`}
-            </div>
-            {count < 4 && (
-                <div
-                    style={{
-                        position: "absolute",
-                        top: 0,
-                        right: 50,
-                        fontSize: 100,
-                    }}
-                >
-                    {count}
-                </div>
-            )}
+            <div style={styles.progress}>{progress}</div>
+            {count < 4 && <div style={styles.count}>{count}</div>}
         </div>
     );
 }

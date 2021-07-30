@@ -1,10 +1,42 @@
 import * as React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { ChangePage, Page } from ".";
 import { audioPlayAsync } from "../../../common/util/audio/audioPlayAsync";
 import CharacterComment from "../../shared/CharacterComment";
 import { ScrollBox } from "../../shared/ScrollBox";
 import { sound, vocab } from "../types/vocab";
+
+const styles = {
+    h1Style: {
+        marginTop: 10,
+        marginBottom: 20,
+        fontWeight: "bold",
+        fontSize: 90,
+    },
+    characterCommentStyle: {
+        maxWidth: 1000,
+        position: "relative",
+        left: -75,
+    },
+    commentStyle: {
+        fontSize: 100,
+        fontWeight: "bold",
+        maxWidth: 1000,
+        marginLeft: 40,
+        textAlign: "center",
+        marginBottom: -20,
+        lineHeight: 1.3,
+        padding: "30px 0",
+    },
+    characterImgStyle: { maxWidth: 150 },
+    scroll: { marginTop: 60 },
+    scrollInsideDiv: {
+        fontSize: 50,
+        textOverflow: "hidden",
+        width: 1100,
+        fontWeight: "bold",
+    },
+} as const;
 
 export function TitlePage({
     titleToShowUpper,
@@ -23,8 +55,8 @@ export function TitlePage({
     const characterCommentRef = useRef<HTMLDivElement>(null);
 
     const [isInitial, setIsInitial] = useState(true);
-    const [vList, setVList] = useState<vocab[]>(
-        vocabList.filter((v, i) => i <= 10).map(v => ({ ...v }))
+    const [hiraganaList, setHiraganaList] = useState<string[]>(
+        vocabList.filter((v, i) => i <= 8).map(v => v.hiragana)
     );
     const [isOmitted, setIsOmitted] = useState(false);
     const [isCommentTwoLines, setIsCommentTwoLines] = useState(false);
@@ -49,12 +81,24 @@ export function TitlePage({
     }, []);
 
     useEffect(() => {
-        const rect = scrollTextRef.current?.getBoundingClientRect();
-        if (rect && rect.height > 100) {
-            setIsOmitted(true);
-            setVList(vList.filter((v, i) => i !== vList.length - 1));
+        const l = [...hiraganaList];
+        if (l.join("").length > 18) {
+            l.length = l.length - 1;
+            while (l.join("").length > 18) {
+                l.length = l.length - 1;
+            }
+        } else {
+            const rect = scrollTextRef.current?.getBoundingClientRect();
+            if (rect && rect.height > 100) {
+                l.length = l.length - 1;
+            }
         }
-    }, [vList, vocabList, scrollTextRef.current]);
+
+        if (l.length !== hiraganaList.length) {
+            setIsOmitted(true);
+            setHiraganaList(l);
+        }
+    }, [hiraganaList, vocabList, scrollTextRef.current]);
 
     useEffect(() => {
         const rect = characterCommentRef.current?.getBoundingClientRect();
@@ -86,30 +130,24 @@ export function TitlePage({
         }
     }, [isInitial]);
 
+    const outsideDivStyle = useMemo<CSSProperties>(
+        () =>
+            isInitial
+                ? {
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "space-around",
+                      height: isCommentTwoLines ? "98%" : "95%",
+                  }
+                : {},
+        [isInitial, isCommentTwoLines]
+    );
+
     return (
-        <div
-            style={
-                isInitial
-                    ? {
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "space-around",
-                          height: isCommentTwoLines ? "98%" : "95%",
-                      }
-                    : {}
-            }
-        >
+        <div style={outsideDivStyle}>
             {isInitial && (
-                <h1
-                    id="h1title"
-                    style={{
-                        marginTop: 10,
-                        marginBottom: isInitial ? 20 : 100,
-                        fontWeight: "bold",
-                        fontSize: 90,
-                    }}
-                >
+                <h1 id="h1title" style={styles.h1Style}>
                     {"Japanese Vocabulary Quiz"}
                 </h1>
             )}
@@ -118,35 +156,15 @@ export function TitlePage({
                 imgNumber={1}
                 screenWidth={screenWidth}
                 comment={comment}
-                style={{
-                    maxWidth: 1000,
-                    position: "relative",
-                    left: -75,
-                }}
-                commentStyle={{
-                    fontSize: 100,
-                    fontWeight: "bold",
-                    maxWidth: 1000,
-                    marginLeft: 40,
-                    textAlign: "center",
-                    marginBottom: -20,
-                    lineHeight: 1.3,
-                    padding: "30px 0",
-                }}
-                imgStyle={{ maxWidth: 150 }}
+                style={styles.characterCommentStyle}
+                commentStyle={styles.commentStyle}
+                imgStyle={styles.characterImgStyle}
             />
             {isInitial && (
-                <ScrollBox style={{ marginTop: 60 }}>
-                    <div
-                        style={{
-                            fontSize: 50,
-                            textOverflow: "hidden",
-                            width: 1100,
-                            fontWeight: "bold",
-                        }}
-                    >
+                <ScrollBox style={styles.scroll}>
+                    <div style={styles.scrollInsideDiv}>
                         <span ref={scrollTextRef}>
-                            {vList.map(v => v.hiragana).join(", ")}
+                            {hiraganaList.join(", ")}
                             {isOmitted && "..., etc"}
                         </span>
                     </div>

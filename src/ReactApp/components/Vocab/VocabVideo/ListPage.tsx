@@ -1,22 +1,76 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChangePage, Page } from ".";
 import { sleepAsync } from "../../../common/functions";
 import { audioPlayAsync } from "../../../common/util/audio/audioPlayAsync";
 import CharacterComment from "../../shared/CharacterComment";
 import { vocab } from "../types/vocab";
 
+const styles = {
+    outsideDiv: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        fontSize: 90,
+    },
+    pStyle: { margin: "0 0 30px" },
+    listContentDiv: { marginBottom: 10, textAlign: "center" },
+    outsideCharacterComment: { position: "absolute", bottom: 0, left: 20 },
+    commentP: {
+        fontSize: "x-large",
+        minWidth: 273,
+        margin: 0,
+    },
+    characterImg: { width: 95 },
+    commentStyle: {
+        marginLeft: 15,
+        paddingLeft: 30,
+        width: 300,
+    },
+    progress: {
+        position: "absolute",
+        top: 10,
+        left: 20,
+        fontSize: 40,
+    },
+} as const;
+
 export function ListPage({
     screenWidth,
-    changePage,
-    vocabList,
-    vocabSounds,
-    vocabSeasons,
-    isOneSeason,
-    setSeason,
-    season,
+    ...currentVocabProps
 }: {
     screenWidth: number;
+} & CurrentVocabProps) {
+    const { currentVocab, progress } = useCurrentVocab(currentVocabProps);
+
+    return (
+        <div style={styles.outsideDiv}>
+            <div style={styles.listContentDiv}>
+                <p style={styles.pStyle}>{currentVocab.kanji}</p>
+                <p style={styles.pStyle}>{currentVocab.hiragana}</p>
+                <p style={styles.pStyle}>{currentVocab.english}</p>
+            </div>
+            <div style={styles.outsideCharacterComment}>
+                <CharacterComment
+                    imgNumber={2}
+                    comment={
+                        <p style={styles.commentP}>
+                            {"Remember these words"}
+                            <br />
+                            {"before the quiz!"}
+                        </p>
+                    }
+                    imgStyle={styles.characterImg}
+                    screenWidth={screenWidth / 2}
+                    commentStyle={styles.commentStyle}
+                />
+            </div>
+            <div style={styles.progress}>{progress}</div>
+        </div>
+    );
+}
+
+interface CurrentVocabProps {
     changePage: ChangePage;
     vocabList: vocab[];
     vocabSounds: HTMLAudioElement[];
@@ -24,7 +78,17 @@ export function ListPage({
     isOneSeason: boolean;
     setSeason: (season: string) => void;
     season: string;
-}) {
+}
+
+function useCurrentVocab({
+    changePage,
+    vocabList,
+    vocabSounds,
+    vocabSeasons,
+    isOneSeason,
+    setSeason,
+    season,
+}: CurrentVocabProps) {
     const [currentVocab, setCurrentVocab] = useState(vocabList[0]);
 
     useEffect(() => {
@@ -49,57 +113,10 @@ export function ListPage({
         })();
     }, []);
 
-    const pStyle = { margin: "0 0 30px" };
-
-    return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                fontSize: 90,
-            }}
-        >
-            <div style={{ marginBottom: 10, textAlign: "center" }}>
-                <p style={pStyle}>{currentVocab.kanji}</p>
-                <p style={pStyle}>{currentVocab.hiragana}</p>
-                <p style={pStyle}>{currentVocab.english}</p>
-            </div>
-            <div style={{ position: "absolute", bottom: 0, left: 20 }}>
-                <CharacterComment
-                    imgNumber={2}
-                    comment={
-                        <p
-                            style={{
-                                fontSize: "x-large",
-                                minWidth: 273,
-                                margin: 0,
-                            }}
-                        >
-                            {"Remember these words"}
-                            <br />
-                            {"before the quiz!"}
-                        </p>
-                    }
-                    imgStyle={{ width: 95 }}
-                    screenWidth={screenWidth / 2}
-                    commentStyle={{
-                        marginLeft: 15,
-                        paddingLeft: 30,
-                        width: 300,
-                    }}
-                />
-            </div>
-            <div
-                style={{
-                    position: "absolute",
-                    top: 10,
-                    left: 20,
-                    fontSize: 40,
-                }}
-            >
-                {`${vocabList.indexOf(currentVocab) + 1} / ${vocabList.length}`}
-            </div>
-        </div>
+    const progress = useMemo(
+        () => `${vocabList.indexOf(currentVocab) + 1} / ${vocabList.length}`,
+        [vocabList, currentVocab]
     );
+
+    return { currentVocab, progress };
 }

@@ -105,6 +105,7 @@ export function MenuPage({
                 afterVideo={() => changePage(Page.title)}
                 started={isOpeningVideoShown}
                 style={{ width: "100%" }}
+                freezingTimeBeforePlay={2000}
             />
 
             {isButtonShown ? (
@@ -136,8 +137,8 @@ export function MenuPage({
                                 style={{ margin: 10 }}
                                 onClick={() => {
                                     setTimeout(() => {
-                                        startRecording();
                                         setOpeningVideoShown(true);
+                                        setTimeout(startRecording, 2000);
                                     }, 1000);
                                     if (!checkUnmounted()) {
                                         setIsButtonShown(false);

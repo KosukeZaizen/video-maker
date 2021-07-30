@@ -36,6 +36,19 @@ const music: sound = getAudio({
     src: `${BLOB_URL}/vocabulary-quiz/music.mp3`,
 });
 
+const styles = {
+    pageContentDiv:{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    }
+} as const
+
 function VocabVideo({ match: { params } }: Props) {
     const [currentPage, setCurrentPage] = useState<Page>(Page.menu);
     const [season, setSeason] = useState("spring");
@@ -163,16 +176,7 @@ function VocabVideo({ match: { params } }: Props) {
     return (
         <>
             <div
-                style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
+                style={styles.pageContentDiv}
             >
                 {pageContent}
             </div>
