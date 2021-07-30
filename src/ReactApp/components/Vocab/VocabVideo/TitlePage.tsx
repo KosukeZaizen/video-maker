@@ -23,7 +23,9 @@ export function TitlePage({
     const characterCommentRef = useRef<HTMLDivElement>(null);
 
     const [isInitial, setIsInitial] = useState(true);
-    const [vList, setVList] = useState<vocab[]>(vocabList.map(v => ({ ...v })));
+    const [vList, setVList] = useState<vocab[]>(
+        vocabList.filter((v, i) => i <= 10).map(v => ({ ...v }))
+    );
     const [isOmitted, setIsOmitted] = useState(false);
     const [isCommentTwoLines, setIsCommentTwoLines] = useState(false);
 
@@ -47,10 +49,6 @@ export function TitlePage({
     }, []);
 
     useEffect(() => {
-        if (!vList?.length) {
-            setVList(vocabList);
-        }
-
         const rect = scrollTextRef.current?.getBoundingClientRect();
         if (rect && rect.height > 100) {
             setIsOmitted(true);
