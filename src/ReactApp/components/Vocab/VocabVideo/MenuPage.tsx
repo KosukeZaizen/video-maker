@@ -103,9 +103,9 @@ export function MenuPage({
             <Video
                 src={`${staticFolderPath}/video/opening-small-sound.mp4`}
                 afterVideo={() => changePage(Page.title)}
-                started={isOpeningVideoShown}
+                shown={isOpeningVideoShown}
                 style={{ width: "100%" }}
-                freezingTimeBeforePlay={2000}
+                freezingTimeAfterShowing={2000}
             />
 
             {isButtonShown ? (

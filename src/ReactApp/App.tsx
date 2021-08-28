@@ -6,6 +6,7 @@ import { TestPage } from "./components/TestPage";
 import VocabEdit from "./components/Vocab/Edit";
 import VocabEditTop from "./components/Vocab/Edit/Top";
 import VocabVideo from "./components/Vocab/VocabVideo";
+import VocabAdventure from "./components/VocabAdventure";
 
 function App() {
     return (
@@ -28,6 +29,12 @@ function App() {
                     exact
                     path="/vocabularyVideo/:genreName"
                     component={VocabVideo}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/vocabularyAdventure/:genreName"
+                    component={VocabAdventure}
                 />
                 <Route sensitive exact path="/test" component={TestPage} />
                 <Route component={Home} />

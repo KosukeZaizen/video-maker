@@ -5,35 +5,35 @@ export function Video({
     style,
     afterVideo,
     src,
-    started,
-    freezingTimeBeforePlay,
+    shown,
+    freezingTimeAfterShowing,
 }: {
     style?: CSSProperties;
     afterVideo: () => void;
     src: string;
-    started: boolean;
-    freezingTimeBeforePlay?: number;
+    shown: boolean;
+    freezingTimeAfterShowing?: number;
 }) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         const videoElement = videoRef?.current;
         if (videoElement) {
-            if (!started) {
-                // When video ref was set
-                videoElement.load();
-                videoElement.onended = afterVideo;
-            } else if (started) {
-                setTimeout(() => videoElement.play(), freezingTimeBeforePlay);
-            }
-        } else if (started) {
-            alert("cannot start the video before the Ref is set");
+            videoElement.load();
+            videoElement.onended = afterVideo;
         }
-    }, [videoRef, started, freezingTimeBeforePlay]);
+    }, [videoRef]);
+
+    useEffect(() => {
+        const videoElement = videoRef?.current;
+        if (videoElement && shown) {
+            setTimeout(() => videoElement.play(), freezingTimeAfterShowing);
+        }
+    }, [videoRef, shown, freezingTimeAfterShowing]);
 
     const styleMemo = useMemo(
-        () => ({ ...style, display: started ? "block" : "none" }),
-        [style, started]
+        () => ({ ...style, display: shown ? "block" : "none" }),
+        [style, shown]
     );
 
     return <video ref={videoRef} src={src} style={styleMemo} />;
