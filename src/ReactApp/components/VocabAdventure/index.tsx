@@ -1,8 +1,16 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { staticFolderPath } from "../../common/consts";
+import { useHideScrollBar } from "../../hooks/useHideScrollBar";
 import { Video } from "../shared/Video";
-import { Game } from "./Game";
+import { Game, GameInfo } from "./Game";
+
+type VideoState = { isPlaying: boolean; scene: Scene };
+
+const initialVideoState: VideoState = {
+    isPlaying: true,
+    scene: "game",
+};
 
 const styles = {
     pageContentDiv: {
@@ -22,9 +30,13 @@ type Props = {
     match: { params: { [key: string]: string } };
 };
 
+export interface VideoInfo {
+    gameInfo: GameInfo;
+}
+
 function VocabAdventure({ match: { params } }: Props) {
-    const [isPlaying, setPlaying] = useState(false);
-    const videoKey = "test";
+    const [isPlaying, setPlaying] = useState(initialVideoState.isPlaying);
+    const videoInfo: VideoInfo = { gameInfo: { commands: [] } };
 
     return (
         <>
@@ -39,7 +51,7 @@ function VocabAdventure({ match: { params } }: Props) {
                 <div style={styles.pageContentDiv}>
                     <VideoContents
                         setPlaying={setPlaying}
-                        videoKey={videoKey}
+                        videoInfo={videoInfo}
                     />
                 </div>
             )}
@@ -51,12 +63,14 @@ type Scene = "opening" | "game" | "quiz" | "ending";
 
 function VideoContents({
     setPlaying,
-    videoKey,
+    videoInfo,
 }: {
     setPlaying: (isPlaying: boolean) => void;
-    videoKey: string;
+    videoInfo: VideoInfo;
 }) {
-    const [scene, setScene] = useState<Scene>("game");
+    useHideScrollBar();
+
+    const [scene, setScene] = useState<Scene>(initialVideoState.scene);
 
     switch (scene) {
         case "opening": {
@@ -65,7 +79,7 @@ function VideoContents({
                     onended={() => {
                         setScene("game");
                     }}
-                    videoKey={videoKey}
+                    videoInfo={videoInfo}
                 />
             );
         }
@@ -75,15 +89,29 @@ function VideoContents({
                     onended={() => {
                         setScene("quiz");
                     }}
-                    videoKey={videoKey}
+                    videoInfo={videoInfo}
                 />
             );
         }
         case "quiz": {
-            return <div>hello</div>;
+            return (
+                <QuizScene
+                    onended={() => {
+                        setScene("ending");
+                    }}
+                    videoInfo={videoInfo}
+                />
+            );
         }
         case "ending": {
-            return <div>hello</div>;
+            return (
+                <EndingScene
+                    onended={() => {
+                        setPlaying(false);
+                    }}
+                    videoInfo={videoInfo}
+                />
+            );
         }
         default: {
             return null;
@@ -93,7 +121,7 @@ function VideoContents({
 
 interface SceneProps {
     onended: () => void;
-    videoKey: string;
+    videoInfo: VideoInfo;
 }
 
 function OpeningScene({ onended }: SceneProps) {
@@ -110,8 +138,22 @@ function OpeningScene({ onended }: SceneProps) {
     );
 }
 
-function GameScene({ onended, videoKey }: SceneProps) {
-    return <Game command={{}} videoKey={videoKey} />;
+function GameScene({ onended, videoInfo }: SceneProps) {
+    return <Game gameInfo={videoInfo.gameInfo} onended={onended} />;
+}
+
+function QuizScene({ onended, videoInfo: videoKey }: SceneProps) {
+    useEffect(() => {
+        setTimeout(onended, 2000);
+    }, []);
+    return <div>Quiz</div>;
+}
+
+function EndingScene({ onended, videoInfo: videoKey }: SceneProps) {
+    useEffect(() => {
+        setTimeout(onended, 2000);
+    }, []);
+    return <div>Ending</div>;
 }
 
 export default VocabAdventure;

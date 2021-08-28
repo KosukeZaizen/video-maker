@@ -10,9 +10,7 @@ export abstract class GameElement {
 
     abstract renderElement: ({
         playtime,
-        UL,
     }: {
         playtime: number;
-        UL: number;
     }) => JSX.Element | null;
 }

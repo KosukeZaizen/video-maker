@@ -12,7 +12,7 @@ const setScreen = debounce<React.Dispatch<React.SetStateAction<number>>>(
             screenHeight = window.innerWidth;
         }
 
-        const UL = Math.min(screenWidth / 168, screenHeight / 94.5);
+        const UL = Math.min(screenWidth / 160, screenHeight / 90);
         setUL(UL);
     },
     100

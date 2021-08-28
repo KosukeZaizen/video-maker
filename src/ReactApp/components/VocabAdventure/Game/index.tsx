@@ -3,27 +3,36 @@ import { useEffect, useState } from "react";
 import { useUnitLength } from "../../../hooks/useUnitLength";
 import { GameCommand, gameState } from "./GameState";
 
+export type GameInfo = {
+    commands: {
+        type: keyof GameCommand;
+        startTime: number;
+        duration: number;
+    }[];
+};
+
 export function Game({
-    command,
-    videoKey,
+    gameInfo,
+    onended,
 }: {
-    command: GameCommand;
-    videoKey: string;
+    gameInfo: GameInfo;
+    onended: () => void;
 }) {
-    useEffect(() => {}, [command]);
     const playtime = usePlaytime();
-    const UL = useUnitLength();
+    const UL = useUL();
+    useCommands(gameInfo.commands);
 
     return (
-        <>
+        <div
+            style={{
+                width: 160 * UL,
+                height: 90 * UL,
+            }}
+        >
             {gameState.GameElements.map(Elem => (
-                <Elem.renderElement
-                    key={Elem.name}
-                    UL={UL}
-                    playtime={playtime}
-                />
+                <Elem.renderElement key={Elem.name} playtime={playtime} />
             ))}
-        </>
+        </div>
     );
 }
 
@@ -36,4 +45,25 @@ function usePlaytime() {
         }, gameState.timeStep);
     }, [playtime]);
     return playtime;
+}
+
+function useUL() {
+    const UL = useUnitLength();
+    useEffect(() => {
+        gameState.UL = UL;
+    }, [UL]);
+    return UL;
+}
+
+function useCommands(commands: GameInfo["commands"]) {
+    useEffect(() => {
+        commands.forEach(command =>
+            setTimeout(() => {
+                gameState.command[command.type] = true;
+                setTimeout(() => {
+                    gameState.command[command.type] = false;
+                }, command.duration);
+            }, command.startTime)
+        );
+    }, [commands]);
 }
