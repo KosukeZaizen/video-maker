@@ -7,7 +7,6 @@ import { gameState } from "../GameState";
 const imgPath = `${staticFolderPath}/img/running_ninja.png`;
 
 export class Ninja extends GameElement {
-    private speedX = 0;
     private speedY = 0;
 
     constructor(x: number, y: number, width: number) {

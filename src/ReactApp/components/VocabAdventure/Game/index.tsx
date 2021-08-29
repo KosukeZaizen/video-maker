@@ -22,6 +22,8 @@ export function Game({
     const UL = useUL();
     useCommands(gameInfo.commands);
 
+    const { gameElements, ninja } = gameState;
+
     return (
         <div
             style={{
@@ -29,7 +31,7 @@ export function Game({
                 height: 90 * UL,
             }}
         >
-            {gameState.GameElements.map(Elem => (
+            {[ninja, ...gameElements].map(Elem => (
                 <Elem.renderElement key={Elem.name} playtime={playtime} />
             ))}
         </div>
@@ -39,10 +41,12 @@ export function Game({
 function usePlaytime() {
     const [playtime, setPlaytime] = useState(0);
     useEffect(() => {
+        const { gameElements, timeStep, ninja } = gameState;
         setTimeout(() => {
-            gameState.GameElements.forEach(el => el.onEachTime());
+            ninja.onEachTime();
+            gameElements.forEach(el => el.onEachTime());
             setPlaytime(playtime + 1);
-        }, gameState.timeStep);
+        }, timeStep);
     }, [playtime]);
     return playtime;
 }

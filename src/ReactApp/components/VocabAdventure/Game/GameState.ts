@@ -3,13 +3,15 @@ import { Ninja } from "./GameElement/Ninja";
 
 export interface GameState {
     timeStep: number;
-    GameElements: GameElement[];
+    ninja: Ninja;
+    gameElements: GameElement[];
     command: GameCommand;
     UL: number;
 }
 export const gameState: GameState = {
     timeStep: 50,
-    GameElements: [new Ninja(0, 0, 13)],
+    ninja: new Ninja(0, 0, 13),
+    gameElements: [],
     command: {},
     UL: 0,
 };
