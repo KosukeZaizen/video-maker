@@ -16,7 +16,13 @@ export class Ninja extends GameElement {
         const { UL } = gameState;
         const { jump, goLeft, goRight } = gameState.command;
 
-        this.speedY += 0.02;
+        if (goLeft && !goRight) {
+            this.x -= 3;
+        } else if (!goLeft && goRight) {
+            this.x += 3;
+        }
+
+        this.speedY += 0.1;
         this.y += this.speedY * UL;
     };
 

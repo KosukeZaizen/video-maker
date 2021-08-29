@@ -72,7 +72,7 @@ function usePlaytime() {
     useEffect(() => {
         const { gameElements, timeStep, ninja, commandTimeline } = gameState;
         setTimeout(() => {
-            commandTimeline[playtime].forEach(c => {
+            commandTimeline[playtime]?.forEach(c => {
                 gameState.command[c.type] = c.start;
             });
 
@@ -92,17 +92,4 @@ function useUL() {
         gameState.UL = UL;
     }, [UL]);
     return UL;
-}
-
-function useCommands(commands: GameInfo["commands"]) {
-    useEffect(() => {
-        commands.forEach(command =>
-            setTimeout(() => {
-                gameState.command[command.type] = true;
-                setTimeout(() => {
-                    gameState.command[command.type] = false;
-                }, command.duration);
-            }, command.startTimeStep)
-        );
-    }, [commands]);
 }
