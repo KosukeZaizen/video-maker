@@ -22,7 +22,7 @@ export function Game({
     const UL = useUL();
     useCommands(gameInfo.commands);
 
-    const { gameElements, ninja } = gameState;
+    const { ninja, gameElements } = gameState;
 
     return (
         <div

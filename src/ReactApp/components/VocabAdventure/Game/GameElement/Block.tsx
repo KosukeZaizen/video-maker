@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { gameState } from "../GameState";
 import { GameElement, getElementStyle } from "./BaseClass";
 
-export class Floor extends GameElement {
+export class Block extends GameElement {
     constructor(
         name: string,
         x: number,

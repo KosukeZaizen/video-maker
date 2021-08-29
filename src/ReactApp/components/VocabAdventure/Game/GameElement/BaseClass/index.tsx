@@ -1,4 +1,5 @@
-import { Direction } from "../../../../types/Direction";
+import { Direction } from "../../../../../types/Direction";
+import { gameState } from "../../GameState";
 
 export abstract class GameElement {
     constructor(
@@ -60,4 +61,39 @@ export abstract class GameElement {
             return dY > 0 ? Direction.top : Direction.bottom;
         }
     }
+}
+
+export function getAnimationStyle(
+    x: number,
+    y: number,
+    width: number,
+    UL: number
+) {}
+
+export function getElementStyle(
+    willAnimate: boolean,
+    x: number,
+    y: number,
+    width: number,
+    UL: number
+) {
+    if (willAnimate) {
+        return {
+            willChange: "left, top",
+            transitionProperty: "left, top",
+            transitionDuration: `${gameState.timeStep}ms`,
+            transitionTimingFunction: "linear",
+            position: "absolute",
+            left: x * UL,
+            top: y * UL,
+            width: width * UL,
+        } as const;
+    }
+
+    return {
+        position: "absolute",
+        left: x * UL,
+        top: y * UL,
+        width: width * UL,
+    } as const;
 }

@@ -1,13 +1,14 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { GameElement } from ".";
 import { staticFolderPath } from "../../../../common/consts";
 import { gameState } from "../GameState";
+import { GameElement, getElementStyle } from "./BaseClass";
 
 const imgPath = `${staticFolderPath}/img/running_ninja.png`;
 
 export class Ninja extends GameElement {
     private speedY = 0;
+    private willAnimate = true;
 
     constructor(x: number, y: number, width: number) {
         super("ninja", x, y, width);
@@ -26,17 +27,14 @@ export class Ninja extends GameElement {
 
         const style = useMemo(
             () =>
-                ({
-                    willChange: "left, top",
-                    transitionProperty: "left, top",
-                    transitionDuration: `${timeStep}ms`,
-                    transitionTimingFunction: "linear",
-                    position: "absolute",
-                    left: this.x * UL,
-                    top: this.y * UL,
-                    width: this.width * UL,
-                } as const),
-            [UL, this.x, this.y]
+                getElementStyle(
+                    this.willAnimate,
+                    this.x,
+                    this.y,
+                    this.width,
+                    UL
+                ),
+            [UL, this.x, this.y, this.willAnimate]
         );
 
         return <img src={imgPath} style={style} />;
