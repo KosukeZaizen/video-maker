@@ -1,6 +1,7 @@
 import { Direction } from "../../../../../types/Direction";
 import { gameState } from "../../GameState";
 
+export type GameElementProps = Pick<GameElement, "name" | "x" | "y" | "width">;
 export abstract class GameElement {
     constructor(
         public name: string,

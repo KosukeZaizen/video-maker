@@ -2,21 +2,19 @@ import * as React from "react";
 import { useMemo } from "react";
 import { ElementImgName, imgSrc } from "../../../../common/imgSrc";
 import { gameState } from "../GameState";
-import { GameElement, getElementStyle } from "./BaseClass";
+import { GameElement, GameElementProps, getElementStyle } from "./BaseClass";
 
+interface Props extends GameElementProps, Pick<Block, "willAnimate"> {
+    imgName?: ElementImgName;
+}
 export class Block extends GameElement {
     imgSrc?: string;
+    willAnimate?: boolean;
 
-    constructor(
-        name: string,
-        x: number,
-        y: number,
-        width: number,
-        imgName?: ElementImgName,
-        private willAnimate?: boolean
-    ) {
+    constructor({ name, x, y, width, imgName, willAnimate }: Props) {
         super(name, x, y, width);
         this.imgSrc = imgName && imgSrc.gameElement[imgName];
+        this.willAnimate = willAnimate;
     }
 
     onEachTime = () => {

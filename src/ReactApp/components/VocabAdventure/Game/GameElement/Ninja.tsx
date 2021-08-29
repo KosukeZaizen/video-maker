@@ -8,7 +8,7 @@ export class Ninja extends GameElement {
     private speedY = 0;
     private willAnimate = true;
 
-    constructor(x: number, y: number, width: number) {
+    constructor({ x, y, width }: { x: number; y: number; width: number }) {
         super("ninja", x, y, width);
     }
 

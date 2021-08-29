@@ -13,10 +13,16 @@ export interface GameState {
 
 export const gameState: GameState = {
     timeStep: 50,
-    ninja: new Ninja(140, 0, 13),
+    ninja: new Ninja({ x: 140, y: 0, width: 13 }),
     gameElements: [
-        new Floor("floor1", -20, 90, 200),
-        new Block("stone1", 135, 70, 25, "rock"),
+        new Floor({ name: "floor1", x: -20, y: 90, width: 200 }),
+        new Block({
+            name: "stone1",
+            x: 135,
+            y: 70,
+            width: 25,
+            imgName: "rock",
+        }),
     ],
     command: {},
     UL: 0,
