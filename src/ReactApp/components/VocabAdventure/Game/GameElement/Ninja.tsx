@@ -1,10 +1,8 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { staticFolderPath } from "../../../../common/consts";
+import { imgSrc } from "../../../../common/imgSrc";
 import { gameState } from "../GameState";
 import { GameElement, getElementStyle } from "./BaseClass";
-
-const imgPath = `${staticFolderPath}/img/running_ninja.png`;
 
 export class Ninja extends GameElement {
     private speedY = 0;
@@ -23,7 +21,7 @@ export class Ninja extends GameElement {
     };
 
     renderElement = () => {
-        const { UL, timeStep } = gameState;
+        const { UL } = gameState;
 
         const style = useMemo(
             () =>
@@ -37,6 +35,6 @@ export class Ninja extends GameElement {
             [UL, this.x, this.y, this.willAnimate]
         );
 
-        return <img src={imgPath} style={style} />;
+        return <img src={imgSrc.gameElement.running_ninja} style={style} />;
     };
 }

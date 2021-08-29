@@ -1,26 +1,47 @@
 import * as React from "react";
 import { useMemo } from "react";
+import { ElementImgName, imgSrc } from "../../../../common/imgSrc";
 import { gameState } from "../GameState";
 import { GameElement, getElementStyle } from "./BaseClass";
 
 export class Block extends GameElement {
+    imgSrc?: string;
+
     constructor(
         name: string,
         x: number,
         y: number,
         width: number,
-        private imgSrc?: string,
+        imgName?: ElementImgName,
         private willAnimate?: boolean
     ) {
         super(name, x, y, width);
+        this.imgSrc = imgName && imgSrc.gameElement[imgName];
     }
 
     onEachTime = () => {
         const { ninja } = gameState;
+
         if (this.checkTouched(ninja)) {
             const direction = this.getTargetDirection(ninja);
-            if (direction === "top") {
-                ninja.y = this.y - ninja.width;
+
+            switch (direction) {
+                case "top": {
+                    ninja.y = this.y - ninja.width;
+                    break;
+                }
+                case "bottom": {
+                    ninja.y = this.y + this.width;
+                    break;
+                }
+                case "left": {
+                    ninja.x = this.x - ninja.width;
+                    break;
+                }
+                case "right": {
+                    ninja.x = this.x + this.width;
+                    break;
+                }
             }
         }
     };
