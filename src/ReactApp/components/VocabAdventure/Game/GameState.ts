@@ -1,3 +1,4 @@
+import { CommandTimeline } from ".";
 import { GameElement } from "./GameElement/BaseClass";
 import { Block } from "./GameElement/Block";
 import { Floor } from "./GameElement/Floor";
@@ -8,11 +9,12 @@ export interface GameState {
     ninja: Ninja;
     gameElements: GameElement[];
     command: GameCommand;
+    commandTimeline: CommandTimeline;
     UL: number;
 }
 
 export const gameState: GameState = {
-    timeStep: 50,
+    timeStep: 100,
     ninja: new Ninja({ x: 140, y: 0, width: 13 }),
     gameElements: [
         new Floor({ name: "floor1", x: -20, y: 90, width: 200 }),
@@ -25,6 +27,7 @@ export const gameState: GameState = {
         }),
     ],
     command: {},
+    commandTimeline: {},
     UL: 0,
 };
 
