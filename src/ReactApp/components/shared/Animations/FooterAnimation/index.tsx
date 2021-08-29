@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { appsPublicImg } from "../../../../common/consts";
 
-const timeStep = 1000; //ms
+const timeStep = 50; //ms
 
 const badNinja = appsPublicImg + "ninja_bad.png";
 const rock = appsPublicImg + "rockRight.png";

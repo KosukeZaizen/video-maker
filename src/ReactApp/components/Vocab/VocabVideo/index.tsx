@@ -6,7 +6,6 @@ import { useScreenSize } from "../../../hooks/useScreenSize";
 import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
 import { useVocabList } from "../../../hooks/Vocab/useVocabList";
 import { FallingAnimation } from "../../shared/Animations/FallingAnimation";
-import { FooterAnimation } from "../../shared/Animations/FooterAnimation";
 import { sound } from "../types/vocab";
 import { LastPage } from "./LastPage";
 import { ListPage } from "./ListPage";
@@ -37,7 +36,7 @@ const music: sound = getAudio({
 });
 
 const styles = {
-    pageContentDiv:{
+    pageContentDiv: {
         position: "absolute",
         top: 0,
         left: 0,
@@ -46,8 +45,8 @@ const styles = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-    }
-} as const
+    },
+} as const;
 
 function VocabVideo({ match: { params } }: Props) {
     const [currentPage, setCurrentPage] = useState<Page>(Page.menu);
@@ -175,11 +174,7 @@ function VocabVideo({ match: { params } }: Props) {
 
     return (
         <>
-            <div
-                style={styles.pageContentDiv}
-            >
-                {pageContent}
-            </div>
+            <div style={styles.pageContentDiv}>{pageContent}</div>
             {currentPage !== Page.thumbnail && (
                 <FallingAnimation
                     frequencySec={3}
@@ -187,9 +182,6 @@ function VocabVideo({ match: { params } }: Props) {
                     screenHeight={screenHeight}
                     season={season}
                 />
-            )}
-            {[Page.menu, Page.thumbnail].every(p => p !== currentPage) && (
-                <FooterAnimation />
             )}
         </>
     );

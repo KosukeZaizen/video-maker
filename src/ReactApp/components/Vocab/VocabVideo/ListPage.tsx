@@ -41,14 +41,28 @@ export function ListPage({
 }: {
     screenWidth: number;
 } & CurrentVocabProps) {
-    const { currentVocab, progress } = useCurrentVocab(currentVocabProps);
+    const { currentVocab, progress, showAnswer } =
+        useCurrentVocab(currentVocabProps);
+
+    const redPStyle = useMemo(
+        () =>
+            ({
+                color: "red",
+                opacity: showAnswer ? 1 : 0,
+                transition: "500ms",
+                ...styles.pStyle,
+            } as const),
+        [showAnswer]
+    );
 
     return (
         <div style={styles.outsideDiv}>
             <div style={styles.listContentDiv}>
                 <p style={styles.pStyle}>{currentVocab.kanji}</p>
                 <p style={styles.pStyle}>{currentVocab.hiragana}</p>
-                <p style={styles.pStyle}>{currentVocab.english}</p>
+                <p key={currentVocab.vocabId} style={redPStyle}>
+                    {currentVocab.english}
+                </p>
             </div>
             <div style={styles.outsideCharacterComment}>
                 <CharacterComment
@@ -90,6 +104,7 @@ function useCurrentVocab({
     season,
 }: CurrentVocabProps) {
     const [currentVocab, setCurrentVocab] = useState(vocabList[0]);
+    const [showAnswer, setShowAnswer] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -104,9 +119,11 @@ function useCurrentVocab({
                 setCurrentVocab(vocabList[i]);
                 const audio = vocabSounds[vocabId];
                 await audioPlayAsync(audio);
+                setShowAnswer(true);
                 await sleepAsync(2000);
                 await audioPlayAsync(audio);
                 await sleepAsync(2000);
+                setShowAnswer(false);
             }
             setSeason(initialSeason);
             changePage(Page.quiz);
@@ -118,5 +135,5 @@ function useCurrentVocab({
         [vocabList, currentVocab]
     );
 
-    return { currentVocab, progress };
+    return { currentVocab, progress, showAnswer };
 }
