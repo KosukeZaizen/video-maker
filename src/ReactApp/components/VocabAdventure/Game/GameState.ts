@@ -1,4 +1,5 @@
 import { GameElement } from "./GameElement";
+import { Floor } from "./GameElement/Floor";
 import { Ninja } from "./GameElement/Ninja";
 
 export interface GameState {
@@ -8,10 +9,11 @@ export interface GameState {
     command: GameCommand;
     UL: number;
 }
+
 export const gameState: GameState = {
     timeStep: 50,
     ninja: new Ninja(0, 0, 13),
-    gameElements: [],
+    gameElements: [new Floor("floor1", -20, 90, 200)],
     command: {},
     UL: 0,
 };
