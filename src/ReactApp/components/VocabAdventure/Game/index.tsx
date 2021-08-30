@@ -1,14 +1,11 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useUnitLength } from "../../../hooks/useUnitLength";
-import { GameCommand, gameState } from "./GameState";
+import { gameState } from "./GameState";
+import { CommandTimeline, setCommands } from "./GameState/Command";
 
 export type GameInfo = {
-    commands: {
-        type: keyof GameCommand;
-        startTimeStep: number;
-        duration: number;
-    }[];
+    commandTimeline: CommandTimeline;
 };
 
 export function Game({
@@ -18,7 +15,10 @@ export function Game({
     gameInfo: GameInfo;
     onended: () => void;
 }) {
-    useCommandTimeline(gameInfo.commands);
+    useEffect(() => {
+        gameState.gameInfo = gameInfo;
+    }, [gameInfo]);
+
     const playtime = usePlaytime();
     const UL = useUL();
 
@@ -38,44 +38,13 @@ export function Game({
     );
 }
 
-export interface CommandTimeline {
-    [key: number]: { type: keyof GameCommand; start: boolean }[];
-}
-function useCommandTimeline(commands: GameInfo["commands"]) {
-    useEffect(() => {
-        gameState.commandTimeline = commands.reduce((acc, val) => {
-            const existingStartTimeEvents = acc[val.startTimeStep] ?? [];
-            const mergedStartTimeEvents = [
-                ...existingStartTimeEvents,
-                { type: val.type, start: true },
-            ];
-
-            const existingEndTimeEvents =
-                acc[val.startTimeStep + val.duration] ?? [];
-            const mergedEndTimeEvents = [
-                ...existingEndTimeEvents,
-                { type: val.type, start: false },
-            ];
-
-            return {
-                ...acc,
-                [val.startTimeStep]: mergedStartTimeEvents,
-                [val.startTimeStep + val.duration]: mergedEndTimeEvents,
-            };
-        }, {} as CommandTimeline);
-    }, [commands]);
-}
-
 function usePlaytime() {
     const [playtime, setPlaytime] = useState(0);
 
     useEffect(() => {
-        const { gameElements, timeStep, ninja, commandTimeline } = gameState;
+        const { gameElements, timeStep, ninja } = gameState;
         setTimeout(() => {
-            commandTimeline[playtime]?.forEach(c => {
-                gameState.command[c.type] = c.start;
-            });
-
+            setCommands(timeStep);
             ninja.onEachTime();
             gameElements.forEach(el => el.onEachTime());
 

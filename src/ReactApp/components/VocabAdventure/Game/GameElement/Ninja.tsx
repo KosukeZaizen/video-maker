@@ -22,7 +22,12 @@ export class Ninja extends GameElement {
             this.x += 3;
         }
 
-        this.speedY += 0.1;
+        if (jump) {
+            this.speedY -= 5;
+        }
+
+        // gravity
+        this.speedY += 0.2;
         this.y += this.speedY * UL;
     };
 

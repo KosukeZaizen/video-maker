@@ -38,7 +38,11 @@ function VocabAdventure({ match: { params } }: Props) {
     const [isPlaying, setPlaying] = useState(initialVideoState.isPlaying);
     const videoInfo: VideoInfo = {
         gameInfo: {
-            commands: [{ type: "goLeft", startTimeStep: 50, duration: 50 }],
+            commandTimeline: {
+                50: [{ type: "goLeft", start: true }],
+                60: [{ type: "jump" }],
+                100: [{ type: "goLeft", start: false }],
+            },
         },
     };
 
