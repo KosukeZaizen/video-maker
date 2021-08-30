@@ -6,8 +6,8 @@ import { Ninja } from "../GameElement/Ninja";
 import { Command } from "./Command";
 
 export interface GameState {
-    timeStep: number;
-    ninja: Ninja;
+    readonly timeStep: number;
+    readonly ninja: Ninja;
     gameElements: GameElement[];
     command: CommandStatus;
     gameInfo: GameInfo;
