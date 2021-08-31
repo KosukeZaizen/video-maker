@@ -5,16 +5,18 @@ import { gameState } from "../GameState";
 import { GameElement, getElementStyle } from "./BaseClass";
 
 export class Ninja extends GameElement {
-    private speedY = 0;
-    private willAnimate = true;
+    speedY = 0;
+    willAnimate = false;
 
     constructor({ x, y, width }: { x: number; y: number; width: number }) {
         super("ninja", x, y, width);
     }
 
     onEachTime = () => {
-        const { UL } = gameState;
-        const { jump, goLeft, goRight } = gameState.command;
+        const {
+            UL,
+            command: { jump, goLeft, goRight },
+        } = gameState;
 
         if (goLeft && !goRight) {
             this.x -= 3;
@@ -23,16 +25,23 @@ export class Ninja extends GameElement {
         }
 
         if (jump) {
-            this.speedY -= 5;
+            this.speedY -= 1.5;
+            gameState.command.jump = false;
         }
 
         // gravity
         this.speedY += 0.2;
         this.y += this.speedY * UL;
+
+        this.willAnimate = true;
     };
 
     renderElement = () => {
         const { UL } = gameState;
+
+        if (!UL) {
+            return null;
+        }
 
         const style = useMemo(
             () =>

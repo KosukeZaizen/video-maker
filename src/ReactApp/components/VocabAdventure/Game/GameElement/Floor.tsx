@@ -24,6 +24,7 @@ export class Floor extends GameElement {
             const direction = this.getTargetDirection(ninja);
             if (direction === "top") {
                 ninja.y = this.y - ninja.width;
+                ninja.speedY = 0;
             }
         }
     };

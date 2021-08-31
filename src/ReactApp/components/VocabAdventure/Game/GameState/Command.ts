@@ -12,8 +12,8 @@ export interface CommandTimeline {
     [key: number]: Command[];
 }
 
-export function setCommands(timeStep: number) {
-    gameState.gameInfo.commandTimeline[timeStep]?.forEach(c => {
+export function setCommands(playtime: number) {
+    gameState.gameInfo.commandTimeline[playtime]?.forEach(c => {
         switch (c.type) {
             case "jump": {
                 gameState.command.jump = true;

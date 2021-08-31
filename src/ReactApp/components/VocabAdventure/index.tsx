@@ -39,9 +39,10 @@ function VocabAdventure({ match: { params } }: Props) {
     const videoInfo: VideoInfo = {
         gameInfo: {
             commandTimeline: {
+                30: [{ type: "jump" }],
                 50: [{ type: "goLeft", start: true }],
-                60: [{ type: "jump" }],
-                100: [{ type: "goLeft", start: false }],
+                70: [{ type: "jump" }],
+                90: [{ type: "goLeft", start: false }],
             },
         },
     };

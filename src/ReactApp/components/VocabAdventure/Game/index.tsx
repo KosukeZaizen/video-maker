@@ -44,7 +44,7 @@ function usePlaytime() {
     useEffect(() => {
         const { gameElements, timeStep, ninja } = gameState;
         setTimeout(() => {
-            setCommands(timeStep);
+            setCommands(playtime);
             ninja.onEachTime();
             gameElements.forEach(el => el.onEachTime());
 

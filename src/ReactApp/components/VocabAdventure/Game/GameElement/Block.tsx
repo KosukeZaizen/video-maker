@@ -26,10 +26,12 @@ export class Block extends GameElement {
             switch (direction) {
                 case "top": {
                     ninja.y = this.y - ninja.width;
+                    ninja.speedY = 0;
                     break;
                 }
                 case "bottom": {
                     ninja.y = this.y + this.width;
+                    ninja.speedY = 0;
                     break;
                 }
                 case "left": {
