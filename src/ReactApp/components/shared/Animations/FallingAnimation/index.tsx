@@ -98,6 +98,8 @@ function useSeasonItems(pSeason?: string) {
         // load
         (async () => {
             if (!pSeason || pSeason === "none") {
+                setFallingItemKeyword("none");
+                setSeasonItems([]);
                 return;
             }
 

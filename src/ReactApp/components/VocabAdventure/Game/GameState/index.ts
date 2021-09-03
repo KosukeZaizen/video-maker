@@ -20,7 +20,7 @@ export const gameState: GameState = {
     gameElements: [
         new Floor({ name: "floor1", x: -120, y: 90, width: 400 }),
         new Block({
-            name: "stone1",
+            name: "rock1",
             x: 135,
             y: 70,
             width: 25,

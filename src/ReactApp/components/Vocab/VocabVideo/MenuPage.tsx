@@ -90,7 +90,7 @@ export function MenuPage({
         (async () => {
             const seasons = await getFallingImages();
             if (!checkUnmounted()) {
-                setSeasonNames(seasons.map(s => s.name));
+                setSeasonNames(["none", ...seasons.map(s => s.name)]);
             }
         })();
     }, [checkUnmounted]);

@@ -50,7 +50,7 @@ const styles = {
 
 function VocabVideo({ match: { params } }: Props) {
     const [currentPage, setCurrentPage] = useState<Page>(Page.menu);
-    const [season, setSeason] = useState("spring");
+    const [season, setSeason] = useState("none");
     const [isOneSeason, setIsOneSeason] = useState(true);
     const [vocabSeasons, setVocabSeasons] = useState<string[]>([]);
     const pGenreName = useMemo(
