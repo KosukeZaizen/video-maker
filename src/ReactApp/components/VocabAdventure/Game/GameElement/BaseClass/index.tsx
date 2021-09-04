@@ -1,22 +1,69 @@
+import * as React from "react";
+import { useMemo } from "react";
+import { ElementImgName, imgSrc } from "../../../../../common/imgSrc";
 import { Direction } from "../../../../../types/Direction";
 import { gameState } from "../../GameState";
 
-export type GameElementProps = Pick<GameElement, "name" | "x" | "y" | "width">;
+export interface GameElementProps
+    extends Pick<GameElement, "name" | "x" | "y" | "width"> {
+    imgInfo?: {
+        imgName: ElementImgName;
+        willAnimate?: boolean;
+        zIndex?: number;
+    };
+}
 export abstract class GameElement {
-    constructor(
-        public name: string,
-        public x: number,
-        public y: number,
-        public width: number
-    ) {}
+    name: string;
+    x: number;
+    y: number;
+    width: number;
+    imgInfo?: {
+        imgSrc: string;
+        willAnimate?: boolean;
+        zIndex?: number;
+    };
+
+    constructor({ name, x, y, width, imgInfo }: GameElementProps) {
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        if (imgInfo) {
+            const { imgName, zIndex, willAnimate } = imgInfo;
+            this.imgInfo = {
+                imgSrc: imgName && imgSrc.gameElement[imgName],
+                zIndex,
+                willAnimate,
+            };
+        }
+    }
 
     abstract onEachTime: () => void;
 
-    abstract renderElement: ({
-        playtime,
-    }: {
-        playtime: number;
-    }) => JSX.Element | null;
+    renderElement = ({}: { playTime: number }) => {
+        const { imgInfo } = this;
+
+        if (!imgInfo) {
+            return null;
+        }
+
+        const { UL } = gameState;
+
+        const style = useMemo(
+            () =>
+                getElementStyle({
+                    willAnimate: imgInfo.willAnimate || false,
+                    x: this.x,
+                    y: this.y,
+                    width: this.width,
+                    UL,
+                    zIndex: imgInfo.zIndex,
+                }),
+            [UL, this.x, this.y, this.width]
+        );
+
+        return <img src={imgInfo.imgSrc} style={style} />;
+    };
 
     checkTouched(target: GameElement): boolean {
         //かすっていたらtrue
@@ -64,20 +111,21 @@ export abstract class GameElement {
     }
 }
 
-export function getAnimationStyle(
-    x: number,
-    y: number,
-    width: number,
-    UL: number
-) {}
-
-export function getElementStyle(
-    willAnimate: boolean,
-    x: number,
-    y: number,
-    width: number,
-    UL: number
-) {
+export function getElementStyle({
+    willAnimate,
+    x,
+    y,
+    width,
+    UL,
+    zIndex,
+}: {
+    willAnimate?: boolean;
+    x: number;
+    y: number;
+    width: number;
+    UL: number;
+    zIndex?: number;
+}) {
     if (willAnimate) {
         return {
             willChange: "left, top",
@@ -88,6 +136,7 @@ export function getElementStyle(
             left: x * UL,
             top: y * UL,
             width: width * UL,
+            zIndex,
         } as const;
     }
 
@@ -96,5 +145,6 @@ export function getElementStyle(
         left: x * UL,
         top: y * UL,
         width: width * UL,
+        zIndex,
     } as const;
 }

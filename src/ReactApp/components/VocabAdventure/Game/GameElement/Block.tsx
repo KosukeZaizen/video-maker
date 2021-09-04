@@ -1,20 +1,10 @@
-import * as React from "react";
-import { useMemo } from "react";
-import { ElementImgName, imgSrc } from "../../../../common/imgSrc";
 import { gameState } from "../GameState";
-import { GameElement, GameElementProps, getElementStyle } from "./BaseClass";
+import { GameElement, GameElementProps } from "./BaseClass";
 
-interface Props extends GameElementProps, Pick<Block, "willAnimate"> {
-    imgName?: ElementImgName;
-}
+interface Props extends GameElementProps {}
 export class Block extends GameElement {
-    imgSrc?: string;
-    willAnimate?: boolean;
-
-    constructor({ name, x, y, width, imgName, willAnimate }: Props) {
-        super(name, x, y, width);
-        this.imgSrc = imgName && imgSrc.gameElement[imgName];
-        this.willAnimate = willAnimate;
+    constructor(props: Props) {
+        super(props);
     }
 
     onEachTime = () => {
@@ -44,27 +34,5 @@ export class Block extends GameElement {
                 }
             }
         }
-    };
-
-    renderElement = () => {
-        if (!this.imgSrc) {
-            return null;
-        }
-
-        const { UL } = gameState;
-
-        const style = useMemo(
-            () =>
-                getElementStyle(
-                    this.willAnimate || false,
-                    this.x,
-                    this.y,
-                    this.width,
-                    UL
-                ),
-            [UL]
-        );
-
-        return <img src={this.imgSrc} style={style} />;
     };
 }

@@ -8,8 +8,8 @@ export class Ninja extends GameElement {
     speedY = 0;
     willAnimate = false;
 
-    constructor({ x, y, width }: { x: number; y: number; width: number }) {
-        super("ninja", x, y, width);
+    constructor(props: { x: number; y: number; width: number }) {
+        super({ name: "ninja", ...props });
     }
 
     onEachTime = () => {
@@ -45,13 +45,14 @@ export class Ninja extends GameElement {
 
         const style = useMemo(
             () =>
-                getElementStyle(
-                    this.willAnimate,
-                    this.x,
-                    this.y,
-                    this.width,
-                    UL
-                ),
+                getElementStyle({
+                    willAnimate: this.willAnimate,
+                    x: this.x,
+                    y: this.y,
+                    width: this.width,
+                    UL,
+                    zIndex: 100,
+                }),
             [UL, this.x, this.y, this.willAnimate]
         );
 

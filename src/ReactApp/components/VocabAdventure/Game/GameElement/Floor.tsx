@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { ElementImgName, imgSrc } from "../../../../common/imgSrc";
+import { ElementImgName } from "../../../../common/imgSrc";
 import { gameState } from "../GameState";
 import { GameElement, GameElementProps, getElementStyle } from "./BaseClass";
 
@@ -12,10 +12,8 @@ export class Floor extends GameElement {
     imgSrc?: string;
     willAnimate?: boolean;
 
-    constructor({ name, x, y, width, imgName, willAnimate }: Props) {
-        super(name, x, y, width);
-        this.imgSrc = imgName && imgSrc.gameElement[imgName];
-        this.willAnimate = willAnimate;
+    constructor(props: Props) {
+        super(props);
     }
 
     onEachTime = () => {
@@ -38,13 +36,13 @@ export class Floor extends GameElement {
 
         const style = useMemo(
             () =>
-                getElementStyle(
-                    this.willAnimate || false,
-                    this.x,
-                    this.y,
-                    this.width,
-                    UL
-                ),
+                getElementStyle({
+                    willAnimate: this.willAnimate || false,
+                    x: this.x,
+                    y: this.y,
+                    width: this.width,
+                    UL,
+                }),
             [UL]
         );
 

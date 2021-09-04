@@ -1,7 +1,9 @@
 import { GameInfo } from "..";
+import { BackgroundImg } from "../GameElement/BackgroundImg";
 import { GameElement } from "../GameElement/BaseClass";
 import { Block } from "../GameElement/Block";
 import { Floor } from "../GameElement/Floor";
+import { Img } from "../GameElement/Img";
 import { Ninja } from "../GameElement/Ninja";
 import { Command } from "./Command";
 
@@ -24,7 +26,15 @@ export const gameState: GameState = {
             x: 135,
             y: 70,
             width: 25,
-            imgName: "rock",
+            imgInfo: { imgName: "rock" },
+        }),
+        new BackgroundImg({ imgName: "first_street" }),
+        new Img({
+            name: "torii",
+            imgInfo: { imgName: "torii", zIndex: 99 },
+            x: 35,
+            y: 18,
+            width: 120,
         }),
     ],
     command: {},

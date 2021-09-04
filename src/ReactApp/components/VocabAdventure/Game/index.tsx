@@ -19,7 +19,7 @@ export function Game({
         gameState.gameInfo = gameInfo;
     }, [gameInfo]);
 
-    const playtime = usePlaytime();
+    const playTime = usePlayTime();
     const UL = useUL();
 
     const { ninja, gameElements } = gameState;
@@ -32,27 +32,27 @@ export function Game({
             }}
         >
             {[ninja, ...gameElements].map(Elem => (
-                <Elem.renderElement key={Elem.name} playtime={playtime} />
+                <Elem.renderElement key={Elem.name} playTime={playTime} />
             ))}
         </div>
     );
 }
 
-function usePlaytime() {
-    const [playtime, setPlaytime] = useState(0);
+function usePlayTime() {
+    const [playTime, setPlayTime] = useState(0);
 
     useEffect(() => {
         const { gameElements, timeStep, ninja } = gameState;
         setTimeout(() => {
-            setCommands(playtime);
+            setCommands(playTime);
             ninja.onEachTime();
             gameElements.forEach(el => el.onEachTime());
 
-            setPlaytime(playtime + 1);
+            setPlayTime(playTime + 1);
         }, timeStep);
-    }, [playtime]);
+    }, [playTime]);
 
-    return playtime;
+    return playTime;
 }
 
 function useUL() {
