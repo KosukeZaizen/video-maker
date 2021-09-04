@@ -9,6 +9,7 @@ export type GameInfo = {
     currentStage: number;
     stages: {
         currentStageTime: number;
+        initialPosition: { x: number; y: number };
         commandTimeline: CommandTimeline;
         elements: GameElement[];
     }[];
@@ -23,6 +24,10 @@ export function Game({
 }) {
     useEffect(() => {
         gameState.gameInfo = pGameInfo;
+        const { stages, currentStage } = pGameInfo;
+        const { x, y } = stages[currentStage].initialPosition;
+        gameState.ninja.x = x;
+        gameState.ninja.y = y;
     }, [pGameInfo]);
 
     const {
@@ -43,6 +48,8 @@ export function Game({
             style={{
                 width: 160 * UL,
                 height: 90 * UL,
+                backgroundColor: "black",
+                zIndex: -1,
             }}
         >
             {[ninja, ...stage.elements].map(Elem => (
@@ -62,11 +69,10 @@ function usePlayTime() {
             ninja,
         } = gameState;
         setTimeout(() => {
-            const stage = stages[currentStage];
-
-            setCommands(stage.currentStageTime);
+            setCommands();
             ninja.onEachTime();
 
+            const stage = stages[currentStage];
             stage.elements.forEach(el => el.onEachTime());
 
             stage.currentStageTime++;

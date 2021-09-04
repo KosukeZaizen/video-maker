@@ -8,6 +8,7 @@ import { BackgroundImg } from "./Game/GameElement/BackgroundImg";
 import { Block } from "./Game/GameElement/Block";
 import { Floor } from "./Game/GameElement/Floor";
 import { Img } from "./Game/GameElement/Img";
+import { StageChanger } from "./Game/GameElement/StageChanger";
 
 type VideoState = { isPlaying: boolean; scene: Scene };
 
@@ -46,11 +47,13 @@ function VocabAdventure({ match: { params } }: Props) {
             stages: [
                 {
                     currentStageTime: 0,
+                    initialPosition: { x: 140, y: 0 },
                     commandTimeline: {
                         30: [{ type: "jump" }],
                         50: [{ type: "goLeft", start: true }],
                         70: [{ type: "jump" }],
                         90: [{ type: "goLeft", start: false }],
+                        100: [{ type: "goLeft", start: true }],
                     },
                     elements: [
                         new Floor({
@@ -74,6 +77,30 @@ function VocabAdventure({ match: { params } }: Props) {
                             y: 18,
                             width: 120,
                         }),
+                        new StageChanger({
+                            name: "stageChanger1",
+                            x: -30,
+                            y: 70,
+                            width: 20,
+                        }),
+                    ],
+                },
+                {
+                    currentStageTime: 0,
+                    initialPosition: { x: 160, y: 77 },
+                    commandTimeline: {
+                        20: [{ type: "jump" }],
+                        1: [{ type: "goLeft", start: true }],
+                        50: [{ type: "goLeft", start: false }],
+                    },
+                    elements: [
+                        new Floor({
+                            name: "floor1",
+                            x: -120,
+                            y: 90,
+                            width: 400,
+                        }),
+                        new BackgroundImg({ imgName: "pochi_room" }),
                     ],
                 },
             ],

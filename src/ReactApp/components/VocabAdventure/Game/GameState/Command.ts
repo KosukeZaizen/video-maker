@@ -12,7 +12,7 @@ export interface CommandTimeline {
     [key: number]: Command[];
 }
 
-export function setCommands(playtime: number) {
+export function setCommands() {
     const {
         gameInfo: { currentStage, stages },
     } = gameState;

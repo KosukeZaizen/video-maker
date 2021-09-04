@@ -4,7 +4,7 @@ import { Command } from "./Command";
 
 export interface GameState {
     readonly timeStep: number;
-    readonly ninja: Ninja;
+    ninja: Ninja;
     command: CommandStatus;
     gameInfo: GameInfo;
     UL: number;
@@ -12,7 +12,7 @@ export interface GameState {
 
 export const gameState: GameState = {
     timeStep: 100,
-    ninja: new Ninja({ x: 140, y: 0, width: 13 }),
+    ninja: new Ninja({ x: 160, y: 90, width: 13 }),
     command: {},
     gameInfo: {
         stages: [],

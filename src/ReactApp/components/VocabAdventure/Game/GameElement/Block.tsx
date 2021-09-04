@@ -2,6 +2,7 @@ import { gameState } from "../GameState";
 import { GameElement, GameElementProps } from "./BaseClass";
 
 interface Props extends GameElementProps {}
+
 export class Block extends GameElement {
     constructor(props: Props) {
         super(props);

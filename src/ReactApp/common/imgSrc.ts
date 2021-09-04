@@ -1,7 +1,7 @@
 import { staticFolderPath } from "./consts";
 
 const imgNames = ["running_ninja", "rock", "torii"] as const;
-const backgroundNames = ["first_street"] as const;
+const backgroundNames = ["first_street", "pochi_room"] as const;
 
 type ImgNames = typeof imgNames[number];
 type BackgroundNames = typeof backgroundNames[number];
