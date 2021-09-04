@@ -13,7 +13,13 @@ export interface CommandTimeline {
 }
 
 export function setCommands(playtime: number) {
-    gameState.gameInfo.commandTimeline[playtime]?.forEach(c => {
+    const {
+        gameInfo: { currentStage, stages },
+    } = gameState;
+
+    const { commandTimeline, currentStageTime } = stages[currentStage];
+
+    commandTimeline[currentStageTime]?.forEach(c => {
         switch (c.type) {
             case "jump": {
                 gameState.command.jump = true;

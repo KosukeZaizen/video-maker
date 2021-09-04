@@ -1,28 +1,42 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useUnitLength } from "../../../hooks/useUnitLength";
+import { GameElement } from "./GameElement/BaseClass";
 import { gameState } from "./GameState";
 import { CommandTimeline, setCommands } from "./GameState/Command";
 
 export type GameInfo = {
-    commandTimeline: CommandTimeline;
+    currentStage: number;
+    stages: {
+        currentStageTime: number;
+        commandTimeline: CommandTimeline;
+        elements: GameElement[];
+    }[];
 };
 
 export function Game({
-    gameInfo,
+    gameInfo: pGameInfo,
     onended,
 }: {
     gameInfo: GameInfo;
     onended: () => void;
 }) {
     useEffect(() => {
-        gameState.gameInfo = gameInfo;
-    }, [gameInfo]);
+        gameState.gameInfo = pGameInfo;
+    }, [pGameInfo]);
+
+    const {
+        ninja,
+        gameInfo: { stages, currentStage },
+    } = gameState;
 
     const playTime = usePlayTime();
     const UL = useUL();
 
-    const { ninja, gameElements } = gameState;
+    const stage = stages[currentStage];
+    if (!stage) {
+        return null;
+    }
 
     return (
         <div
@@ -31,7 +45,7 @@ export function Game({
                 height: 90 * UL,
             }}
         >
-            {[ninja, ...gameElements].map(Elem => (
+            {[ninja, ...stage.elements].map(Elem => (
                 <Elem.renderElement key={Elem.name} playTime={playTime} />
             ))}
         </div>
@@ -42,12 +56,20 @@ function usePlayTime() {
     const [playTime, setPlayTime] = useState(0);
 
     useEffect(() => {
-        const { gameElements, timeStep, ninja } = gameState;
+        const {
+            gameInfo: { stages, currentStage },
+            timeStep,
+            ninja,
+        } = gameState;
         setTimeout(() => {
-            setCommands(playTime);
-            ninja.onEachTime();
-            gameElements.forEach(el => el.onEachTime());
+            const stage = stages[currentStage];
 
+            setCommands(stage.currentStageTime);
+            ninja.onEachTime();
+
+            stage.elements.forEach(el => el.onEachTime());
+
+            stage.currentStageTime++;
             setPlayTime(playTime + 1);
         }, timeStep);
     }, [playTime]);

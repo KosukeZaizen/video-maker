@@ -4,6 +4,10 @@ import { staticFolderPath } from "../../common/consts";
 import { useHideScrollBar } from "../../hooks/useHideScrollBar";
 import { Video } from "../shared/Video";
 import { Game, GameInfo } from "./Game";
+import { BackgroundImg } from "./Game/GameElement/BackgroundImg";
+import { Block } from "./Game/GameElement/Block";
+import { Floor } from "./Game/GameElement/Floor";
+import { Img } from "./Game/GameElement/Img";
 
 type VideoState = { isPlaying: boolean; scene: Scene };
 
@@ -38,12 +42,41 @@ function VocabAdventure({ match: { params } }: Props) {
     const [isPlaying, setPlaying] = useState(initialVideoState.isPlaying);
     const videoInfo: VideoInfo = {
         gameInfo: {
-            commandTimeline: {
-                30: [{ type: "jump" }],
-                50: [{ type: "goLeft", start: true }],
-                70: [{ type: "jump" }],
-                90: [{ type: "goLeft", start: false }],
-            },
+            currentStage: 0,
+            stages: [
+                {
+                    currentStageTime: 0,
+                    commandTimeline: {
+                        30: [{ type: "jump" }],
+                        50: [{ type: "goLeft", start: true }],
+                        70: [{ type: "jump" }],
+                        90: [{ type: "goLeft", start: false }],
+                    },
+                    elements: [
+                        new Floor({
+                            name: "floor1",
+                            x: -120,
+                            y: 90,
+                            width: 400,
+                        }),
+                        new Block({
+                            name: "rock1",
+                            x: 135,
+                            y: 70,
+                            width: 25,
+                            imgInfo: { imgName: "rock" },
+                        }),
+                        new BackgroundImg({ imgName: "first_street" }),
+                        new Img({
+                            name: "torii",
+                            imgInfo: { imgName: "torii", zIndex: 99 },
+                            x: 35,
+                            y: 18,
+                            width: 120,
+                        }),
+                    ],
+                },
+            ],
         },
     };
 
