@@ -55,10 +55,22 @@ export function TitlePage({
     const characterCommentRef = useRef<HTMLDivElement>(null);
 
     const [isInitial, setIsInitial] = useState(true);
-    const [hiraganaList, setHiraganaList] = useState<string[]>(
-        vocabList.filter((v, i) => i <= 8).map(v => v.hiragana)
-    );
+
     const [isOmitted, setIsOmitted] = useState(false);
+    const initialHiraganaList = useMemo(
+        () =>
+            vocabList.reduce((acc, val) => {
+                const nextArr = [...acc, val.hiragana];
+                if (nextArr.join("").length > 18) {
+                    setIsOmitted(true);
+                    return acc;
+                }
+                return nextArr;
+            }, [] as string[]),
+        []
+    );
+    const [hiraganaList, setHiraganaList] =
+        useState<string[]>(initialHiraganaList);
     const [isCommentTwoLines, setIsCommentTwoLines] = useState(false);
 
     useEffect(() => {
@@ -82,16 +94,9 @@ export function TitlePage({
 
     useEffect(() => {
         const l = [...hiraganaList];
-        if (l.join("").length > 18) {
+        const rect = scrollTextRef.current?.getBoundingClientRect();
+        if (rect && rect.height > 100) {
             l.length = l.length - 1;
-            while (l.join("").length > 18) {
-                l.length = l.length - 1;
-            }
-        } else {
-            const rect = scrollTextRef.current?.getBoundingClientRect();
-            if (rect && rect.height > 100) {
-                l.length = l.length - 1;
-            }
         }
 
         if (l.length !== hiraganaList.length) {
