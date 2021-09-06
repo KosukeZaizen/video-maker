@@ -8,6 +8,7 @@ import { BackgroundImg } from "./Game/GameElement/BackgroundImg";
 import { Block } from "./Game/GameElement/Block";
 import { Floor } from "./Game/GameElement/Floor";
 import { Img } from "./Game/GameElement/Img";
+import { SpeakingCharacter } from "./Game/GameElement/SpeakingCharacter";
 import { StageChanger } from "./Game/GameElement/StageChanger";
 
 type VideoState = { isPlaying: boolean; scene: Scene };
@@ -43,17 +44,14 @@ function VocabAdventure({ match: { params } }: Props) {
     const [isPlaying, setPlaying] = useState(initialVideoState.isPlaying);
     const videoInfo: VideoInfo = {
         gameInfo: {
-            currentStage: 0,
+            currentStage: 1,
             stages: [
                 {
                     currentStageTime: 0,
                     initialPosition: { x: 140, y: 0 },
                     commandTimeline: {
-                        30: [{ type: "jump" }],
-                        50: [{ type: "goLeft", start: true }],
-                        70: [{ type: "jump" }],
-                        90: [{ type: "goLeft", start: false }],
-                        100: [{ type: "goLeft", start: true }],
+                        20: [{ type: "goLeft", start: true }],
+                        40: [{ type: "jump" }],
                     },
                     elements: [
                         new Floor({
@@ -64,7 +62,7 @@ function VocabAdventure({ match: { params } }: Props) {
                         }),
                         new Block({
                             name: "rock1",
-                            x: 135,
+                            x: 20,
                             y: 70,
                             width: 25,
                             imgInfo: { imgName: "rock" },
@@ -89,9 +87,11 @@ function VocabAdventure({ match: { params } }: Props) {
                     currentStageTime: 0,
                     initialPosition: { x: 160, y: 77 },
                     commandTimeline: {
-                        20: [{ type: "jump" }],
                         1: [{ type: "goLeft", start: true }],
-                        50: [{ type: "goLeft", start: false }],
+                        5: [{ type: "goLeft", start: false }],
+                        10: [{ type: "goLeft", start: true }],
+                        15: [{ type: "jump" }],
+                        40: [{ type: "goLeft", start: false }],
                     },
                     elements: [
                         new Floor({
@@ -101,6 +101,17 @@ function VocabAdventure({ match: { params } }: Props) {
                             width: 400,
                         }),
                         new BackgroundImg({ imgName: "pochi_room" }),
+                        new SpeakingCharacter({
+                            message:
+                                "Hello!\nYour mission is learning Japanese vocabulary!\nGood Luck!",
+                            name: "pochi",
+                            x: 30,
+                            y: 74.5,
+                            width: 12,
+                            imgInfo: {
+                                imgName: "pochi",
+                            },
+                        }),
                     ],
                 },
             ],

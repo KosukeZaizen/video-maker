@@ -19,9 +19,9 @@ export class Ninja extends GameElement {
         } = gameState;
 
         if (goLeft && !goRight) {
-            this.x -= 3;
+            this.x -= 3.5;
         } else if (!goLeft && goRight) {
-            this.x += 3;
+            this.x += 3.5;
         }
 
         if (jump) {
