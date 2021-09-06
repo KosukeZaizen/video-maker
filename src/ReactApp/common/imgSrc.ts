@@ -8,6 +8,7 @@ const imgNames = [
     "torii",
     "tree",
     "signboard",
+    "butsudan",
 ] as const;
 const backgroundNames = ["first_street", "pochi_room"] as const;
 

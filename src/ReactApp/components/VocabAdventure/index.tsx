@@ -90,8 +90,10 @@ function VocabAdventure({ match: { params } }: Props) {
                         1: [{ type: "goLeft", start: true }],
                         5: [{ type: "goLeft", start: false }],
                         10: [{ type: "goLeft", start: true }],
-                        15: [{ type: "jump" }],
-                        40: [{ type: "goLeft", start: false }],
+                        20: [{ type: "goLeft", start: false }],
+                        30: [{ type: "goLeft", start: true }],
+                        43: [{ type: "jump" }],
+                        54: [{ type: "goLeft", start: false }],
                     },
                     elements: [
                         new Floor({
@@ -103,14 +105,22 @@ function VocabAdventure({ match: { params } }: Props) {
                         new BackgroundImg({ imgName: "pochi_room" }),
                         new SpeakingCharacter({
                             message:
-                                "Hello!\nYour mission is learning Japanese vocabulary!\nGood Luck!",
+                                "Hello!\nYour mission is learning Japanese vocabulary!\nGood luck!",
+                            messageWidth: 100,
                             name: "pochi",
-                            x: 30,
+                            x: 100,
                             y: 74.5,
                             width: 12,
                             imgInfo: {
                                 imgName: "pochi",
                             },
+                        }),
+                        new Block({
+                            name: "butsudan",
+                            x: 20,
+                            y: 65,
+                            width: 25,
+                            imgInfo: { imgName: "butsudan" },
                         }),
                     ],
                 },

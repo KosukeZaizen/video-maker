@@ -7,7 +7,7 @@ import { Img } from "./Img";
 
 interface Props
     extends GameElementProps,
-        Pick<SpeakingCharacter, "withoutIcon" | "message"> {}
+        Pick<SpeakingCharacter, "withoutIcon" | "message" | "messageWidth"> {}
 
 const origins = {
     anchor: { vertical: "top", horizontal: "left" },
@@ -16,15 +16,17 @@ const origins = {
 
 export class SpeakingCharacter extends GameElement {
     message: string;
+    messageWidth: number;
     withoutIcon?: boolean;
     isSpeaking = false;
     charImg: Img;
 
-    constructor({ withoutIcon, message, ...rest }: Props) {
+    constructor({ withoutIcon, message, messageWidth, ...rest }: Props) {
         super(rest);
         this.withoutIcon = withoutIcon;
         this.message = message;
         this.charImg = new Img(rest);
+        this.messageWidth = messageWidth;
     }
 
     onEachTime = () => {
@@ -41,21 +43,16 @@ export class SpeakingCharacter extends GameElement {
             return null;
         }
 
-        const style = useMemo(
-            () =>
-                getElementStyle({
-                    x: this.x,
-                    y: this.y,
-                    width: this.width,
-                    UL,
-                    zIndex: imgInfo.zIndex,
-                }),
-            [UL]
-        );
-
         const dependingOnUl = useMemo(
             () =>
                 ({
+                    charImg: getElementStyle({
+                        x: this.x,
+                        y: this.y,
+                        width: this.width,
+                        UL,
+                        zIndex: imgInfo.zIndex,
+                    }),
                     popoverPaperProps: {
                         style: {
                             padding: 1 * UL,
@@ -67,13 +64,28 @@ export class SpeakingCharacter extends GameElement {
                         width: 10 * UL,
                         margin: 3 * UL,
                     },
+                    flexDiv: { display: "flex", margin: 2 * UL },
                 } as const),
             [UL]
         );
 
+        const messageDivStyle = useMemo(
+            () =>
+                ({
+                    whiteSpace: "pre-wrap",
+                    margin: 3 * UL,
+                    width: this.messageWidth * UL,
+                } as const),
+            [UL, this.messageWidth]
+        );
+
         return (
             <>
-                <img src={imgInfo.imgSrc} style={style} ref={ref} />
+                <img
+                    src={imgInfo.imgSrc}
+                    style={dependingOnUl.charImg}
+                    ref={ref}
+                />
                 <Popover
                     anchorOrigin={origins.anchor}
                     transformOrigin={origins.transform}
@@ -81,7 +93,7 @@ export class SpeakingCharacter extends GameElement {
                     anchorEl={ref.current}
                     open={isSpeaking}
                 >
-                    <div style={{ display: "flex", margin: 2 * UL }}>
+                    <div style={dependingOnUl.flexDiv}>
                         {!this.withoutIcon && (
                             <div>
                                 <img
@@ -91,9 +103,7 @@ export class SpeakingCharacter extends GameElement {
                                 />
                             </div>
                         )}
-                        <div style={{ whiteSpace: "pre-wrap", margin: 3 * UL }}>
-                            {this.message}
-                        </div>
+                        <div style={messageDivStyle}>{this.message}</div>
                     </div>
                 </Popover>
             </>
