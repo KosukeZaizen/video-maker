@@ -2,6 +2,7 @@ import * as React from "react";
 import { useMemo } from "react";
 import { ElementImgName, imgSrc } from "../../../../../common/imgSrc";
 import { Direction } from "../../../../../types/Direction";
+import { Flip } from "../../../../../types/Flip";
 import { gameState } from "../../GameState";
 
 export interface GameElementProps
@@ -10,6 +11,7 @@ export interface GameElementProps
         imgName: ElementImgName;
         willAnimate?: boolean;
         zIndex?: number;
+        flip?: Flip;
     };
 }
 export abstract class GameElement {
@@ -17,10 +19,11 @@ export abstract class GameElement {
     x: number;
     y: number;
     width: number;
-    imgInfo?: {
+    imgInfo: {
         imgSrc: string;
-        willAnimate?: boolean;
-        zIndex?: number;
+        willAnimate: boolean;
+        zIndex: number;
+        flip: Flip;
     };
 
     constructor({ name, x, y, width, imgInfo }: GameElementProps) {
@@ -29,25 +32,33 @@ export abstract class GameElement {
         this.y = y;
         this.width = width;
         if (imgInfo) {
-            const { imgName, zIndex, willAnimate } = imgInfo;
+            const { imgName, zIndex, willAnimate, flip } = imgInfo;
             this.imgInfo = {
                 imgSrc: imgName && imgSrc.gameElement[imgName],
-                zIndex,
-                willAnimate,
+                zIndex: zIndex || 0,
+                willAnimate: willAnimate || false,
+                flip: flip || Flip.none,
+            };
+        } else {
+            this.imgInfo = {
+                imgSrc: "",
+                willAnimate: false,
+                zIndex: 0,
+                flip: Flip.none,
             };
         }
     }
 
     abstract onEachTime: () => void;
 
-    renderElement = ({}: { playTime: number }) => {
+    renderElement = ({}: { playTime: number }): JSX.Element | null => {
         const { imgInfo } = this;
 
-        if (!imgInfo) {
+        const { UL } = gameState;
+
+        if (!UL) {
             return null;
         }
-
-        const { UL } = gameState;
 
         const style = useMemo(
             () =>
@@ -58,8 +69,9 @@ export abstract class GameElement {
                     width: this.width,
                     UL,
                     zIndex: imgInfo.zIndex,
+                    flip: imgInfo.flip,
                 }),
-            [UL, this.x, this.y, this.width]
+            [UL, this.x, this.y, this.width, imgInfo.flip, imgInfo.willAnimate]
         );
 
         return <img src={imgInfo.imgSrc} style={style} />;
@@ -118,6 +130,7 @@ export function getElementStyle({
     width,
     UL,
     zIndex,
+    flip,
 }: {
     willAnimate?: boolean;
     x: number;
@@ -125,6 +138,7 @@ export function getElementStyle({
     width: number;
     UL: number;
     zIndex?: number;
+    flip?: Flip;
 }) {
     if (willAnimate) {
         return {
@@ -137,6 +151,7 @@ export function getElementStyle({
             top: y * UL,
             width: width * UL,
             zIndex,
+            transform: getTransform(flip),
         } as const;
     }
 
@@ -146,5 +161,21 @@ export function getElementStyle({
         top: y * UL,
         width: width * UL,
         zIndex,
+        transform: getTransform(flip),
     } as const;
+}
+
+function getTransform(flip?: Flip) {
+    switch (flip) {
+        case Flip.flippedHorizontally: {
+            return "translate(-1,1)";
+        }
+        case Flip.upsideDown: {
+            return "translate(1,-1)";
+        }
+        case Flip.none:
+        default: {
+            return undefined;
+        }
+    }
 }

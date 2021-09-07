@@ -9,7 +9,9 @@ const imgNames = [
     "tree",
     "signboard",
     "butsudan",
+    "fire",
 ] as const;
+
 const backgroundNames = ["first_street", "pochi_room"] as const;
 
 type ImgNames = typeof imgNames[number];

@@ -7,6 +7,7 @@ import { Game, GameInfo } from "./Game";
 import { BackgroundImg } from "./Game/GameElement/BackgroundImg";
 import { Block } from "./Game/GameElement/Block";
 import { Floor } from "./Game/GameElement/Floor";
+import { FlyingBlock } from "./Game/GameElement/FlyingBlock";
 import { Img } from "./Game/GameElement/Img";
 import { SpeakingCharacter } from "./Game/GameElement/SpeakingCharacter";
 import { StageChanger } from "./Game/GameElement/StageChanger";
@@ -115,12 +116,13 @@ function VocabAdventure({ match: { params } }: Props) {
                                 imgName: "pochi",
                             },
                         }),
-                        new Block({
+                        new FlyingBlock({
                             name: "butsudan",
                             x: 20,
                             y: 65,
                             width: 25,
                             imgInfo: { imgName: "butsudan" },
+                            directionToFly: "top",
                         }),
                     ],
                 },

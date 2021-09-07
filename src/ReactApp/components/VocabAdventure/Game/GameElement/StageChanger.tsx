@@ -19,7 +19,9 @@ export class StageChanger extends GameElement {
             const { x, y } = stages[currentStage].initialPosition;
             ninja.x = x;
             ninja.y = y;
-            ninja.willAnimate = false;
+            if (ninja.imgInfo) {
+                ninja.imgInfo.willAnimate = false;
+            }
             gameState.command = {};
         }
     };

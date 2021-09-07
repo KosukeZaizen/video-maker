@@ -1,14 +1,24 @@
 import * as React from "react";
 import { useMemo } from "react";
+import { ElementImgName } from "../../../../common/imgSrc";
 import { Direction } from "../../../../types/Direction";
 import { gameState } from "../GameState";
 import { GameElement, GameElementProps, getElementStyle } from "./BaseClass";
+import { Ninja } from "./Ninja";
 
-interface Props extends GameElementProps, Pick<FlyingBlock, "directionToFly"> {}
+interface Props
+    extends GameElementProps,
+        Pick<FlyingBlock, "directionToFly" | "speed"> {
+    imgInfo: {
+        imgName: ElementImgName;
+        zIndex?: number;
+    };
+}
 
 export class FlyingBlock extends GameElement {
+    directionToFly: Omit<Direction, "bottom">;
+    speed?: number;
     isFlying = false;
-    directionToFly: Direction;
 
     constructor({ directionToFly: direction, ...rest }: Props) {
         super(rest);
@@ -16,30 +26,38 @@ export class FlyingBlock extends GameElement {
     }
 
     onEachTime = () => {
-        const { ninja } = gameState;
-
-        if (this.isFlying) {
-        }
+        const { ninja, UL } = gameState;
 
         if (this.checkTouched(ninja)) {
             const ninjaDirection = this.getTargetDirection(ninja);
 
             switch (ninjaDirection) {
-                case "top": {
+                case Direction.top: {
+                    if (this.imgInfo) {
+                        this.imgInfo.willAnimate = true;
+                    }
+                    setTimeout(() => {
+                        this.isFlying = true;
+                    }, 500);
+
+                    if (this.isFlying) {
+                        this.updatePosition(ninja, UL);
+                    }
+
                     ninja.y = this.y - ninja.width;
                     ninja.speedY = 0;
                     break;
                 }
-                case "bottom": {
+                case Direction.bottom: {
                     ninja.y = this.y + this.width;
                     ninja.speedY = 0;
                     break;
                 }
-                case "left": {
+                case Direction.left: {
                     ninja.x = this.x - ninja.width;
                     break;
                 }
-                case "right": {
+                case Direction.right: {
                     ninja.x = this.x + this.width;
                     break;
                 }
@@ -47,12 +65,29 @@ export class FlyingBlock extends GameElement {
         }
     };
 
+    updatePosition = (ninja: Ninja, UL: number) => {
+        const speed = (this.speed || 0.5) * UL;
+
+        switch (this.directionToFly) {
+            case Direction.top: {
+                this.y -= speed;
+                return;
+            }
+            case Direction.right: {
+                this.x += speed;
+                ninja.x += speed;
+                return;
+            }
+            case Direction.left: {
+                this.x -= speed;
+                ninja.x -= speed;
+                return;
+            }
+        }
+    };
+
     renderElement = ({}: { playTime: number }) => {
         const { imgInfo } = this;
-
-        if (!imgInfo) {
-            return null;
-        }
 
         const { UL } = gameState;
 
@@ -60,15 +95,15 @@ export class FlyingBlock extends GameElement {
             const fire = { x: this.x, y: this.y, width: this.width };
 
             switch (this.directionToFly) {
-                case "top": {
+                case Direction.top: {
                     fire.y += this.width;
                     break;
                 }
-                case "left": {
+                case Direction.left: {
                     fire.x += this.width;
                     break;
                 }
-                case "right": {
+                case Direction.right: {
                     fire.x -= fire.width;
                     break;
                 }
@@ -76,7 +111,7 @@ export class FlyingBlock extends GameElement {
 
             return {
                 element: getElementStyle({
-                    willAnimate: true,
+                    willAnimate: imgInfo.willAnimate,
                     x: this.x,
                     y: this.y,
                     width: this.width,
@@ -85,7 +120,7 @@ export class FlyingBlock extends GameElement {
                 }),
                 fire: getElementStyle({
                     ...fire,
-                    willAnimate: true,
+                    willAnimate: imgInfo.willAnimate,
                     UL,
                     zIndex: imgInfo.zIndex,
                 }),

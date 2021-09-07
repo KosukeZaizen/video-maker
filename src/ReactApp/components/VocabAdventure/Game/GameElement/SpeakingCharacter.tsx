@@ -39,10 +39,6 @@ export class SpeakingCharacter extends GameElement {
         const { imgInfo, isSpeaking } = this;
         const { UL } = gameState;
 
-        if (!imgInfo) {
-            return null;
-        }
-
         const dependingOnUl = useMemo(
             () =>
                 ({

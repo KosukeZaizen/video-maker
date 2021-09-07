@@ -1,15 +1,21 @@
-import * as React from "react";
-import { useMemo } from "react";
-import { imgSrc } from "../../../../common/imgSrc";
+import { Flip } from "../../../../types/Flip";
 import { gameState } from "../GameState";
-import { GameElement, getElementStyle } from "./BaseClass";
+import { GameElement } from "./BaseClass";
 
 export class Ninja extends GameElement {
     speedY = 0;
-    willAnimate = false;
 
     constructor(props: { x: number; y: number; width: number }) {
-        super({ name: "ninja", ...props });
+        super({
+            name: "ninja",
+            ...props,
+            imgInfo: {
+                imgName: "running_ninja",
+                zIndex: 100,
+                willAnimate: false,
+                flip: Flip.none,
+            },
+        });
     }
 
     onEachTime = () => {
@@ -33,29 +39,8 @@ export class Ninja extends GameElement {
         this.speedY += 0.2;
         this.y += this.speedY * UL;
 
-        this.willAnimate = true;
-    };
-
-    renderElement = () => {
-        const { UL } = gameState;
-
-        if (!UL) {
-            return null;
+        if (this.imgInfo) {
+            this.imgInfo.willAnimate = true;
         }
-
-        const style = useMemo(
-            () =>
-                getElementStyle({
-                    willAnimate: this.willAnimate,
-                    x: this.x,
-                    y: this.y,
-                    width: this.width,
-                    UL,
-                    zIndex: 100,
-                }),
-            [UL, this.x, this.y, this.willAnimate]
-        );
-
-        return <img src={imgSrc.gameElement.running_ninja} style={style} />;
     };
 }
