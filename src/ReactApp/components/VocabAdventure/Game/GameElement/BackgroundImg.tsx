@@ -18,10 +18,6 @@ export class BackgroundImg extends GameElement {
     onEachTime = () => {};
 
     renderElement = () => {
-        if (!this.imgSrc) {
-            return null;
-        }
-
         const { UL } = gameState;
 
         const style = useMemo(

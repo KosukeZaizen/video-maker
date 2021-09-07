@@ -33,9 +33,7 @@ export class FlyingBlock extends GameElement {
 
             switch (ninjaDirection) {
                 case Direction.top: {
-                    if (this.imgInfo) {
-                        this.imgInfo.willAnimate = true;
-                    }
+                    this.imgInfo.willAnimate = true;
                     setTimeout(() => {
                         this.isFlying = true;
                     }, 500);
@@ -88,8 +86,11 @@ export class FlyingBlock extends GameElement {
 
     renderElement = ({}: { playTime: number }) => {
         const { imgInfo } = this;
-
         const { UL } = gameState;
+
+        if (!imgInfo || !UL) {
+            return null;
+        }
 
         const styles = useMemo(() => {
             const fire = { x: this.x, y: this.y, width: this.width };

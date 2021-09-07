@@ -1,17 +1,9 @@
-import * as React from "react";
-import { useMemo } from "react";
-import { ElementImgName } from "../../../../common/imgSrc";
 import { gameState } from "../GameState";
-import { GameElement, GameElementProps, getElementStyle } from "./BaseClass";
+import { GameElement, GameElementProps } from "./BaseClass";
 
-interface Props extends GameElementProps, Pick<Floor, "willAnimate"> {
-    imgName?: ElementImgName;
-}
+interface Props extends GameElementProps {}
 
 export class Floor extends GameElement {
-    imgSrc?: string;
-    willAnimate?: boolean;
-
     constructor(props: Props) {
         super(props);
     }
@@ -25,27 +17,5 @@ export class Floor extends GameElement {
                 ninja.speedY = 0;
             }
         }
-    };
-
-    renderElement = () => {
-        if (!this.imgSrc) {
-            return null;
-        }
-
-        const { UL } = gameState;
-
-        const style = useMemo(
-            () =>
-                getElementStyle({
-                    willAnimate: this.willAnimate || false,
-                    x: this.x,
-                    y: this.y,
-                    width: this.width,
-                    UL,
-                }),
-            [UL]
-        );
-
-        return <img src={this.imgSrc} style={style} />;
     };
 }

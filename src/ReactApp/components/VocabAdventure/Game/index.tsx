@@ -33,13 +33,14 @@ export function Game({
     const {
         ninja,
         gameInfo: { stages, currentStage },
+        UL,
     } = gameState;
 
     const playTime = usePlayTime();
-    const UL = useUL();
+    useUL();
 
     const stage = stages[currentStage];
-    if (!stage) {
+    if (!stage || !UL) {
         return null;
     }
 
@@ -88,5 +89,4 @@ function useUL() {
     useEffect(() => {
         gameState.UL = UL;
     }, [UL]);
-    return UL;
 }

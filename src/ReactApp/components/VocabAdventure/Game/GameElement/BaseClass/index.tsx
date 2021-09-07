@@ -31,6 +31,7 @@ export abstract class GameElement {
         this.x = x;
         this.y = y;
         this.width = width;
+
         if (imgInfo) {
             const { imgName, zIndex, willAnimate, flip } = imgInfo;
             this.imgInfo = {
@@ -53,12 +54,7 @@ export abstract class GameElement {
 
     renderElement = ({}: { playTime: number }): JSX.Element | null => {
         const { imgInfo } = this;
-
         const { UL } = gameState;
-
-        if (!UL) {
-            return null;
-        }
 
         const style = useMemo(
             () =>
@@ -74,7 +70,7 @@ export abstract class GameElement {
             [UL, this.x, this.y, this.width, imgInfo.flip, imgInfo.willAnimate]
         );
 
-        return <img src={imgInfo.imgSrc} style={style} />;
+        return  <img src={imgInfo.imgSrc} style={style} />;
     };
 
     checkTouched(target: GameElement): boolean {
