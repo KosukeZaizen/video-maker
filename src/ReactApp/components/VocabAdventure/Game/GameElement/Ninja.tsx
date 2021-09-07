@@ -26,8 +26,10 @@ export class Ninja extends GameElement {
 
         if (goLeft && !goRight) {
             this.x -= 3.5;
+            this.imgInfo.flip = Flip.none;
         } else if (!goLeft && goRight) {
             this.x += 3.5;
+            this.imgInfo.flip = Flip.flippedHorizontally;
         }
 
         if (jump) {

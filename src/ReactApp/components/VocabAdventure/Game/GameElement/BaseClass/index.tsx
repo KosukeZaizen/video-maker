@@ -70,7 +70,7 @@ export abstract class GameElement {
             [UL, this.x, this.y, this.width, imgInfo.flip, imgInfo.willAnimate]
         );
 
-        return  <img src={imgInfo.imgSrc} style={style} />;
+        return <img src={imgInfo.imgSrc} style={style} />;
     };
 
     checkTouched(target: GameElement): boolean {
@@ -164,10 +164,10 @@ export function getElementStyle({
 function getTransform(flip?: Flip) {
     switch (flip) {
         case Flip.flippedHorizontally: {
-            return "translate(-1,1)";
+            return "scale(-1,1)";
         }
         case Flip.upsideDown: {
-            return "translate(1,-1)";
+            return "scale(1,-1)";
         }
         case Flip.none:
         default: {
