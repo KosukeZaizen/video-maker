@@ -10,6 +10,7 @@ const imgNames = [
     "signboard",
     "butsudan",
     "fire",
+    "fireHorizontal",
 ] as const;
 
 const backgroundNames = ["first_street", "pochi_room"] as const;

@@ -45,7 +45,7 @@ function VocabAdventure({ match: { params } }: Props) {
     const [isPlaying, setPlaying] = useState(initialVideoState.isPlaying);
     const videoInfo: VideoInfo = {
         gameInfo: {
-            currentStage: 1,
+            currentStage: 0,
             stages: [
                 {
                     currentStageTime: 0,
@@ -123,6 +123,7 @@ function VocabAdventure({ match: { params } }: Props) {
                             width: 25,
                             imgInfo: { imgName: "butsudan" },
                             directionToFly: "top",
+                            distanceBetweenFireAndBlock: 0.4,
                         }),
                     ],
                 },

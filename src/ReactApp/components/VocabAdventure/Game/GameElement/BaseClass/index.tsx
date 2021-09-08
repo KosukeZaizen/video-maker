@@ -35,7 +35,7 @@ export abstract class GameElement {
         if (imgInfo) {
             const { imgName, zIndex, willAnimate, flip } = imgInfo;
             this.imgInfo = {
-                imgSrc: imgName && imgSrc.gameElement[imgName],
+                imgSrc: imgSrc.gameElement[imgName],
                 zIndex: zIndex || 0,
                 willAnimate: willAnimate || false,
                 flip: flip || Flip.none,
@@ -47,6 +47,7 @@ export abstract class GameElement {
                 zIndex: 0,
                 flip: Flip.none,
             };
+            this.renderElement = () => null;
         }
     }
 
