@@ -57,20 +57,16 @@ export function TitlePage({
     const [isInitial, setIsInitial] = useState(true);
 
     const [isOmitted, setIsOmitted] = useState(false);
-    const initialHiraganaList = useMemo(
-        () =>
-            vocabList.reduce((acc, val) => {
-                const nextArr = [...acc, val.hiragana];
-                if (nextArr.join("").length > 18) {
-                    setIsOmitted(true);
-                    return acc;
-                }
-                return nextArr;
-            }, [] as string[]),
-        []
+    const [hiraganaList, setHiraganaList] = useState<string[]>(() =>
+        vocabList.reduce((acc, val) => {
+            const nextArr = [...acc, val.hiragana];
+            if (nextArr.join("").length > 18) {
+                setIsOmitted(true);
+                return acc;
+            }
+            return nextArr;
+        }, [] as string[])
     );
-    const [hiraganaList, setHiraganaList] =
-        useState<string[]>(initialHiraganaList);
     const [isCommentTwoLines, setIsCommentTwoLines] = useState(false);
 
     useEffect(() => {
