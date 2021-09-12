@@ -131,25 +131,19 @@ function VocabAdventure({ match: { params } }: Props) {
         },
     };
 
-    return (
-        <>
-            {!isPlaying && (
-                <div style={styles.pageContentDiv}>
-                    <button onClick={() => setPlaying(true)}>
-                        Video Start
-                    </button>
-                </div>
-            )}
-            {isPlaying && (
-                <div style={styles.pageContentDiv}>
-                    <VideoContents
-                        setPlaying={setPlaying}
-                        videoInfo={videoInfo}
-                    />
-                </div>
-            )}
-        </>
-    );
+    if (isPlaying) {
+        return (
+            <div style={styles.pageContentDiv}>
+                <VideoContents setPlaying={setPlaying} videoInfo={videoInfo} />
+            </div>
+        );
+    } else {
+        return (
+            <div style={styles.pageContentDiv}>
+                <button onClick={() => setPlaying(true)}>Video Start</button>
+            </div>
+        );
+    }
 }
 
 type Scene = "opening" | "game" | "quiz" | "ending";
