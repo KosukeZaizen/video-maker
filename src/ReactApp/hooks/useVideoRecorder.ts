@@ -10,10 +10,17 @@ import { setScreenSizeForVideo } from "../common/util/ipc/setScreenSizeForVideo"
 import { showMenuBar } from "../common/util/ipc/showMenuBar";
 
 const recordingState = { isRecording: false };
+let videoFileName = "video";
 
-export function useVideoRecorder() {
+export function useVideoRecorder({ fileName }: { fileName?: string }) {
     const inputSource = useInputSource();
     const mediaRecorder = useMediaRecorder(inputSource);
+
+    useEffect(() => {
+        if (fileName) {
+            videoFileName = fileName;
+        }
+    }, [fileName]);
 
     return {
         startRecording: () => {
@@ -138,8 +145,12 @@ function getHandleStop(blobData: Blob) {
 
         const downloadFolder = `${process.env.USERPROFILE}/Downloads`;
 
-        writeFile(`${downloadFolder}/vid-${Date.now()}.webm`, buffer, () => {
-            alert("File saved successfully");
-        });
+        writeFile(
+            `${downloadFolder}/${videoFileName}-${Date.now()}.webm`,
+            buffer,
+            () => {
+                alert("File saved successfully");
+            }
+        );
     };
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useVideoRecorder } from "../hooks/useVideoRecorder";
 
 export function TestPage() {
-    const { startRecording, stopRecording } = useVideoRecorder();
+    const { startRecording, stopRecording } = useVideoRecorder({});
     return (
         <>
             <ul>

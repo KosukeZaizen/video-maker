@@ -67,7 +67,9 @@ function VocabVideo({ match: { params } }: Props) {
         [vocabSounds]
     );
     const { screenWidth, screenHeight } = useScreenSize();
-    const { startRecording, stopRecording } = useVideoRecorder();
+    const { startRecording, stopRecording } = useVideoRecorder({
+        fileName: `Japanese_Vocab_Quiz_${genreName}`,
+    });
 
     const titleToShowUpper = useMemo(
         () =>
