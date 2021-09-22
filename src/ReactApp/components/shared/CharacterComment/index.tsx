@@ -1,8 +1,11 @@
 import * as React from "react";
-import * as consts from "../../../common/consts";
+import { imgSrc } from "../../../common/imgSrc";
+
+const { standing_ninja, pochi, ninja_girl } = imgSrc.element;
+const imgs = { 1: standing_ninja, 2: pochi, 3: ninja_girl };
 
 type TProps = {
-    imgNumber: number;
+    imgNumber: keyof typeof imgs;
     screenWidth: number;
     comment: string | React.ReactNode;
     style?: React.CSSProperties;
@@ -32,7 +35,7 @@ export default function CharacterComment(props: TProps) {
         >
             <div style={{ flex: 1 }}>
                 <img
-                    src={`${consts.BLOB_URL}/vocabulary-quiz/img/ninja${imgNumber}.png`}
+                    src={imgs[imgNumber]}
                     alt="Japanese ninja"
                     style={{
                         width: (screenWidth * 2) / 10,

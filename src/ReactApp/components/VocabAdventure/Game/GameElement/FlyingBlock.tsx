@@ -42,14 +42,14 @@ export class FlyingBlock extends GameElement {
         switch (direction) {
             case Direction.right: {
                 this.fireImg = {
-                    imgSrc: imgSrc.gameElement["fireHorizontal"],
+                    imgSrc: imgSrc.element["fireHorizontal"],
                     flip: Flip.none,
                 };
                 break;
             }
             case Direction.left: {
                 this.fireImg = {
-                    imgSrc: imgSrc.gameElement["fireHorizontal"],
+                    imgSrc: imgSrc.element["fireHorizontal"],
                     flip: Flip.flippedHorizontally,
                 };
                 break;
@@ -57,7 +57,7 @@ export class FlyingBlock extends GameElement {
             case Direction.top:
             default: {
                 this.fireImg = {
-                    imgSrc: imgSrc.gameElement["fire"],
+                    imgSrc: imgSrc.element["fire"],
                     flip: Flip.upsideDown,
                 };
                 break;

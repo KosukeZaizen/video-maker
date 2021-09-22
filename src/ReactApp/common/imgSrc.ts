@@ -2,6 +2,7 @@ import { staticFolderPath } from "./consts";
 
 const imgNames = [
     "running_ninja",
+    "standing_ninja",
     "pochi",
     "ninja_girl",
     "rock",
@@ -19,11 +20,11 @@ type ImgNames = typeof imgNames[number];
 type BackgroundNames = typeof backgroundNames[number];
 
 function getGameElementPngPath(fileName: string) {
-    return `${staticFolderPath}/img/gameElement/${fileName}.png`;
+    return `${staticFolderPath}/img/element/${fileName}.png`;
 }
 
 function getBackgroundJpgPath(fileName: string) {
-    return `${staticFolderPath}/img/gameBackground/${fileName}.jpg`;
+    return `${staticFolderPath}/img/background/${fileName}.jpg`;
 }
 
 const elementSrc = imgNames.reduce(
@@ -36,7 +37,7 @@ const backgroundSrc = backgroundNames.reduce(
     {} as { [key in BackgroundNames]: string }
 );
 
-export const imgSrc = { gameElement: elementSrc, background: backgroundSrc };
+export const imgSrc = { element: elementSrc, background: backgroundSrc };
 
-export type ElementImgName = keyof typeof imgSrc["gameElement"];
+export type ElementImgName = keyof typeof imgSrc["element"];
 export type BackgroundImgName = keyof typeof imgSrc["background"];
