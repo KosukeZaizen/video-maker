@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChangePage, Page } from ".";
 import { staticFolderPath } from "../../../common/consts";
+import { imgSrc } from "../../../common/imgSrc";
 import { getFallingImages } from "../../shared/Animations/FallingAnimation";
 import { FallingImageEdit } from "../../shared/Animations/FallingAnimation/FallingImageEdit";
 import { Video } from "../../shared/Video";
@@ -269,8 +270,26 @@ export function MenuPage({
                         </div>
                     </div>
                     <FallingImageEdit />
+                    <PreparedImgs />
                 </div>
             ) : null}
         </>
+    );
+}
+
+const { standing_ninja, pochi, ninja_girl } = imgSrc.element;
+
+const imgs = [standing_ninja, pochi, ninja_girl];
+
+function PreparedImgs() {
+    return (
+        <div style={{ position: "absolute", left: 30 }}>
+            {imgs.map((url, i) => {
+                const key = `img${i}`;
+                return (
+                    <img src={url} alt={key} key={key} style={{ width: 30 }} />
+                );
+            })}
+        </div>
     );
 }
