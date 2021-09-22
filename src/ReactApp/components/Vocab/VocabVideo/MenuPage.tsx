@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChangePage, Page } from ".";
-import { BLOB_URL, staticFolderPath } from "../../../common/consts";
+import { staticFolderPath } from "../../../common/consts";
 import { getFallingImages } from "../../shared/Animations/FallingAnimation";
 import { FallingImageEdit } from "../../shared/Animations/FallingAnimation/FallingImageEdit";
 import { BackButton } from "../../shared/BackButton";
@@ -266,28 +266,8 @@ export function MenuPage({
                         </div>
                     </div>
                     <FallingImageEdit />
-                    <PreparedImgs />
                 </div>
             ) : null}
         </>
-    );
-}
-
-const imgs = [
-    `${BLOB_URL}/vocabulary-quiz/img/ninja1.png`,
-    `${BLOB_URL}/vocabulary-quiz/img/ninja2.png`,
-    `${BLOB_URL}/vocabulary-quiz/img/ninja3.png`,
-];
-
-function PreparedImgs() {
-    return (
-        <div style={{ position: "absolute", left: 30 }}>
-            {imgs.map((url, i) => {
-                const key = `img${i}`;
-                return (
-                    <img src={url} alt={key} key={key} style={{ width: 30 }} />
-                );
-            })}
-        </div>
     );
 }
