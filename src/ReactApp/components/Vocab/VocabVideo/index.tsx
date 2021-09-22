@@ -105,6 +105,7 @@ function VocabVideo({ match: { params } }: Props) {
                     setIsOneSeason={setIsOneSeason}
                     vocabSeasons={vocabSeasons}
                     startRecording={startRecording}
+                    genreName={genreName}
                 />
             );
             break;

@@ -5,7 +5,6 @@ import { ChangePage, Page } from ".";
 import { staticFolderPath } from "../../../common/consts";
 import { getFallingImages } from "../../shared/Animations/FallingAnimation";
 import { FallingImageEdit } from "../../shared/Animations/FallingAnimation/FallingImageEdit";
-import { BackButton } from "../../shared/BackButton";
 import { Video } from "../../shared/Video";
 import { sound, vocab } from "../types/vocab";
 
@@ -21,6 +20,7 @@ export function MenuPage({
     setIsOneSeason,
     vocabSeasons,
     startRecording,
+    genreName,
 }: {
     changePage: ChangePage;
     vocabSounds: sound[];
@@ -33,6 +33,7 @@ export function MenuPage({
     setIsOneSeason: (isOneSeason: boolean) => void;
     vocabSeasons: string[];
     startRecording: () => void;
+    genreName: string;
 }) {
     const [isButtonShown, setIsButtonShown] = useState(true);
     const [playableArray, setPlayableArray] = useState(
@@ -117,7 +118,9 @@ export function MenuPage({
                     }}
                 >
                     <div style={{ display: "flex" }}>
-                        <BackButton />
+                        <Link to={`/vocabularyEdit/${genreName}`}>
+                            <button>{"<< back"}</button>
+                        </Link>
                         <Link to="/">
                             <button>Home</button>
                         </Link>

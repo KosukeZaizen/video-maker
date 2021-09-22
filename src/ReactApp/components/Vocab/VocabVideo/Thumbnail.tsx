@@ -37,12 +37,12 @@ export function Thumbnail({
     }, [titleToShowUpper]);
 
     const comment = titleToShowUpper.split(" ").map((t, i) => {
-        const str = i ? " " + t : t;
-        return t.includes("-") ? (
-            <span style={{ display: "inline-block" }}>{str}</span>
+        const content = t.includes("-") ? (
+            <span style={{ display: "inline-block" }}>{t}</span>
         ) : (
-            str
+            t
         );
+        return i ? <> {content}</> : content;
     });
 
     return (
