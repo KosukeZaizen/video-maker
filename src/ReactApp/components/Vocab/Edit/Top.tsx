@@ -6,7 +6,7 @@ import { sendPost } from "../../../common/functions";
 import { compareObjects } from "../../../common/util/compareObjects";
 import {
     getCurrentToken,
-    InputRegisterToken
+    InputRegisterToken,
 } from "../../shared/InputRegisterToken";
 import { vocabGenre } from "../types/vocab";
 
@@ -86,7 +86,7 @@ function VocabEditTop() {
                 </button>
             </div>
 
-            <table>
+            <table style={{ marginBottom: 100 }}>
                 <thead>
                     <tr>
                         <th>Order</th>
@@ -190,7 +190,6 @@ function VocabEditTop() {
                         })}
                 </tbody>
             </table>
-            <div style={{ height: 50 }} />
             <div
                 style={{
                     position: "fixed",
