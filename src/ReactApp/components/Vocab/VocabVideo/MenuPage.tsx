@@ -69,6 +69,7 @@ export function MenuPage({
                 vocabSound.playable = true;
                 if (!checkUnmounted()) {
                     setPlayableArray(vocabSounds.map(s => s.playable));
+                    vocabSound.audio.play();
                 }
             };
             vocabSound.audio.load();
