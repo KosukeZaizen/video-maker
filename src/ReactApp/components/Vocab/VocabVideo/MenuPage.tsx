@@ -22,6 +22,7 @@ export function MenuPage({
     vocabSeasons,
     startRecording,
     genreName,
+    isMerged,
 }: {
     changePage: ChangePage;
     vocabSounds: sound[];
@@ -35,6 +36,7 @@ export function MenuPage({
     vocabSeasons: string[];
     startRecording: () => void;
     genreName: string;
+    isMerged: boolean;
 }) {
     const [isButtonShown, setIsButtonShown] = useState(true);
     const [playableArray, setPlayableArray] = useState(
@@ -120,7 +122,11 @@ export function MenuPage({
                     }}
                 >
                     <div style={{ display: "flex" }}>
-                        <Link to={`/vocabularyEdit/${genreName}`}>
+                        <Link
+                            to={`/${
+                                isMerged ? "vocabularyMerge" : "vocabularyEdit"
+                            }/${genreName}`}
+                        >
                             <button>{"<< back"}</button>
                         </Link>
                         <Link to="/">

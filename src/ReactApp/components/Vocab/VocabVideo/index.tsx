@@ -27,7 +27,7 @@ export type Page = typeof Page[keyof typeof Page];
 export type ChangePage = (nextPage: Page) => void;
 
 type Props = {
-    location: { pathname: string };
+    location: Location;
     match: { params: { [key: string]: string } };
 };
 
@@ -48,20 +48,19 @@ const styles = {
     },
 } as const;
 
-function VocabVideo({ match: { params } }: Props) {
+function VocabVideo({ location, match: { params } }: Props) {
+    const isMerged = location.hash === "#merged";
+
     const [currentPage, setCurrentPage] = useState<Page>(Page.menu);
     const [season, setSeason] = useState("none");
     const [isOneSeason, setIsOneSeason] = useState(true);
     const [vocabSeasons, setVocabSeasons] = useState<string[]>([]);
-    const pGenreName = useMemo(
-        () => params.genreName.toString().split("#")[0],
-        [params]
-    );
+    const pGenreName = useMemo(() => params.genreName.toString(), [params]);
     const {
         vocabGenre: { genreName },
         vocabList,
         vocabSounds,
-    } = useVocabList(pGenreName);
+    } = useVocabList(pGenreName, isMerged);
     const audioVocabSound = useMemo(
         () => vocabSounds.map(s => s?.audio),
         [vocabSounds]
@@ -106,6 +105,7 @@ function VocabVideo({ match: { params } }: Props) {
                     vocabSeasons={vocabSeasons}
                     startRecording={startRecording}
                     genreName={genreName}
+                    isMerged={isMerged}
                 />
             );
             break;

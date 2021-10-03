@@ -59,7 +59,11 @@ function VocabMergeTop() {
 
     return (
         <>
-            <h1 style={{ marginBottom: 30 }}>{"Vocabulary Merge"}</h1>
+            <h1 style={{ marginBottom: 20 }}>{"Vocabulary Merge"}</h1>
+
+            <div style={{ marginBottom: 30 }}>
+                <Link to="/vocabularyEdit">{"<< back"}</Link>
+            </div>
 
             <div style={{ marginBottom: 30, backgroundColor: "lightyellow" }}>
                 <p style={{ fontWeight: "bold", marginBottom: 0 }}>

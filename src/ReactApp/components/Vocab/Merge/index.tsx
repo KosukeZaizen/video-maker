@@ -67,7 +67,7 @@ class VocabMerge extends React.Component<Props, State> {
             vocabMergedGenre: vocabMergedGenre;
         } = await (await res1).json();
 
-        const allGenres = await (await res2).json();
+        const allGenres: vocabGenre[] = await (await res2).json();
 
         this.makeSound(mergedVocabList, allGenres);
 
@@ -187,8 +187,8 @@ class VocabMerge extends React.Component<Props, State> {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Link to={"/vocabularyEdit"}>一覧へ戻る</Link>
-                    <Link to={`/vocabularyVideo/${mergedGenreName}`}>
+                    <Link to={"/vocabularyMerge"}>一覧へ戻る</Link>
+                    <Link to={`/vocabularyVideo/${mergedGenreName}#merged`}>
                         Make Video
                     </Link>
                     <button
