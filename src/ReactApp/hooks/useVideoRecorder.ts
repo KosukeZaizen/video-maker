@@ -3,7 +3,7 @@ import { writeFile } from "fs";
 import { useEffect, useState } from "react";
 import {
     hideMouseCursor,
-    showMouseCursor,
+    showMouseCursor
 } from "../common/util/hideMouseCursor";
 import { hideMenuBar } from "../common/util/ipc/hideMenuBar";
 import { setScreenSizeForVideo } from "../common/util/ipc/setScreenSizeForVideo";
@@ -35,6 +35,7 @@ export function useVideoRecorder({ fileName }: { fileName?: string }) {
                 if (recordingState.isRecording) {
                     setTimeout(checkStop, 500);
                 } else {
+                    console.log("confirmed that recording needs to stop");
                     mediaRecorder?.stop();
                     setTimeout(afterRecording, 1000);
                 }
@@ -42,6 +43,7 @@ export function useVideoRecorder({ fileName }: { fileName?: string }) {
             checkStop();
         },
         stopRecording: () => {
+            console.log("register recording stop");
             recordingState.isRecording = false;
         },
     };
@@ -54,6 +56,7 @@ function beforeRecording() {
 }
 
 function afterRecording() {
+    console.log("do procedures after recording");
     showMenuBar();
     showMouseCursor();
 }
