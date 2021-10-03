@@ -36,14 +36,18 @@ export function Thumbnail({
         setIsCommentTwoLines(isTwoLines);
     }, [titleToShowUpper]);
 
-    const comment = titleToShowUpper.split(" ").map((t, i) => {
-        const content = t.includes("-") ? (
-            <span style={{ display: "inline-block" }}>{t}</span>
-        ) : (
-            t
-        );
-        return i ? <> {content}</> : content;
-    });
+    const comment = (
+        <div style={{ padding: "0 20px" }}>
+            {titleToShowUpper.split(" ").map((t, i) => {
+                const content = t.includes("-") ? (
+                    <span style={{ display: "inline-block" }}>{t}</span>
+                ) : (
+                    t
+                );
+                return <span key={i}>{i ? <> {content}</> : content}</span>;
+            })}
+        </div>
+    );
 
     return (
         <div

@@ -109,14 +109,20 @@ export function TitlePage({
 
     const comment = useMemo(() => {
         if (isInitial) {
-            return titleToShowUpper.split(" ").map((t, i) => {
-                const block = t.includes("-") ? (
-                    <span style={{ display: "inline-block" }}>{t}</span>
-                ) : (
-                    t
-                );
-                return i ? <> {block}</> : block;
-            });
+            return (
+                <div style={{ padding: "0 20px" }}>
+                    {titleToShowUpper.split(" ").map((t, i) => {
+                        const content = t.includes("-") ? (
+                            <span style={{ display: "inline-block" }}>{t}</span>
+                        ) : (
+                            t
+                        );
+                        return (
+                            <span key={i}>{i ? <> {content}</> : content}</span>
+                        );
+                    })}
+                </div>
+            );
         } else {
             return (
                 <>
