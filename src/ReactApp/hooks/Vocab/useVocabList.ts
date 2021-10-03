@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { BLOB_URL, Z_APPS_TOP_URL } from "../../common/consts";
 import { getAudio } from "../../common/util/audio/getAudio";
-import { sound, vocab, vocabGenre } from "../../components/Vocab/types/vocab";
+import {
+    sound,
+    vocab,
+    vocabGenre,
+    VocabGenreId,
+} from "../../components/Vocab/types/vocab";
 
-const initialVocabGenre = {
-    genreId: 0,
+const initialVocabGenre: vocabGenre = {
+    genreId: VocabGenreId(0),
     genreName: "",
     order: 0,
     youtube: "",

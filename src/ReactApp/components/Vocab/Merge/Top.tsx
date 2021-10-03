@@ -8,18 +8,20 @@ import {
     getCurrentToken,
     InputRegisterToken,
 } from "../../shared/InputRegisterToken";
-import { vocabGenre, VocabGenreId } from "../types/vocab";
+import { vocabMergedGenre, VocabMergedGenreId } from "../types/vocab";
 
-async function fetchAllGenres(setAllGenres: (genres: vocabGenre[]) => void) {
+async function fetchAllGenres(
+    setAllGenres: (genres: vocabMergedGenre[]) => void
+) {
     const res = await fetch(
-        `${Z_APPS_TOP_URL}/api/VocabQuiz/GetAllGenresForEdit`
+        `${Z_APPS_TOP_URL}/api/VocabQuiz/GetAllMergedGenres`
     );
     setAllGenres(await res.json());
 }
 
-function VocabEditTop() {
-    const [initGenres, setInitGenres] = useState<vocabGenre[]>([]);
-    const [allGenres, setAllGenres] = useState<vocabGenre[]>([]);
+function VocabMergeTop() {
+    const [initGenres, setInitGenres] = useState<vocabMergedGenre[]>([]);
+    const [allGenres, setAllGenres] = useState<vocabMergedGenre[]>([]);
     const [newGenreName, setNewGenreName] = useState("");
 
     const loadAllGenres = () => {
@@ -38,9 +40,9 @@ function VocabEditTop() {
     }, []);
 
     const changeGenre = (
-        originalGenre: vocabGenre,
-        targetKey: keyof vocabGenre,
-        newValue: vocabGenre[keyof vocabGenre]
+        originalGenre: vocabMergedGenre,
+        targetKey: keyof vocabMergedGenre,
+        newValue: vocabMergedGenre[keyof vocabMergedGenre]
     ) => {
         const newGenre = { ...originalGenre, [targetKey]: newValue };
         setAllGenres([
@@ -49,7 +51,7 @@ function VocabEditTop() {
         ]);
     };
 
-    const checkGenreChanged = (g: vocabGenre) =>
+    const checkGenreChanged = (g: vocabMergedGenre) =>
         !compareObjects(
             g,
             initGenres.find(pg => pg.genreId === g.genreId)
@@ -57,12 +59,11 @@ function VocabEditTop() {
 
     return (
         <>
-            <Link to="/">home</Link>
-            <h1 style={{ marginBottom: 30 }}>{"Vocabulary Edit"}</h1>
+            <h1 style={{ marginBottom: 30 }}>{"Vocabulary Merge"}</h1>
 
             <div style={{ marginBottom: 30, backgroundColor: "lightyellow" }}>
                 <p style={{ fontWeight: "bold", marginBottom: 0 }}>
-                    New Genre Name:
+                    New Merged Genre Name:
                 </p>
                 <input
                     value={newGenreName}
@@ -84,18 +85,14 @@ function VocabEditTop() {
                 >
                     Add new genre
                 </button>
-                <Link to="/vocabularyMerge">
-                    <button style={{ marginLeft: 100 }}>Merge</button>
-                </Link>
             </div>
 
-            <table style={{ marginBottom: 100 }}>
+            <table>
                 <thead>
                     <tr>
                         <th>Order</th>
                         <th>Genre Name</th>
                         <th>YouTube</th>
-                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -156,20 +153,6 @@ function VocabEditTop() {
                                             }}
                                         />
                                     </td>
-                                    <td style={{ backgroundColor: "white" }}>
-                                        Release:
-                                        <input
-                                            type="checkbox"
-                                            checked={g.released}
-                                            onChange={() => {
-                                                changeGenre(
-                                                    g,
-                                                    "released",
-                                                    !g.released
-                                                );
-                                            }}
-                                        />
-                                    </td>
                                     <td
                                         style={{
                                             paddingLeft: 20,
@@ -181,7 +164,7 @@ function VocabEditTop() {
                                         ) && (
                                             <span style={{ margin: "0 10px" }}>
                                                 <Link
-                                                    to={`/vocabularyEdit/${g.genreName}`}
+                                                    to={`/vocabularyMerge/${g.genreName}`}
                                                 >
                                                     Edit
                                                 </Link>
@@ -193,6 +176,7 @@ function VocabEditTop() {
                         })}
                 </tbody>
             </table>
+            <div style={{ height: 50 }} />
             <div
                 style={{
                     position: "fixed",
@@ -232,7 +216,7 @@ function VocabEditTop() {
     );
 }
 
-async function save(allGenres: vocabGenre[], fncAfterSaving: () => void) {
+async function save(allGenres: vocabMergedGenre[], fncAfterSaving: () => void) {
     if (!allGenres.every(g => g.order && g.genreName)) {
         alert("「order」か「genreName」が、空白もしくはゼロの行があります。");
         return;
@@ -263,7 +247,7 @@ async function save(allGenres: vocabGenre[], fncAfterSaving: () => void) {
                 genres: allGenres,
                 token: getCurrentToken(),
             },
-            `${Z_APPS_TOP_URL}/api/VocabQuiz/SaveVocabGenres`
+            `${Z_APPS_TOP_URL}/api/VocabQuiz/SaveVocabMergedGenres`
         );
 
         if (result === true) {
@@ -278,18 +262,20 @@ async function save(allGenres: vocabGenre[], fncAfterSaving: () => void) {
     alert("failed...");
 }
 
-function getNewGenre(genreName: string, allGenres: vocabGenre[]): vocabGenre {
+function getNewGenre(
+    genreName: string,
+    allGenres: vocabMergedGenre[]
+): vocabMergedGenre {
     const maxGenreId = allGenres.reduce(
         (acc, val) => (acc > val.genreId ? acc : val.genreId),
         0
     );
     return {
         genreName,
-        genreId: VocabGenreId(maxGenreId + 1),
-        order: 1,
+        genreId: VocabMergedGenreId(maxGenreId + 1),
         youtube: "",
-        released: false,
+        order: 1,
     };
 }
 
-export default VocabEditTop;
+export default VocabMergeTop;

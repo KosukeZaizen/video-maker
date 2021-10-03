@@ -5,6 +5,8 @@ import { Home } from "./components/Home";
 import { TestPage } from "./components/TestPage";
 import VocabEdit from "./components/Vocab/Edit";
 import VocabEditTop from "./components/Vocab/Edit/Top";
+import VocabMerge from "./components/Vocab/Merge";
+import VocabMergeTop from "./components/Vocab/Merge/Top";
 import VocabVideo from "./components/Vocab/VocabVideo";
 import VocabAdventure from "./components/VocabAdventure";
 
@@ -29,6 +31,18 @@ function App() {
                     exact
                     path="/vocabularyVideo/:genreName"
                     component={VocabVideo}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/vocabularyMerge"
+                    component={VocabMergeTop}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/vocabularyMerge/:genreName"
+                    component={VocabMerge}
                 />
                 <Route
                     sensitive
