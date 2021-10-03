@@ -137,6 +137,8 @@ async function setVideoSource(source: DesktopCapturerSource) {
 
 function getHandleStop(blobData: Blob) {
     return async () => {
+        console.log("onstop the video recording");
+
         const blob = new Blob([blobData], {
             type: "video/webm;codecs=vp9",
         });
@@ -144,12 +146,14 @@ function getHandleStop(blobData: Blob) {
         const buffer = Buffer.from(await blob.arrayBuffer());
 
         const downloadFolder = `${process.env.USERPROFILE}/Downloads`;
+        console.log("downloadFolder", downloadFolder);
 
         writeFile(
             `${downloadFolder}/${videoFileName}-${Date.now()}.webm`,
             buffer,
             () => {
-                alert("File saved successfully");
+                console.log("File was saved successfully");
+                alert("File was saved successfully");
             }
         );
     };

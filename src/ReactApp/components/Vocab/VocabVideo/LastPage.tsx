@@ -51,8 +51,12 @@ export function LastPage({
                 imgStyle={{ minWidth: 160, position: "relative", left: -40 }}
                 screenWidth={screenWidth}
                 comment={[
-                    <p style={{ margin: 0 }}>{"Don't forget to subscribe"}</p>,
-                    <p style={{ margin: 0 }}>{"to this YouTube channel!"}</p>,
+                    <p key={1} style={{ margin: 0 }}>
+                        {"Don't forget to subscribe"}
+                    </p>,
+                    <p key={2} style={{ margin: 0 }}>
+                        {"to this YouTube channel!"}
+                    </p>,
                 ]}
                 style={{ maxWidth: 1000, marginBottom: 40 }}
                 commentStyle={{

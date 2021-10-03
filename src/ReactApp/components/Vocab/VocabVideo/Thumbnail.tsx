@@ -37,7 +37,7 @@ export function Thumbnail({
     }, [titleToShowUpper]);
 
     const comment = (
-        <div style={{ padding: "0 20px" }}>
+        <div style={{ padding: "0 30px" }}>
             {titleToShowUpper.split(" ").map((t, i) => {
                 const content = t.includes("-") ? (
                     <span style={{ display: "inline-block" }}>{t}</span>
