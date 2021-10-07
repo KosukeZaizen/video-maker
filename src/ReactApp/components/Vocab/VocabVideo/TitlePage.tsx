@@ -72,7 +72,7 @@ export function TitlePage({
     useEffect(() => {
         (async () => {
             const { audio } = music;
-            audio.volume = 0.003;
+            audio.volume = 0.004;
 
             while (audio.volume > 0) {
                 await audioPlayAsync(audio);
