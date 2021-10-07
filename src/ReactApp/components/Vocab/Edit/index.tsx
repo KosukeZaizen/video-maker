@@ -153,6 +153,7 @@ class VocabEdit extends React.Component<Props, State> {
 
         return (
             <div>
+                {genreName}
                 <h1 style={{ marginBottom: 30 }}>{titleToShowUpper}</h1>
 
                 <div
