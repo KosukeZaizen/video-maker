@@ -278,7 +278,7 @@ class VocabEdit extends React.Component<Props, State> {
                                         <input
                                             type="text"
                                             value={v.english}
-                                            style={{ width: 220 }}
+                                            style={{ width: 190 }}
                                             onChange={ev => {
                                                 this.changeVocab(v.vocabId, {
                                                     english: ev.target.value,
