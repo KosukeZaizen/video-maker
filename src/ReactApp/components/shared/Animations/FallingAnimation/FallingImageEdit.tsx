@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getFallingImages } from ".";
 import { Z_APPS_TOP_URL } from "../../../../common/consts";
 import { sendPost } from "../../../../common/functions";
-import { compareObjects } from "../../../../common/util/compareObjects";
+import { areSameObjects } from "../../../../common/util/compareObjects";
 import { getCurrentToken, InputRegisterToken } from "../../InputRegisterToken";
 import { fallingImage } from "./type";
 
@@ -89,7 +89,7 @@ function Edit({ close }: { close: () => void }) {
                     {fallingImages.map((fi, i) => (
                         <tr
                             style={{
-                                backgroundColor: compareObjects(
+                                backgroundColor: areSameObjects(
                                     fi,
                                     initialFallingImages[i]
                                 )

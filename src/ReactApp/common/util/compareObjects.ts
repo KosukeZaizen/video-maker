@@ -1,5 +1,5 @@
 // ２つのオブジェクトの内容が同一であることを確認
-export function compareObjects<T>(a?: T, b?: T) {
+export function areSameObjects<T>(a?: T, b?: T) {
     if (!a || !b) {
         return false;
     }

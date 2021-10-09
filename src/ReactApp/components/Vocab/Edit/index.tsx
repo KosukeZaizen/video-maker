@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { BLOB_URL, Z_APPS_TOP_URL } from "../../../common/consts";
 import { sendPost } from "../../../common/functions";
-import { compareObjects } from "../../../common/util/compareObjects";
+import { areSameObjects } from "../../../common/util/compareObjects";
 import {
     getCurrentToken,
     InputRegisterToken,
@@ -136,7 +136,7 @@ class VocabEdit extends React.Component<Props, State> {
 
     checkVocabChanged = (v: vocab) => {
         const { initialVocabList } = this.state;
-        return !compareObjects(
+        return !areSameObjects(
             v,
             initialVocabList?.find(vo => vo.vocabId === v.vocabId)
         );

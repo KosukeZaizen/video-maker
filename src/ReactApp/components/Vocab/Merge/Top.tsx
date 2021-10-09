@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Z_APPS_TOP_URL } from "../../../common/consts";
 import { sendPost } from "../../../common/functions";
-import { compareObjects } from "../../../common/util/compareObjects";
+import { areSameObjects } from "../../../common/util/compareObjects";
 import {
     getCurrentToken,
     InputRegisterToken,
@@ -52,7 +52,7 @@ function VocabMergeTop() {
     };
 
     const checkGenreChanged = (g: vocabMergedGenre) =>
-        !compareObjects(
+        !areSameObjects(
             g,
             initGenres.find(pg => pg.genreId === g.genreId)
         );
