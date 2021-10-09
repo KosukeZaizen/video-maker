@@ -98,6 +98,7 @@ function VocabMergeTop() {
                         <th>Genre Name</th>
                         <th>YouTube</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -153,6 +154,20 @@ function VocabMergeTop() {
                                                     g,
                                                     "youtube",
                                                     ev.target.value
+                                                );
+                                            }}
+                                        />
+                                    </td>
+                                    <td style={{ backgroundColor: "white" }}>
+                                        {"Release:"}
+                                        <input
+                                            type="checkbox"
+                                            checked={g.released}
+                                            onChange={() => {
+                                                changeGenre(
+                                                    g,
+                                                    "released",
+                                                    !g.released
                                                 );
                                             }}
                                         />
@@ -279,6 +294,7 @@ function getNewGenre(
         genreId: VocabMergedGenreId(maxGenreId + 1),
         youtube: "",
         order: 1,
+        released: false,
     };
 }
 

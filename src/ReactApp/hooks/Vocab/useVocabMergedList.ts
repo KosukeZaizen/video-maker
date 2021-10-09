@@ -14,6 +14,7 @@ const initialVocabGenre: vocabMergedGenre = {
     genreName: "",
     order: 0,
     youtube: "",
+    released: false,
 };
 
 export function useVocabMergedList(genreName: string) {

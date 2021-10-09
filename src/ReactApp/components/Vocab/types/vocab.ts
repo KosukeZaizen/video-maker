@@ -21,6 +21,7 @@ export type vocabMergedGenre = {
     genreName: string;
     order: number;
     youtube: string;
+    released: boolean;
 };
 export function VocabMergedGenreId(id: number) {
     return id as vocabMergedGenre["genreId"];
