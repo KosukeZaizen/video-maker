@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { Home } from "./components/Home";
+import ImagePainter from "./components/ImagePainter";
 import { TestPage } from "./components/TestPage";
 import VocabEdit from "./components/Vocab/Edit";
 import VocabEditTop from "./components/Vocab/Edit/Top";
@@ -50,6 +51,13 @@ function App() {
                     path="/vocabularyAdventure/:genreName"
                     component={VocabAdventure}
                 />
+                <Route
+                    sensitive
+                    exact
+                    path="/painter"
+                    component={ImagePainter}
+                />
+
                 <Route sensitive exact path="/test" component={TestPage} />
                 <Route component={Home} />
             </Switch>

@@ -14,6 +14,9 @@ export function Home() {
                 <Link to="/vocabularyAdventure/test">Vocab Adventure</Link>
             </li>
             <li>
+                <Link to="/painter">Painter</Link>
+            </li>
+            <li>
                 <Link to="/test">Test Page</Link>
             </li>
         </ul>
