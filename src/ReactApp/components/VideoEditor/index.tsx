@@ -5,6 +5,7 @@ export function VideoEditor() {
     useEffect(() => {
         processor.doLoad();
     }, []);
+
     return (
         <>
             <video
@@ -29,8 +30,8 @@ export function VideoEditor() {
 }
 
 let video: HTMLVideoElement | null = null;
-let c1: HTMLCanvasElement | null = null;
-let ctx1: CanvasRenderingContext2D | null = null;
+let canvas: HTMLCanvasElement | null = null;
+let ctx: CanvasRenderingContext2D | null = null;
 let width = 0;
 let height = 0;
 
@@ -56,8 +57,8 @@ var processor = {
             return;
         }
         video = vElement;
-        c1 = cElement;
-        ctx1 = c1.getContext("2d");
+        canvas = cElement;
+        ctx = canvas.getContext("2d");
         var self = this;
 
         video.addEventListener(
@@ -75,25 +76,33 @@ var processor = {
     },
 
     computeFrame: function () {
-        if (!ctx1 || !video) {
+        if (!ctx || !video) {
             return;
         }
-        ctx1.drawImage(video, 0, 0, width, height);
-        var frame = ctx1.getImageData(0, 0, width, height);
-        var l = frame.data.length / 4;
+        ctx.drawImage(video, 0, 0, width, height);
+        // var frame = ctx.getImageData(0, 0, width, height);
+        // var l = frame.data.length / 4;
 
-        for (var i = 0; i < l; i++) {
-            var grey =
-                (frame.data[i * 4 + 0] +
-                    frame.data[i * 4 + 1] +
-                    frame.data[i * 4 + 2]) /
-                3;
+        // for (var i = 0; i < l; i++) {
+        //     var grey =
+        //         (frame.data[i * 4 + 0] +
+        //             frame.data[i * 4 + 1] +
+        //             frame.data[i * 4 + 2]) /
+        //         3;
 
-            frame.data[i * 4 + 0] = grey;
-            frame.data[i * 4 + 1] = grey;
-            frame.data[i * 4 + 2] = grey;
-        }
-        ctx1.putImageData(frame, 0, 0);
+        //     frame.data[i * 4 + 0] = grey;
+        //     frame.data[i * 4 + 1] = grey;
+        //     frame.data[i * 4 + 2] = grey;
+        // }
+
+        // ctx.font = "30px Arial";
+        // ctx.fillText("Hello World", 10, 50);
+
+        // ctx.putImageData(frame, 0, 0);
+
+        ctx.moveTo(0, 0);
+        ctx.lineTo(200, 100);
+        ctx.stroke();
 
         return;
     },
