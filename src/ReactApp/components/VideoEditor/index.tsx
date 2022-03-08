@@ -2,6 +2,7 @@
  * Audio and video manipulation:
  * https://developer.mozilla.org/en-US/docs/Web/Guide/Audio_and_video_manipulation
  */
+
 import { writeFile } from "fs";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -162,25 +163,6 @@ var processor = {
             return;
         }
         ctx.drawImage(video, 0, 0, width, height);
-        // var frame = ctx.getImageData(0, 0, width, height);
-        // var l = frame.data.length / 4;
-
-        // for (var i = 0; i < l; i++) {
-        //     var grey =
-        //         (frame.data[i * 4 + 0] +
-        //             frame.data[i * 4 + 1] +
-        //             frame.data[i * 4 + 2]) /
-        //         3;
-
-        //     frame.data[i * 4 + 0] = grey;
-        //     frame.data[i * 4 + 1] = grey;
-        //     frame.data[i * 4 + 2] = grey;
-        // }
-
-        // ctx.font = "30px Arial";
-        // ctx.fillText("Hello World", 10, 50);
-
-        // ctx.putImageData(frame, 0, 0);
 
         ctx.moveTo(0, 0);
         ctx.lineTo(200, 100);
