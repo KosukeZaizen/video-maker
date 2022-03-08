@@ -141,9 +141,6 @@ const timerCallback = (
     ctx: CanvasRenderingContext2D,
     video: HTMLVideoElement
 ) => {
-    if (!video || video.paused || video.ended) {
-        return;
-    }
     computeFrame(ctx, video);
     setTimeout(() => {
         timerCallback(ctx, video);
@@ -159,9 +156,6 @@ const doLoad = (video: HTMLVideoElement, canvas: CanvasElement) => {
     video.addEventListener(
         "play",
         () => {
-            if (!video) {
-                return;
-            }
             timerCallback(ctx, video);
         },
         false
