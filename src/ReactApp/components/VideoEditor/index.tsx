@@ -4,6 +4,9 @@
  *
  * Capture a MediaStream From a Canvas, Video or Audio Element:
  * https://developers.google.com/web/updates/2016/10/capture-stream
+ *
+ * MediaStream Capture Canvas and Audio Simultaneously:
+ * https://stackoverflow.com/questions/39302814/mediastream-capture-canvas-and-audio-simultaneously
  */
 
 import { writeFile } from "fs";
