@@ -1,3 +1,7 @@
+/**
+ * Audio and video manipulation:
+ * https://developer.mozilla.org/en-US/docs/Web/Guide/Audio_and_video_manipulation
+ */
 import { writeFile } from "fs";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -59,7 +63,7 @@ export function VideoEditor() {
                             console.log("The video data is available");
                             // recorder.onstop = getHandleStop(e.data);
 
-                            recorder.onstop = (async () => {
+                            recorder.onstop = async () => {
                                 const blob = new Blob([e.data], {
                                     type: "video/webm;codecs=vp9",
                                 });
@@ -81,7 +85,7 @@ export function VideoEditor() {
                                         alert("File was saved successfully");
                                     }
                                 );
-                            });
+                            };
                         };
                         recorder.start();
                         setRecording(true);
