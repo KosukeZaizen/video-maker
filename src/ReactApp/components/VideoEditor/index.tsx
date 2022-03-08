@@ -74,7 +74,8 @@ export function VideoEditor() {
                         sourceNode.connect(dest);
                         sourceNode.connect(ctx.destination);
                         const audioTrack = dest.stream.getAudioTracks()[0];
-                        // add it to your canvas stream:
+
+                        // add it to the canvas stream:
                         stream.addTrack(audioTrack);
 
                         recorder = new MediaRecorder(stream, {
@@ -145,9 +146,8 @@ var processor = {
             return;
         }
         this.computeFrame();
-        var self = this;
-        setTimeout(function () {
-            self.timerCallback();
+        setTimeout(() => {
+            this.timerCallback();
         }, 16); // roughly 60 frames per second
     },
 
@@ -164,17 +164,15 @@ var processor = {
         canvas = cElement;
         ctx = canvas.getContext("2d");
 
-        var self = this;
-
         video.addEventListener(
             "play",
-            function () {
+            () => {
                 if (!video) {
                     return;
                 }
                 width = video.width;
                 height = video.height;
-                self.timerCallback();
+                this.timerCallback();
             },
             false
         );
