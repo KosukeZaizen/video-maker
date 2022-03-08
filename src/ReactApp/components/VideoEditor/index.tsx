@@ -21,10 +21,13 @@ let recorder: MediaRecorder | null = null;
 
 export function VideoEditor() {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<CanvasElement>(null);
 
     useEffect(() => {
-        console.log("vid", videoRef.current);
-        doLoad();
+        if (!videoRef.current || !canvasRef.current) {
+            return;
+        }
+        doLoad(videoRef.current, canvasRef.current);
     }, []);
 
     const [recording, setRecording] = useState(false);
@@ -32,7 +35,6 @@ export function VideoEditor() {
     return (
         <>
             <video
-                id="my-video"
                 width="1280"
                 height="720"
                 crossOrigin="anonymous"
@@ -48,7 +50,8 @@ export function VideoEditor() {
                     type="video/mp4"
                 />
             </video>
-            <canvas id="my-canvas" width="1280" height="720" />
+            <canvas ref={canvasRef} width="1280" height="720" />
+
             {!recording && (
                 <button
                     onClick={() => {
@@ -58,25 +61,19 @@ export function VideoEditor() {
                             return;
                         }
 
-                        const vElement = document.getElementById("my-video");
-                        const cElement = document.getElementById(
-                            "my-canvas"
-                        ) as CanvasElement | null;
-
-                        if (
-                            !(vElement instanceof HTMLVideoElement) ||
-                            !(cElement instanceof HTMLCanvasElement)
-                        ) {
+                        const video = videoRef.current;
+                        const canvas = canvasRef.current;
+                        if (!video || !canvas) {
+                            alert("No elements");
                             return;
                         }
 
-                        const stream = cElement.captureStream();
+                        const stream = canvas.captureStream();
 
                         // get the audio track:
                         const ctx = new AudioContext();
                         const dest = ctx.createMediaStreamDestination();
-                        const sourceNode =
-                            ctx.createMediaElementSource(vElement);
+                        const sourceNode = ctx.createMediaElementSource(video);
                         sourceNode.connect(dest);
                         sourceNode.connect(ctx.destination);
                         const audioTrack = dest.stream.getAudioTracks()[0];
@@ -109,13 +106,13 @@ export function VideoEditor() {
                                     buffer,
                                     () => {
                                         alert("File was saved successfully");
-                                        vElement.pause();
+                                        video.pause();
                                     }
                                 );
                             };
                         };
 
-                        vElement.play();
+                        video.play();
                         recorder.start();
                         setRecording(true);
                     }}
@@ -153,16 +150,7 @@ const timerCallback = (
     }, 16); // roughly 60 frames per second
 };
 
-const doLoad = () => {
-    const video = document.getElementById("my-video");
-    const canvas = document.getElementById("my-canvas");
-    if (
-        !(video instanceof HTMLVideoElement) ||
-        !(canvas instanceof HTMLCanvasElement)
-    ) {
-        return;
-    }
-
+const doLoad = (video: HTMLVideoElement, canvas: CanvasElement) => {
     const ctx = canvas.getContext("2d");
     if (!ctx) {
         return;
