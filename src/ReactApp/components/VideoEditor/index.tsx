@@ -1,10 +1,19 @@
+import { writeFile } from "fs";
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+interface CanvasElement extends HTMLCanvasElement {
+    captureStream(frameRate?: number): MediaStream;
+}
+
+let recorder: MediaRecorder | null = null;
 
 export function VideoEditor() {
     useEffect(() => {
         processor.doLoad();
     }, []);
+
+    const [recording, setRecording] = useState(false);
 
     return (
         <>
@@ -25,6 +34,75 @@ export function VideoEditor() {
                 />
             </video>
             <canvas id="my-canvas" width="480" height="270" />
+            {!recording && (
+                <button
+                    onClick={() => {
+                        const cElement = document.getElementById(
+                            "my-canvas"
+                        ) as CanvasElement | null;
+
+                        if (!(cElement instanceof HTMLCanvasElement)) {
+                            console.log("It's not HTMLCanvasElement");
+                            return;
+                        }
+
+                        const stream = cElement.captureStream();
+                        recorder = new MediaRecorder(stream, {
+                            mimeType: "video/webm;codecs=vp9",
+                        });
+
+                        alert("Do you want to start recording?");
+                        recorder.ondataavailable = (e: BlobEvent) => {
+                            if (!recorder) {
+                                return;
+                            }
+                            console.log("The video data is available");
+                            // recorder.onstop = getHandleStop(e.data);
+
+                            recorder.onstop = (async () => {
+                                const blob = new Blob([e.data], {
+                                    type: "video/webm;codecs=vp9",
+                                });
+
+                                const buffer = Buffer.from(
+                                    await blob.arrayBuffer()
+                                );
+
+                                const downloadFolder = `${process.env.USERPROFILE}/Downloads`;
+                                console.log("downloadFolder", downloadFolder);
+
+                                writeFile(
+                                    `${downloadFolder}/test-${Date.now()}.webm`,
+                                    buffer,
+                                    () => {
+                                        console.log(
+                                            "File was saved successfully"
+                                        );
+                                        alert("File was saved successfully");
+                                    }
+                                );
+                            });
+                        };
+                        recorder.start();
+                        setRecording(true);
+                    }}
+                >
+                    record start
+                </button>
+            )}
+            {recording && (
+                <button
+                    onClick={() => {
+                        if (!recorder) {
+                            return;
+                        }
+                        recorder.stop();
+                        setRecording(false);
+                    }}
+                >
+                    record stop
+                </button>
+            )}
         </>
     );
 }
