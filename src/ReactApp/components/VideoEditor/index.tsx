@@ -28,9 +28,10 @@ export function VideoEditor() {
             <video
                 id="my-video"
                 controls
-                width="480"
-                height="270"
+                width="1280"
+                height="720"
                 crossOrigin="anonymous"
+                style={{ display: "none" }}
             >
                 <source
                     src="http://jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm"
@@ -41,7 +42,7 @@ export function VideoEditor() {
                     type="video/mp4"
                 />
             </video>
-            <canvas id="my-canvas" width="480" height="270" />
+            <canvas id="my-canvas" width="1280" height="720" />
             {!recording && (
                 <button
                     onClick={() => {
@@ -101,10 +102,13 @@ export function VideoEditor() {
                                     buffer,
                                     () => {
                                         alert("File was saved successfully");
+                                        vElement.pause();
                                     }
                                 );
                             };
                         };
+
+                        vElement.play();
                         recorder.start();
                         setRecording(true);
                     }}
