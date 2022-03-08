@@ -11,7 +11,7 @@
 
 import { writeFile } from "fs";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CanvasElement extends HTMLCanvasElement {
     captureStream(frameRate?: number): MediaStream;
@@ -20,8 +20,11 @@ interface CanvasElement extends HTMLCanvasElement {
 let recorder: MediaRecorder | null = null;
 
 export function VideoEditor() {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
     useEffect(() => {
-        processor.doLoad();
+        console.log("vid", videoRef.current);
+        doLoad();
     }, []);
 
     const [recording, setRecording] = useState(false);
@@ -30,11 +33,11 @@ export function VideoEditor() {
         <>
             <video
                 id="my-video"
-                controls
                 width="1280"
                 height="720"
                 crossOrigin="anonymous"
                 style={{ display: "none" }}
+                ref={videoRef}
             >
                 <source
                     src="http://jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm"
@@ -137,60 +140,55 @@ export function VideoEditor() {
     );
 }
 
-let video: HTMLVideoElement | null = null;
-let canvas: HTMLCanvasElement | null = null;
-let ctx: CanvasRenderingContext2D | null = null;
-let width = 0;
-let height = 0;
-
-var processor = {
-    timerCallback: function () {
-        if (!video || video.paused || video.ended) {
-            return;
-        }
-        this.computeFrame();
-        setTimeout(() => {
-            this.timerCallback();
-        }, 16); // roughly 60 frames per second
-    },
-
-    doLoad: function () {
-        const vElement = document.getElementById("my-video");
-        const cElement = document.getElementById("my-canvas");
-        if (
-            !(vElement instanceof HTMLVideoElement) ||
-            !(cElement instanceof HTMLCanvasElement)
-        ) {
-            return;
-        }
-        video = vElement;
-        canvas = cElement;
-        ctx = canvas.getContext("2d");
-
-        video.addEventListener(
-            "play",
-            () => {
-                if (!video) {
-                    return;
-                }
-                width = video.width;
-                height = video.height;
-                this.timerCallback();
-            },
-            false
-        );
-    },
-
-    computeFrame: function () {
-        if (!ctx || !video) {
-            return;
-        }
-        ctx.drawImage(video, 0, 0, width, height);
-
-        ctx.moveTo(0, 0);
-        ctx.lineTo(200, 100);
-        ctx.stroke();
-
+const timerCallback = (
+    ctx: CanvasRenderingContext2D,
+    video: HTMLVideoElement
+) => {
+    if (!video || video.paused || video.ended) {
         return;
-    },
+    }
+    computeFrame(ctx, video);
+    setTimeout(() => {
+        timerCallback(ctx, video);
+    }, 16); // roughly 60 frames per second
+};
+
+const doLoad = () => {
+    const video = document.getElementById("my-video");
+    const canvas = document.getElementById("my-canvas");
+    if (
+        !(video instanceof HTMLVideoElement) ||
+        !(canvas instanceof HTMLCanvasElement)
+    ) {
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+        return;
+    }
+
+    video.addEventListener(
+        "play",
+        () => {
+            if (!video) {
+                return;
+            }
+            timerCallback(ctx, video);
+        },
+        false
+    );
+};
+
+const computeFrame = (
+    ctx: CanvasRenderingContext2D,
+    video: HTMLVideoElement
+) => {
+    ctx.drawImage(video, 0, 0, video.width, video.height);
+
+    ctx.moveTo(0, 0);
+    ctx.lineTo(200, 100);
+    ctx.stroke();
+
+    return;
 };
