@@ -1,6 +1,9 @@
 /**
  * Audio and video manipulation:
  * https://developer.mozilla.org/en-US/docs/Web/Guide/Audio_and_video_manipulation
+ *
+ * Capture a MediaStream From a Canvas, Video or Audio Element:
+ * https://developers.google.com/web/updates/2016/10/capture-stream
  */
 
 import { writeFile } from "fs";
@@ -42,30 +45,48 @@ export function VideoEditor() {
             {!recording && (
                 <button
                     onClick={() => {
+                        if (
+                            !confirm("Do you really want to start recording?")
+                        ) {
+                            return;
+                        }
+
+                        const vElement = document.getElementById("my-video");
                         const cElement = document.getElementById(
                             "my-canvas"
                         ) as CanvasElement | null;
 
-                        if (!(cElement instanceof HTMLCanvasElement)) {
-                            console.log("It's not HTMLCanvasElement");
+                        if (
+                            !(vElement instanceof HTMLVideoElement) ||
+                            !(cElement instanceof HTMLCanvasElement)
+                        ) {
                             return;
                         }
 
                         const stream = cElement.captureStream();
+
+                        // get the audio track:
+                        const ctx = new AudioContext();
+                        const dest = ctx.createMediaStreamDestination();
+                        const sourceNode =
+                            ctx.createMediaElementSource(vElement);
+                        sourceNode.connect(dest);
+                        sourceNode.connect(ctx.destination);
+                        const audioTrack = dest.stream.getAudioTracks()[0];
+                        // add it to your canvas stream:
+                        stream.addTrack(audioTrack);
+
                         recorder = new MediaRecorder(stream, {
                             mimeType: "video/webm;codecs=vp9",
                         });
 
-                        alert("Do you want to start recording?");
-                        recorder.ondataavailable = (e: BlobEvent) => {
+                        recorder.ondataavailable = (ev: BlobEvent) => {
                             if (!recorder) {
                                 return;
                             }
-                            console.log("The video data is available");
-                            // recorder.onstop = getHandleStop(e.data);
 
                             recorder.onstop = async () => {
-                                const blob = new Blob([e.data], {
+                                const blob = new Blob([ev.data], {
                                     type: "video/webm;codecs=vp9",
                                 });
 
@@ -74,15 +95,11 @@ export function VideoEditor() {
                                 );
 
                                 const downloadFolder = `${process.env.USERPROFILE}/Downloads`;
-                                console.log("downloadFolder", downloadFolder);
 
                                 writeFile(
                                     `${downloadFolder}/test-${Date.now()}.webm`,
                                     buffer,
                                     () => {
-                                        console.log(
-                                            "File was saved successfully"
-                                        );
                                         alert("File was saved successfully");
                                     }
                                 );
@@ -142,6 +159,7 @@ var processor = {
         video = vElement;
         canvas = cElement;
         ctx = canvas.getContext("2d");
+
         var self = this;
 
         video.addEventListener(
