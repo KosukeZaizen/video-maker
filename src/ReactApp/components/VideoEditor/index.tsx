@@ -17,9 +17,41 @@ interface CanvasElement extends HTMLCanvasElement {
     captureStream(frameRate?: number): MediaStream;
 }
 
+interface FileSource {
+    src: string;
+    type: string;
+}
+
 let recorder: MediaRecorder | null = null;
 
 export function VideoEditor() {
+    const [fileSource, setFileSource] = useState({
+        src: "",
+        type: "",
+    });
+
+    if (!fileSource.src) {
+        return (
+            <input
+                type="file"
+                name="file"
+                onChange={e => {
+                    const target = e.target;
+                    const file = target.files?.item(0);
+                    if (file) {
+                        setFileSource({
+                            src: URL.createObjectURL(file),
+                            type: file.type,
+                        });
+                    }
+                }}
+            />
+        );
+    }
+    return <Recorder fileSource={fileSource} />;
+}
+
+function Recorder({ fileSource }: { fileSource: FileSource }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<CanvasElement>(null);
 
@@ -34,22 +66,16 @@ export function VideoEditor() {
     return (
         <>
             <video
-                width="1280"
-                height="720"
+                width="960"
+                height="540"
                 crossOrigin="anonymous"
-                style={{ display: "none" }}
+                // style={{ display: "none" }}
                 ref={videoRef}
+                controls
             >
-                <source
-                    src="http://jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm"
-                    type="video/webm"
-                />
-                <source
-                    src="http://jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v"
-                    type="video/mp4"
-                />
+                <source src={fileSource.src} type={fileSource.type} />
             </video>
-            <canvas ref={canvasRef} width="1280" height="720" />
+            <canvas ref={canvasRef} width="960" height="540" />
 
             {!recording && (
                 <button
