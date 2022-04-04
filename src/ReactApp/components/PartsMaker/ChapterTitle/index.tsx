@@ -1,10 +1,8 @@
 import * as React from "react";
 import { CSSProperties, useEffect, useState } from "react";
-import { staticFolderPath } from "../../../common/consts";
 import { sleepAsync } from "../../../common/functions";
 import { imgSrc } from "../../../common/imgSrc";
 import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
-import { Video } from "../../shared/Video";
 
 const { scroll_center, scroll_left } = imgSrc.element;
 
@@ -46,10 +44,17 @@ const backGroundVideo = {
 function TitleAnimation() {
     return (
         <>
-            <div style={{ ...fullScreenStyle, cursor: "none", zIndex: 100 }}>
+            <div
+                style={{
+                    ...fullScreenStyle,
+                    cursor: "none",
+                    zIndex: 100,
+                    backgroundColor: "black",
+                }}
+            >
                 <Scroll />
             </div>
-            <div style={{ ...fullScreenStyle, cursor: "none", zIndex: 10 }}>
+            {/* <div style={{ ...fullScreenStyle, cursor: "none", zIndex: 10 }}>
                 <Video
                     src={`${staticFolderPath}/video/${backGroundVideo.blackSakura}.mp4`}
                     afterVideo={() => {}}
@@ -59,7 +64,7 @@ function TitleAnimation() {
                     }}
                     freezingTimeAfterShowing={100}
                 />
-            </div>
+            </div> */}
         </>
     );
 }
