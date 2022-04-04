@@ -2,6 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { Home } from "./components/Home";
+import { PartsMaker } from "./components/PartsMaker";
+import ChapterTitle from "./components/PartsMaker/ChapterTitle";
 import { TestPage } from "./components/TestPage";
 import { VideoEditor } from "./components/VideoEditor";
 import VocabEdit from "./components/Vocab/Edit";
@@ -56,6 +58,18 @@ function App() {
                     exact
                     path="/videoEditor"
                     component={VideoEditor}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/partsMaker"
+                    component={PartsMaker}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/chapterTitle"
+                    component={ChapterTitle}
                 />
                 <Route sensitive exact path="/test" component={TestPage} />
                 <Route component={Home} />

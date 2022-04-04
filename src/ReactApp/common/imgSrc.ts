@@ -12,6 +12,8 @@ const imgNames = [
     "butsudan",
     "fire",
     "fireHorizontal",
+    "scroll_left",
+    "scroll_center",
 ] as const;
 
 const backgroundNames = ["first_street", "pochi_room"] as const;
@@ -41,3 +43,4 @@ export const imgSrc = { element: elementSrc, background: backgroundSrc };
 
 export type ElementImgName = keyof typeof imgSrc["element"];
 export type BackgroundImgName = keyof typeof imgSrc["background"];
+

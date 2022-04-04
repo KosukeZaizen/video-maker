@@ -17,6 +17,12 @@ export function Home() {
                 <Link to="/videoEditor">Video Editor</Link>
             </li>
             <li>
+                <Link to="/partsMaker">Parts Maker</Link>
+            </li>
+            <li>
+                <Link to="/chapterTitle">Chapter Title</Link>
+            </li>
+            <li>
                 <Link to="/test">Test Page</Link>
             </li>
         </ul>
