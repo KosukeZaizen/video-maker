@@ -3,15 +3,14 @@ import { CSSProperties, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { sleepAsync } from "../../../common/functions";
 import { imgSrc } from "../../../common/imgSrc";
-import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
 
 const { scroll_center, scroll_left } = imgSrc.element;
 
 export default function ChapterTitle() {
     const [started, setStarted] = useState(false);
-    const { startRecording, stopRecording } = useVideoRecorder({
-        fileName: "chapter_title",
-    });
+    // const { startRecording, stopRecording } = useVideoRecorder({
+    //     fileName: "chapter_title",
+    // });
 
     if (started) {
         return <TitleAnimation />;
@@ -24,13 +23,13 @@ export default function ChapterTitle() {
             <button
                 onClick={() => {
                     setStarted(true);
-                    (async () => {
-                        await sleepAsync(1000);
-                        startRecording();
+                    // (async () => {
+                    //     await sleepAsync(1000);
+                    //     startRecording();
 
-                        await sleepAsync(12000);
-                        stopRecording();
-                    })();
+                    //     await sleepAsync(12000);
+                    //     stopRecording();
+                    // })();
                 }}
             >
                 start
@@ -52,7 +51,7 @@ function TitleAnimation() {
                     ...fullScreenStyle,
                     cursor: "none",
                     zIndex: 100,
-                    backgroundColor: "black",
+                    backgroundColor: "red",
                 }}
             >
                 <Scroll />
