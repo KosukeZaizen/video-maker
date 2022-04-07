@@ -3,15 +3,14 @@ import { CSSProperties, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { sleepAsync } from "../../../common/functions";
 import { imgSrc } from "../../../common/imgSrc";
-import { useVideoRecorder } from "../../../hooks/useVideoRecorder";
 
 const { scroll_center, scroll_left } = imgSrc.element;
 
-export default function ChapterTitle() {
-    const [started, setStarted] = useState(false);
-    const { startRecording, stopRecording } = useVideoRecorder({
-        fileName: "chapter_title",
-    });
+export default function NamePlate() {
+    const [started, setStarted] = useState(true);
+    // const { startRecording, stopRecording } = useVideoRecorder({
+    //     fileName: "name_plate",
+    // });
 
     if (started) {
         return <TitleAnimation />;
@@ -24,51 +23,33 @@ export default function ChapterTitle() {
             <button
                 onClick={() => {
                     setStarted(true);
-                    (async () => {
-                        await sleepAsync(1000);
-                        startRecording();
+                    // (async () => {
+                    //     await sleepAsync(1000);
+                    //     startRecording();
 
-                        await sleepAsync(12000);
-                        stopRecording();
-                    })();
+                    //     await sleepAsync(12000);
+                    //     stopRecording();
+                    // })();
                 }}
             >
-                start
+                start name plate
             </button>
         </div>
     );
 }
 
-const backGroundVideo = {
-    blackSakura: "black_sakura",
-    kabuki: "kabuki",
-};
-
 function TitleAnimation() {
     return (
-        <>
-            <div
-                style={{
-                    ...fullScreenStyle,
-                    cursor: "none",
-                    zIndex: 100,
-                    backgroundColor: "black",
-                }}
-            >
-                <Scroll />
-            </div>
-            {/* <div style={{ ...fullScreenStyle, cursor: "none", zIndex: 10 }}>
-                <Video
-                    src={`${staticFolderPath}/video/${backGroundVideo.blackSakura}.mp4`}
-                    afterVideo={() => {}}
-                    shown={true}
-                    style={{
-                        width: "100%",
-                    }}
-                    freezingTimeAfterShowing={100}
-                />
-            </div> */}
-        </>
+        <div
+            style={{
+                ...fullScreenStyle,
+                cursor: "none",
+                zIndex: 100,
+                backgroundColor: "red",
+            }}
+        >
+            <Scroll />
+        </div>
     );
 }
 
@@ -101,7 +82,7 @@ function Scroll() {
             await sleepAsync(500);
             setScrollState("open");
 
-            await sleepAsync(3500);
+            await sleepAsync(6500);
             setScrollState("closed");
 
             await sleepAsync(500);
@@ -129,6 +110,7 @@ function Scroll() {
                             height: "100%",
                             position: "relative",
                             left: "5%",
+                            zIndex: 1000,
                         }}
                     />
                 </div>
@@ -139,9 +121,42 @@ function Scroll() {
                         maxWidth: scrollWidth,
                         overflow: "hidden",
                         transition,
+                        position: "relative",
                     }}
                 >
                     <img src={scroll_center} style={{ height: "100%" }} />
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: 50,
+                            left: 250,
+                            zIndex: 10,
+                            whiteSpace: "nowrap",
+                            fontFamily: `"游明朝", YuMincho, "Hiragino Mincho ProN W3", "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "HG明朝E", "ＭＳ Ｐ明朝", "ＭＳ 明朝", serif`,
+                            fontWeight: "bold",
+                        }}
+                    >
+                        <div
+                            style={{
+                                fontSize: 200,
+                                margin: 0,
+                                padding: 0,
+                            }}
+                        >
+                            航介
+                        </div>
+                        <div
+                            style={{
+                                fontSize: 100,
+                                margin: "0 0 0 10px",
+                                padding: 0,
+                                position: "relative",
+                                bottom: 60,
+                            }}
+                        >
+                            {"Kō suke"}
+                        </div>
+                    </div>
                 </div>
                 <div style={{ height: "100%" }}>
                     <img
@@ -151,6 +166,7 @@ function Scroll() {
                             transform: "scale(-1,1)",
                             position: "relative",
                             right: "5%",
+                            zIndex: 1000,
                         }}
                     />
                 </div>
