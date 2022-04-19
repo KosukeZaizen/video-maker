@@ -66,7 +66,7 @@ type ScrollState = "hidden" | "closed" | "open";
 const transition = "500ms";
 
 function Scroll() {
-    const [scrollState, setScrollState] = useState<ScrollState>("closed");
+    const [scrollState, setScrollState] = useState<ScrollState>("hidden");
 
     const scrollWidth =
         scrollState === "open" ? openScrollWidth : closedScrollWidth;
