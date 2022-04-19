@@ -30,6 +30,9 @@ export function Home() {
                 <li>
                     <Link to="/namePlate">NamePlate</Link>
                 </li>
+                <li>
+                    <Link to="/namePlateLow">NamePlateLow</Link>
+                </li>
             </ul>
             <hr />
             <ul>

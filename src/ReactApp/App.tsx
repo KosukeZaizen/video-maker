@@ -5,6 +5,7 @@ import { Home } from "./components/Home";
 import { PartsMaker } from "./components/PartsMaker";
 import ChapterTitle from "./components/PartsMaker/ChapterTitle";
 import NamePlate from "./components/PartsMaker/NamePlate";
+import NamePlateLow from "./components/PartsMaker/NamePlate/NamePlateLow";
 import { TestPage } from "./components/TestPage";
 import { VideoEditor } from "./components/VideoEditor";
 import VocabEdit from "./components/Vocab/Edit";
@@ -77,6 +78,12 @@ function App() {
                     exact
                     path="/namePlate"
                     component={NamePlate}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/namePlateLow"
+                    component={NamePlateLow}
                 />
                 <Route sensitive exact path="/test" component={TestPage} />
                 <Route component={Home} />
