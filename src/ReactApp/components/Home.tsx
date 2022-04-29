@@ -33,6 +33,9 @@ export function Home() {
                 <li>
                     <Link to="/namePlateLow">NamePlateLow</Link>
                 </li>
+                <li>
+                    <Link to="/explanationScroll">ExplanationScroll</Link>
+                </li>
             </ul>
             <hr />
             <ul>

@@ -4,6 +4,7 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { Home } from "./components/Home";
 import { PartsMaker } from "./components/PartsMaker";
 import ChapterTitle from "./components/PartsMaker/ChapterTitle";
+import ExplanationScroll from "./components/PartsMaker/ExplanationScroll";
 import NamePlate from "./components/PartsMaker/NamePlate";
 import NamePlateLow from "./components/PartsMaker/NamePlate/NamePlateLow";
 import { TestPage } from "./components/TestPage";
@@ -84,6 +85,12 @@ function App() {
                     exact
                     path="/namePlateLow"
                     component={NamePlateLow}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/explanationScroll"
+                    component={ExplanationScroll}
                 />
                 <Route sensitive exact path="/test" component={TestPage} />
                 <Route component={Home} />
