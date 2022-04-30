@@ -7,6 +7,7 @@ import ChapterTitle from "./components/PartsMaker/ChapterTitle";
 import ExplanationScroll from "./components/PartsMaker/ExplanationScroll";
 import NamePlate from "./components/PartsMaker/NamePlate";
 import NamePlateLow from "./components/PartsMaker/NamePlate/NamePlateLow";
+import RotatingShuriken from "./components/PartsMaker/RotatingShuriken";
 import { TestPage } from "./components/TestPage";
 import { VideoEditor } from "./components/VideoEditor";
 import VocabEdit from "./components/Vocab/Edit";
@@ -91,6 +92,12 @@ function App() {
                     exact
                     path="/explanationScroll"
                     component={ExplanationScroll}
+                />
+                <Route
+                    sensitive
+                    exact
+                    path="/rotatingShuriken"
+                    component={RotatingShuriken}
                 />
                 <Route sensitive exact path="/test" component={TestPage} />
                 <Route component={Home} />

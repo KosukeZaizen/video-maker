@@ -36,6 +36,9 @@ export function Home() {
                 <li>
                     <Link to="/explanationScroll">ExplanationScroll</Link>
                 </li>
+                <li>
+                    <Link to="/rotatingShuriken">RotatingShuriken</Link>
+                </li>
             </ul>
             <hr />
             <ul>
