@@ -33,6 +33,7 @@ function ShurikenAnimation() {
                 ...fullScreenStyle,
                 cursor: "none",
                 zIndex: 100,
+                backgroundColor: "yellow",
             }}
         >
             <Scroll />
@@ -83,9 +84,12 @@ export function ShurikenProgress({ size, style }: Props) {
     );
 }
 
-const opacityKeyframes = {
+const rotateKeyframes = {
     "0%": {
         transform: "rotate(0deg)",
+    },
+    "90%": {
+        transform: "rotate(360deg)",
     },
     "100%": {
         transform: "rotate(360deg)",
@@ -94,7 +98,7 @@ const opacityKeyframes = {
 
 const styles = StyleSheet.create({
     ShurikenProgress: {
-        animationName: [opacityKeyframes],
+        animationName: [rotateKeyframes],
         animationDuration: "1s",
         animationIterationCount: "infinite",
     },
